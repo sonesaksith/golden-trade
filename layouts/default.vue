@@ -1,6 +1,6 @@
 <template>
-  <!-- <v-app> -->
-    <!-- <v-navigation-drawer v-model="drawer" :mini-variant.sync="mini" permanent>
+  <v-app>
+    <v-navigation-drawer v-model="drawer" :mini-variant.sync="mini" permanent>
       <v-list-item class="px-2">
         <v-list-item-avatar>
           <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
@@ -32,10 +32,8 @@
       <v-container fluid>
         <Nuxt />
       </v-container>
-    </v-main> -->
-    <!-- <v-footer :absolute="!fixed" app style="position: fixed; bottom: 0">
-    </v-footer> -->
-  <!-- </v-app> -->
+    </v-main>
+  </v-app>
 </template>
 
 <script>
@@ -46,7 +44,6 @@ export default {
   middleware: ["checkAuth"],
   data() {
     return {
-      fixed: false,
       drawer: true,
       items: [
         { title: "Home", icon: "mdi-home-city" },

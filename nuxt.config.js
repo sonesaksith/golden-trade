@@ -27,7 +27,7 @@ export default {
   plugins: [
     '~/plugins/secure-storage',
     '~/plugins/axios.client.js',
-    '~/plugins/global.js',
+    // '~/plugins/global.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -44,16 +44,16 @@ export default {
     '@nuxtjs/dotenv', 
   ],
 
-  axios: {
-    retry: { retries: 3 },
-    proxy: true,
-  },
-  proxy: {
-    '/api/': {
-      target: process.env.BASE_URL,
-      pathRewrite: { '^/api/': '/' },
-    },
-  },
+  // axios: {
+  //   retry: { retries: 3 },
+  //   proxy: true,
+  // },
+  // proxy: {
+  //   '/api/': {
+  //     target: process.env.BASE_URL,
+  //     pathRewrite: { '^/api/': '/' },
+  //   },
+  // },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

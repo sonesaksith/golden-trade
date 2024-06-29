@@ -17,7 +17,7 @@
         <v-col cols="12" class="login_form">
           <v-row>
             <v-col cols="12" align="center">
-              <h3>ເຂົ້າສູ່ລະບົບ ສະມາຊິກ</h3>
+              <h3>ເຂົ້າສູ່ລະບົບ</h3>
             </v-col>
             <v-col cols="12" class="py-0">
               <v-text-field

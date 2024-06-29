@@ -8,3 +8,9 @@
     url(../fonts/NotoSansLao-Regular.woff) format("woff"),
     url(../fonts/NotoSansLao-Regular.ttf) format("truetype");
 }
+* {
+  font-family: "Noto Sans Lao", sans-serif;
+}
+* {
+  font-family: "Noto Sans Lao", sans-serif;
+}

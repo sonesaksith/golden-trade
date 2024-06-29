@@ -1,17 +1,19 @@
-<template></template>
+<template>
+  <div></div>
+</template>
 
 <script>
 import secureStorage from '~/plugins/secure-storage';
 export default {
   middleware: ["checkAuth"],
-  // name: 'IndexPage',
+  name: 'IndexPage',
   data() {
     return {};
   },
   mounted() {
-    // if (secureStorage.getItem("token")) {
-      this.$router.replace({ path: "/authen/login" });
-    // }
+    if (secureStorage.getItem("token")) {
+      this.$router.replace({ path: "/stock" });
+    }
   },
   computed: {},
   methods: {},
