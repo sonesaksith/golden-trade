@@ -24,7 +24,7 @@ export default {
   plugins: [
     "~/plugins/secure-storage",
     "~/plugins/axios.client.js",
-    // '~/plugins/global.js',
+    "~/plugins/global.js",
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -34,7 +34,7 @@ export default {
   buildModules: ["@nuxtjs/vuetify"],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ["@nuxtjs/axios", "@nuxtjs/dotenv"],
+  modules: ["@nuxtjs/axios", "@nuxtjs/dotenv", "nuxt-sweetalert2"],
 
   // axios: {
   //   retry: { retries: 3 },
