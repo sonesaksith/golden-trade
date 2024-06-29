@@ -1,0 +1,22 @@
+{
+    "background.enabled": true,
+  "background.loop": false,
+  "background.useDefault": false,
+  "background.useFront": false,
+  "background.style": {
+        "content": "''",
+        "pointer-events": "none",
+        "position": "absolute",
+        "z-index": "99999",
+        "width": "70%",
+        "height": "100%",
+        "margin-left":"30%",
+        "background-position": "right",
+        "background-size": "cover",
+        "background-repeat": "no-repeat",
+        "opacity": 0.1
+    },
+  "background.customImages": [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkQ-jxDuCjRtY2KotaIskw9rrBwn1RS33prj7WW9luOoh5DQQHNDo2LM-5sQnDMFZqg0k&usqp=CAU",
+    ]
+}

@@ -27,7 +27,7 @@ export default {
   plugins: [
     '~/plugins/secure-storage',
     '~/plugins/axios.client.js',
-    // '~/plugins/global.js',
+    '~/plugins/global.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -42,6 +42,7 @@ export default {
   modules: [
     '@nuxtjs/axios', 
     '@nuxtjs/dotenv', 
+    'nuxt-sweetalert2',
   ],
 
   // axios: {

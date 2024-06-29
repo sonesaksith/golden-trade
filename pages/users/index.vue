@@ -1,5 +1,7 @@
 <template>
-  <Stock />
+  <div>
+    <Users />
+  </div>
 </template>
 <script>
 export default {
