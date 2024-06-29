@@ -61,7 +61,7 @@
     </div>
     <div>
       <v-row>
-        <v-col v-for="(item, index) in golds" :key="index" cols="12" sm="3" md="3" lg="3">
+        <v-col v-for="(item, index) in golds" :key="index" cols="12" sm="3" md="3" lg="2">
           <v-card class="mx-auto my-2 rounded-lg" max-width="374">
             <v-img
               height="250"
@@ -85,7 +85,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn outlined rounded text color="secondary" style="border: 0.5px solid #ffd700;"> ເພີ່ມໃສ່ກະຕ່າ </v-btn>
+              <v-btn outlined rounded text color="excel"> ເພີ່ມໃສ່ກະຕ່າ </v-btn>
             </v-card-actions>
           </v-card>
         </v-col>

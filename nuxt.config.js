@@ -82,6 +82,7 @@ export default {
           mygreen: '#1AE23A',
           myblue: '#4D74FF',
           myred: '#FF8B8B',
+          darkGreen: '#17A589',
         },
       },
     },

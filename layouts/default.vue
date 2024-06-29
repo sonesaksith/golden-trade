@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" :mini-variant.sync="mini" permanent fixed app>
-      <v-list-item class="px-2">
+    <v-navigation-drawer v-model="drawer" :mini-variant.sync="mini" permanent fixed app >
+      <v-list-item class="px-2" @click.stop="mini = !mini">
         <v-list-item-avatar>
           <img style="width: 50px; height: 50px;" src="../assets/images/kimbup.jpeg" />
         </v-list-item-avatar>
@@ -15,7 +15,7 @@
 
       <v-divider></v-divider>
 
-      <v-list dense>
+      <v-list nav dense>
         <v-list-item v-for="item in items" :key="item.title" :to="item.path" link>
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
@@ -37,8 +37,8 @@
         </v-list-item>
       </v-list>
       
-      <template v-slot:append>
-        <!-- <v-list-item link>
+      <!-- <template v-slot:append>
+        <v-list-item link>
           <v-list-item-icon>
             <v-icon>mdi-logout</v-icon>
           </v-list-item-icon>
@@ -46,8 +46,8 @@
           <v-list-item-content @click="logout">
             <v-list-item-title><h4>ອອກ​ຈາກ​ລະ​ບົບ</h4></v-list-item-title>
           </v-list-item-content>
-        </v-list-item> -->
-      </template>
+        </v-list-item>
+      </template> -->
     </v-navigation-drawer>
     
     <v-main>
@@ -66,7 +66,7 @@ export default {
   middleware: ["checkAuth"],
   data() {
     return {
-      drawer: true,
+      drawer: false,
       items: [
         { title: "ຫນ້າຫຼັກ", icon: "mdi-home", path: '/stock', },
         { title: "ບັນ​ຊີ​ຂອງ​ຂ້ອຍ", icon: "mdi-account", path: '/profile', },
