@@ -21,6 +21,7 @@
     "secure-web-storage": "^1.0.2",
     "vue": "^2.7.16",
     "vue-server-renderer": "^2.7.10",
-    "vue-template-compiler": "^2.7.10"
+    "vue-template-compiler": "^2.7.10",
+    "vuetify": "^2.7.2"
   }
 }

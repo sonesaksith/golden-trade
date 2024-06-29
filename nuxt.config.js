@@ -56,6 +56,37 @@ export default {
   //   },
   // },
 
+  vuetify: {
+    theme: {
+      light: true,
+      themes: {
+        light: {
+          myprimary: '#c62828',
+          secondary: '#FFEB3B',
+          black: '#000000',
+          error: '#e81e4d',
+          success: '#00C135',
+          warning: '#ffc308',
+          blue: '#3498db',
+          white: '#ffffff',
+          offwhite: '#F3F4F8',
+          bg_color: '#ffc308',
+          red: '#FF0000',
+          add: '#28A745',
+          search: '#FF4D4D',
+          excel: '#20744A',
+          api: '#E20303',
+          purple: '#5E50FF',
+          yellow: '#FFC14A',
+          myorange: '#ffaa04',
+          mygreen: '#1AE23A',
+          myblue: '#4D74FF',
+          myred: '#FF8B8B',
+        },
+      },
+    },
+  },
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   }

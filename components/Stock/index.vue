@@ -5,7 +5,7 @@
         <v-col cols="12" sm="2" md="1" lg="1">
           <h4 style="text-align: center; margin-top: 5px">ຫນ້າຫຼັກ</h4>
         </v-col>
-        <v-col :cols="myGoldType == 2 ? '6' : '4'" sm="4" md="3" lg="4">
+        <v-col :cols="myGoldType == 2 ? '6' : '4'" sm="4" md="3" lg="3">
           <v-select
             v-model="myGoldType"
             label="ປະເພດຄໍາ"
@@ -35,7 +35,7 @@
             class="rounded-md"
           ></v-select>
         </v-col>
-        <v-col :cols="myGoldType == 2 ? '6' : '4'" sm="2" md="2" lg="3">
+        <v-col :cols="myGoldType == 2 ? '6' : '4'" sm="2" md="2" lg="2">
           <v-text-field
             v-model="weight"
             label="ນ້ໍາຫນັກ"
@@ -45,7 +45,7 @@
             class="rounded-md"
           ></v-text-field>
         </v-col>
-        <v-col :cols="myGoldType == 2 ? '6' : '4'" sm="4" md="3" lg="4">
+        <v-col :cols="myGoldType == 2 ? '6' : '4'" sm="4" md="3" lg="3">
           <v-select
             v-model="myWeight"
             label="ປະເພດນ້ໍາຫນັກ"
@@ -61,7 +61,7 @@
     </div>
     <div>
       <v-row>
-        <v-col v-for="item in golds" cols="12" sm="3" md="3" lg="3">
+        <v-col v-for="(item, index) in golds" :key="index" cols="12" sm="3" md="3" lg="3">
           <v-card class="mx-auto my-2 rounded-lg" max-width="374">
             <v-img
               height="250"
@@ -85,7 +85,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn outlined rounded text color="#ffd700" style="border: 0.5px solid #ffd700;"> ເພີ່ມໃສ່ກະຕ່າ </v-btn>
+              <v-btn outlined rounded text color="secondary" style="border: 0.5px solid #ffd700;"> ເພີ່ມໃສ່ກະຕ່າ </v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
