@@ -10,7 +10,7 @@
           <img
             width="250"
             height="250"
-            style="border-radius: 50px;"
+            style="border-radius: 50px"
             src="../../assets/images/kimbup.jpeg"
             draggable="false"
           />
@@ -21,18 +21,18 @@
               <h3>ເຂົ້າສູ່ລະບົບ</h3>
             </v-col>
             <v-col cols="12" class="py-0">
-                <v-text-field
-                    v-model="username"
-                    label="ຊື່ເຂົ້າໃຊ້"
-                    name="username"
-                    placeholder="ກະລູນາປ້ອນຊື່ເຂົ້າໃຊ້"
-                    prepend-inner-icon="mdi-account"
-                    color="grey darken-1"
-                    style="font-size: 14px"
-                    @keyup.enter="authen"
-                    :rules="[rules.required1]"
-                    outlined
-                />
+              <v-text-field
+                v-model="username"
+                label="ຊື່ເຂົ້າໃຊ້"
+                name="username"
+                placeholder="ກະລູນາປ້ອນຊື່ເຂົ້າໃຊ້"
+                prepend-inner-icon="mdi-account"
+                color="grey darken-1"
+                style="font-size: 14px"
+                @keyup.enter="authen"
+                :rules="[rules.required1]"
+                outlined
+              />
             </v-col>
 
             <v-col cols="12" class="py-0">
@@ -54,7 +54,7 @@
             </v-col>
 
             <v-col cols="12" class="pt-0">
-                <v-btn
+              <v-btn
                 :disabled="username == '' || password == ''"
                 :loading="isLoading"
                 color="red"
@@ -77,19 +77,19 @@
   </v-container>
 </template>
 <script>
-import secureStorage from '../../plugins/secure-storage.js';
-import { mapActions, mapGetters } from 'vuex'
+import secureStorage from "../../plugins/secure-storage.js";
+import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
-      username: '',
-      password: '',
+      username: "",
+      password: "",
       show: false,
       rules: {
         required1: (v) => !!v || "ກະລູນາປ້ອນຊື່ເຂົ້າໃຊ້",
         required2: (v) => !!v || "ກະລູນາປ້ອນລະຫັດຜ່ານ",
       },
-    }
+    };
   },
   mounted() {},
   methods: {},
@@ -99,36 +99,34 @@ export default {
   methods: {
     ...mapActions("authen", ["Login"]),
     async login() {
-        try {
-            if (this.username || this.password) {
-                const res = await this.Login(
-                    {
-                        username: this.username,
-                        password: this.password
-                    }
-                );
-                if (res?.message == 'success') {
-                    setTimeout(() => {
-                        this.$router.replace({ path: '/stock' })
-                    }, 1000)
-                } else {
-                    this.$swal({
-                        title: res?.message,
-                        text: res?.message,
-                        type: 'warning',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        timer: 4000,
-                        timerProgressBar: true,
-                    })
-                }
-            }
-        } catch (error) {
-            console.log(error);
+      try {
+        if (this.username || this.password) {
+          const res = await this.Login({
+            username: this.username,
+            password: this.password,
+          });
+          if (res?.message == "success") {
+            setTimeout(() => {
+              this.$router.replace({ path: "/Sell" });
+            }, 1000);
+          } else {
+            this.$swal({
+              title: res?.message,
+              text: res?.message,
+              type: "warning",
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              timer: 4000,
+              timerProgressBar: true,
+            });
+          }
         }
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -137,4 +135,3 @@ export default {
   justify-content: center;
 }
 </style>
-

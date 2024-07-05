@@ -28,7 +28,7 @@
 
       <v-divider></v-divider>
 
-      <v-list dense>
+      <v-list nav dense>
         <v-list-item
           v-for="(item, index) in items"
           :key="item.title"
@@ -41,7 +41,7 @@
 
           <v-list-item-content>
             <v-list-item-title
-              ><h4>{{ item.title }}</h4></v-list-item-title
+              ><h4 class="my-1">{{ item.title }}</h4></v-list-item-title
             >
           </v-list-item-content>
         </v-list-item>
@@ -56,18 +56,6 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-
-      <template v-slot:append>
-        <!-- <v-list-item link>
-          <v-list-item-icon>
-            <v-icon>mdi-logout</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content @click="logout">
-            <v-list-item-title><h4>ອອກ​ຈາກ​ລະ​ບົບ</h4></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item> -->
-      </template>
     </v-navigation-drawer>
 
     <v-main>
@@ -83,14 +71,12 @@ import secureStorage from "~/plugins/secure-storage";
 import { mapActions, mapState } from "vuex";
 export default {
   name: "DefaultLayout",
-  // middleware: ["checkAuth"],
   data() {
     return {
       drawer: true,
       items: [
-        { title: "ຂາຍ", icon: "mdi-gold", path: "/sell/", color: "goldColor" },
-        { title: "My Account", icon: "mdi-account" },
-        { title: "Users", icon: "mdi-account-group-outline" },
+        { title: "ຂາຍ", icon: "mdi-gold", path: "/sell", color: "goldColor" },
+        { title: "ຊື້ເຂົ້າ", icon: "mdi-cash-sync", path: "/buy", color: "success" },
       ],
       mini: true,
     };

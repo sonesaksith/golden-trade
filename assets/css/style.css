@@ -14,3 +14,11 @@
 * {
   font-family: "Noto Sans Lao", sans-serif;
 }
+.span {
+  position: absolute;
+  display: block;
+  margin-top: 4px;
+  height: 18px;
+  width: 5px;
+  background: #fa6d69;
+}
