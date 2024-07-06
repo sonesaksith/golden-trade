@@ -12,7 +12,7 @@ export default {
   },
   mounted() {
     if (secureStorage.getItem("token")) {
-      this.$router.replace({ path: "/" });
+      this.$router.replace({ path: "/Sell" });
     }
   },
   computed: {},

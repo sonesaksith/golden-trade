@@ -1,7 +1,7 @@
 <template>
-  <div class="ma-4">
+  <div class="ma-2">
     <v-row style="height: 100vh" class="pa-4">
-      <v-col cols="7">
+      <v-col cols="12" sm="12" md="7" lg="7">
         <v-card
           style="
             height: 700px;
@@ -22,6 +22,11 @@
             class="px-4 py-0"
             style="height: 580px; overflow-y: auto"
           >
+          <v-form
+            ref="form"
+            v-model="valid"
+            lazy-validation
+          >
             <v-row class="my-2">
               <v-col cols="6">
                 <v-select
@@ -29,25 +34,27 @@
                   :items="goldTypes"
                   :item-text="(item) => item.typeName"
                   :item-value="(item) => item.typeName"
+                  :rules="[v => !!v || 'ກະລຸນາເລືອກປະເພດທອງຄຳ']"
                   label="ປະເພດທອງຄຳ"
                   outlined
                   dense
                   class="rounded-md"
                 ></v-select>
               </v-col>
-              <v-col cols="6">
+              <v-col cols="6" v-if="modelGoldType == 'ທອງຮູບປະພັນ'">
                 <v-select
                   v-model="modelGoldShape"
                   :items="goldShape"
                   :item-text="(item) => item.shapeName"
                   :item-value="(item) => item.shapeName"
+                  :rules="[v => !!v || 'ກະລຸນາເລືອກຮູບປະພັນ']"
                   label="ຮູບປະພັນ"
                   outlined
                   dense
                   class="rounded-md"
                 ></v-select>
               </v-col>
-              <v-col cols="6">
+              <v-col cols="6" v-if="modelGoldType == 'ທອງຮູບປະພັນ'">
                 <v-select
                   v-model="modelGoldShapeLine"
                   :items="goldShapeLine"
@@ -64,6 +71,7 @@
                   v-model="modelWeightAmount"
                   @keyup="fotmatWeight()"
                   label="ນ້ຳໜັກທອງຄຳ"
+                  :rules="[v => !!v || 'ກະລຸນາປ້ອນນ້ຳໜັກທອງຄຳ']"
                   outlined
                   dense
                   class="rounded-md"
@@ -75,6 +83,7 @@
                   :items="weightType"
                   :item-text="(item) => item.weightName"
                   :item-value="(item) => item.weightName"
+                  :rules="[v => !!v || 'ກະລຸນາເລືອກປະເພດນ້ຳໜັກ']"
                   label="ປະເພດນ້ຳໜັກ"
                   outlined
                   dense
@@ -87,6 +96,7 @@
                   :items="amount"
                   :item-text="(item) => item.amount"
                   :item-value="(item) => item.amount"
+                  :rules="[v => !!v || 'ກະລຸນາເລືອກຈໍາ​ນວນ']"
                   label="ຈໍາ​ນວນ"
                   outlined
                   dense
@@ -98,6 +108,7 @@
                   v-model="modelPrice"
                   @keyup="fotmatPrice()"
                   label="ລາຄາ/ຈໍາ​ນວນ"
+                  :rules="[v => !!v || 'ກະລຸນາປ້ອນລາຄາ/ຈໍາ​ນວນ']"
                   outlined
                   dense
                   class="rounded-md"
@@ -114,11 +125,13 @@
                 ></v-text-field>
               </v-col>
             </v-row>
+          </v-form>
           </v-card-text>
           <v-card-actions style="height: 60px; justify-content: center">
             <v-btn
               style="width: 45%; color: #fff; border-radius: 5px"
               color="error"
+              @click="clear"
             >
               ລຶບທັງໝົດ
             </v-btn>
@@ -128,12 +141,13 @@
               color="success"
               @click="addListItems"
             >
-              ເພີ່ມເຂົ້າໃນລາຍການຊື້ເຂົ້າ
+              ເພີ່ມ
+              <!-- ເຂົ້າໃນລາຍການຊື້ເຂົ້າ -->
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
-      <v-col cols="5">
+      <v-col cols="12" sm="12" md="5" lg="5">
         <v-card
           style="
             height: 700px;
@@ -154,7 +168,11 @@
           >
             <br />
             <div v-if="listItems?.length == 0">
-              <WidgetNoData message="ບໍ່​ມີ​ລາຍການຊື້ເຂົ້າ" width="150" height="150" />
+              <WidgetNoData
+                message="ບໍ່​ມີ​ລາຍການຊື້ເຂົ້າ"
+                width="150"
+                height="150"
+              />
             </div>
             <v-row
               v-else
@@ -178,16 +196,28 @@
                 <div style="display: flex; align-items: center">
                   <img
                     src="/goldbar.png"
-                    width="80"
-                    height="80"
+                    width="70"
+                    height="70"
                     style="border-radius: 5px"
+                    class="hide-on-mobile"
                   />
                   <div style="margin-left: 10px">
-                    <p style="font-size: 16px; color: #000; margin: 0">
-                      {{ item.name }} ({{ item.shape }}{{ item.shapeLine }})
+                    <p
+                      style="
+                        font-size: 16px;
+                        color: #000;
+                        margin: 0;
+                        width: 180px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                      "
+                    >
+                      {{ item.name }} {{ item?.shape ? "(" + item?.shape : "" }}{{ item?.shapeLine ? item?.shapeLine + ")" :  item?.shape ? ")" : "" }}
                     </p>
                     <p style="font-size: 14px; color: #000; margin: 0">
-                      ນ້ຳໜັກ: {{ $formatnumber(item.weight) }} {{ item.weightType }}
+                      ນ້ຳໜັກ: {{ $formatnumber(item.weight) }}
+                      {{ item.weightType }}
                     </p>
                     <p style="font-size: 14px; color: #000; margin: 0">
                       ລາຄາ/ຈໍາ​ນວນ: {{ $formatnumber(item.price) }}
@@ -202,8 +232,8 @@
                     display: flex;
                     align-items: center;
                     position: absolute;
-                    bottom: 4px;
-                    right: 4px;
+                    bottom: 8px;
+                    right: 8px;
                   "
                 >
                   <v-icon
@@ -245,11 +275,12 @@
   </div>
 </template>
 <script>
-import { mapActions, mapGetters, mapState, mapMutations } from 'vuex'
+import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
-      modelGoldType: 'ທອງຮູບປະພັນ',
+      valid: true,
+      modelGoldType: "ທອງຮູບປະພັນ",
       goldTypes: [
         {
           id: 1,
@@ -260,7 +291,8 @@ export default {
           typeName: "ທອງຄຳແທ່ງ",
         },
       ],
-      modelGoldShape: 'ສາຍຄໍ',
+      modelGoldShape: "",
+      // modelGoldShape: 'ສາຍຄໍ',
       goldShape: [
         {
           id: 1,
@@ -292,7 +324,7 @@ export default {
       //   { id: 9, amount: 9 },
       //   { id: 10, amount: 10 },
       // ],
-      modelWeightType: 'ກຣາມ(g)',
+      modelWeightType: "ກຣາມ(g)",
       weightType: [
         {
           id: 1,
@@ -313,7 +345,8 @@ export default {
       ],
       modelLost: "",
       modelPrice: "",
-      modelGoldShapeLine: 'ລາຍມັງກອນ',
+      modelGoldShapeLine: "",
+      // modelGoldShapeLine: 'ລາຍມັງກອນ',
       goldShapeLine: [
         {
           id: 1,
@@ -354,23 +387,32 @@ export default {
   mounted() {},
   methods: {},
   computed: {
-    ...mapGetters('buy', [
-      'listItems',
-    ]),
+    ...mapGetters("buy", ["listItems"]),
   },
   methods: {
-    ...mapMutations('buy', ['SET_ITEMS', 'SET_DECREMENT', 'SET_INCREMENT']),
+    ...mapMutations("buy", ["SET_ITEMS", "SET_DECREMENT", "SET_INCREMENT"]),
     addListItems() {
-      this.SET_ITEMS({
-        name: this.modelGoldType,
-        shape: this.modelGoldShape,
-        shapeLine: this.modelGoldShapeLine,
-        weight: this.modelWeightAmount.split(",").join(""),
-        weightType: this.modelWeightType,
-        amount: this.modelAmount,
-        price: this.modelPrice.split(",").join(""),
-        lost: this.modelLost.split(",").join(""),
-      })
+      if (this.$refs.form.validate()) {
+        this.SET_ITEMS({
+          name: this.modelGoldType,
+          shape: this.modelGoldShape,
+          shapeLine: this.modelGoldShapeLine,
+          weight: this.modelWeightAmount?.split(",").join(""),
+          weightType: this.modelWeightType,
+          amount: this.modelAmount,
+          price: this.modelPrice?.split(",").join(""),
+          lost: this.modelLost?.split(",").join(""),
+        });
+        this.$refs.form.reset();
+        // this.modelGoldType = this.modelGoldType;
+        // this.modelGoldShape = "";
+        // this.modelGoldShapeLine = "";
+        // this.modelWeightAmount = "";
+        // this.modelWeightType = this.modelWeightType;
+        // this.modelAmount = 1;
+        // this.modelPrice = "";
+        // this.modelLost = "";
+      }
       // this.listItems.push({
       //   name: this.modelGoldType,
       //   shape: this.modelGoldShape,
@@ -384,6 +426,9 @@ export default {
     },
     buy() {
       console.log(this.listItems);
+    },
+    clear() {
+      this.$refs.form.reset()
     },
     // removeListItem(item, i) {
     //   let temp = this.listItems.filter((item, ind) => {
@@ -409,7 +454,7 @@ export default {
     //   return this.listItems;
     // },
     fotmatWeight() {
-      this.modelWeightAmount = this.modelWeightAmount.split(",").join("")
+      this.modelWeightAmount = this.modelWeightAmount.split(",").join("");
       let val;
       let valArr = [];
       val = this.modelWeightAmount;
@@ -422,7 +467,7 @@ export default {
       this.modelWeightAmount = val;
     },
     fotmatPrice() {
-      this.modelPrice = this.modelPrice.split(",").join("")
+      this.modelPrice = this.modelPrice.split(",").join("");
       let val;
       let valArr = [];
       val = this.modelPrice;
@@ -435,7 +480,7 @@ export default {
       this.modelPrice = val;
     },
     fotmatLost() {
-      this.modelLost = this.modelLost.split(",").join("")
+      this.modelLost = this.modelLost.split(",").join("");
       let val;
       let valArr = [];
       val = this.modelLost;
@@ -457,5 +502,10 @@ export default {
   cursor: pointer;
   border-radius: 50%;
   height: 20px;
+}
+@media (max-width: 700px) {
+  .hide-on-mobile {
+    display: none;
+  }
 }
 </style>
