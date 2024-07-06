@@ -5,7 +5,7 @@
 <script>
 import secureStorage from '~/plugins/secure-storage';
 export default {
-  middleware: ["checkAuth"],
+  // middleware: ["checkAuth"],
   name: 'IndexPage',
   data() {
     return {};
