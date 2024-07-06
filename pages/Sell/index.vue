@@ -118,6 +118,7 @@
           :items="filteredData"
           item-key="name"
           :search="searchGoldTypes"
+          :loading="loading"
         >
           <template
             v-for="(header, i) in headers"
@@ -140,6 +141,7 @@
               <v-autocomplete
                 style="width: 200px"
                 v-if="header.text == 'ປະເພດຮູບປະຄຳ'"
+                :disabled="multiSearch.typGold === 'ທອງຄຳແທ່ງ'"
                 v-model="multiSearch[header.value]"
                 :items="goldShape"
                 :item-text="(item) => item.shapeName"
@@ -153,6 +155,7 @@
               <v-autocomplete
                 style="width: 200px"
                 v-if="header.text == 'ລາຍ'"
+                :disabled="multiSearch.typGold === 'ທອງຄຳແທ່ງ'"
                 v-model="multiSearch[header.value]"
                 :items="goldShapeLine"
                 :item-text="(item) => item.shapeLineName"
@@ -434,6 +437,7 @@ export default {
       ],
 
       multiSearch: {},
+      loading: false,
     };
   },
   computed: {
@@ -444,24 +448,30 @@ export default {
     },
 
     filteredData() {
-      // if (this.multiSearch.typGold == null) {
-      //   this.multiSearch = {};
-      // }
-      // if (this.multiSearch.shapeLineName == null) {
-      //   this.multiSearch = {};
-      // }
-      // if (this.multiSearch.shapeName == null) {
-      //   this.multiSearch = {};
-      // }
-      // if (this.multiSearch.typeName == null) {
-      //   this.multiSearch = {};
-      // }
-      // if (this.multiSearch.amount == null) {
-      //   this.multiSearch = {};
-      // }
+      this.loading = true;
+
+      console.log("multiSearch", this.multiSearch);
+
       try {
+        // if (this.multiSearch.typGold == null) {
+        //   return (this.multiSearch = {});
+        // }
+        // if (this.multiSearch.optionGole == null) {
+        //   return (this.multiSearch = {});
+        // }
+        // if (this.multiSearch.typeLine == null) {
+        //   return (this.multiSearch = {});
+        // }
+        // if (this.multiSearch.wight == null) {
+        //   return (this.multiSearch = {});
+        // }
+        // if (this.multiSearch.typwight == null) {
+        //   return (this.multiSearch = {});
+        // }
         if (this.multiSearch) {
           return this.items.filter((item) => {
+            this.loading = false;
+
             return Object.entries(this.multiSearch).every(([key, value]) => {
               if (value.includes("|") && !value.includes("!")) {
                 let el = value.split("|");
@@ -520,11 +530,12 @@ export default {
             });
           });
         } else {
-          this.multiSearch = {};
+          // this.multiSearch = {};
           return this.items;
         }
       } catch (error) {
-        this.multiSearch = {};
+        this.loading = false;
+        // this.multiSearch = {};
         // console.log("this.multiSearch ", this.multiSearch);
         return this.items;
       }
