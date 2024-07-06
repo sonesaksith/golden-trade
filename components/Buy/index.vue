@@ -1,0 +1,511 @@
+<template>
+  <div class="ma-2">
+    <v-row style="height: 100vh" class="pa-4">
+      <v-col cols="12" sm="12" md="7" lg="7">
+        <v-card
+          style="
+            height: 700px;
+            border-radius: 10px;
+            box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
+              rgba(17, 17, 26, 0.05) 0px 8px 32px;
+            /* display: flex; */
+            /* flex-direction: column; */
+          "
+        >
+          <v-card-title style="height: 60px">
+            <h4>
+              <span style="color: brown">{{ "#" }}</span>
+              &nbsp;ເພີ່ມລາຍການຊື້ເຂົ້າ
+            </h4>
+          </v-card-title>
+          <v-card-text
+            class="px-4 py-0"
+            style="height: 580px; overflow-y: auto"
+          >
+          <v-form
+            ref="form"
+            v-model="valid"
+            lazy-validation
+          >
+            <v-row class="my-2">
+              <v-col cols="6">
+                <v-select
+                  v-model="modelGoldType"
+                  :items="goldTypes"
+                  :item-text="(item) => item.typeName"
+                  :item-value="(item) => item.typeName"
+                  :rules="[v => !!v || 'ກະລຸນາເລືອກປະເພດທອງຄຳ']"
+                  label="ປະເພດທອງຄຳ"
+                  outlined
+                  dense
+                  class="rounded-md"
+                ></v-select>
+              </v-col>
+              <v-col cols="6" v-if="modelGoldType == 'ທອງຮູບປະພັນ'">
+                <v-select
+                  v-model="modelGoldShape"
+                  :items="goldShape"
+                  :item-text="(item) => item.shapeName"
+                  :item-value="(item) => item.shapeName"
+                  :rules="[v => !!v || 'ກະລຸນາເລືອກຮູບປະພັນ']"
+                  label="ຮູບປະພັນ"
+                  outlined
+                  dense
+                  class="rounded-md"
+                ></v-select>
+              </v-col>
+              <v-col cols="6" v-if="modelGoldType == 'ທອງຮູບປະພັນ'">
+                <v-select
+                  v-model="modelGoldShapeLine"
+                  :items="goldShapeLine"
+                  :item-text="(item) => item.shapeLineName"
+                  :item-value="(item) => item.shapeLineName"
+                  label="ລາຍຮູບປະພັນ"
+                  outlined
+                  dense
+                  class="rounded-md"
+                ></v-select>
+              </v-col>
+              <v-col cols="6">
+                <v-text-field
+                  v-model="modelWeightAmount"
+                  @keyup="fotmatWeight()"
+                  label="ນ້ຳໜັກທອງຄຳ"
+                  :rules="[v => !!v || 'ກະລຸນາປ້ອນນ້ຳໜັກທອງຄຳ']"
+                  outlined
+                  dense
+                  class="rounded-md"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-select
+                  v-model="modelWeightType"
+                  :items="weightType"
+                  :item-text="(item) => item.weightName"
+                  :item-value="(item) => item.weightName"
+                  :rules="[v => !!v || 'ກະລຸນາເລືອກປະເພດນ້ຳໜັກ']"
+                  label="ປະເພດນ້ຳໜັກ"
+                  outlined
+                  dense
+                  class="rounded-md"
+                ></v-select>
+              </v-col>
+              <v-col cols="6">
+                <v-select
+                  v-model="modelAmount"
+                  :items="amount"
+                  :item-text="(item) => item.amount"
+                  :item-value="(item) => item.amount"
+                  :rules="[v => !!v || 'ກະລຸນາເລືອກຈໍາ​ນວນ']"
+                  label="ຈໍາ​ນວນ"
+                  outlined
+                  dense
+                  class="rounded-md"
+                ></v-select>
+              </v-col>
+              <v-col cols="6">
+                <v-text-field
+                  v-model="modelPrice"
+                  @keyup="fotmatPrice()"
+                  label="ລາຄາ/ຈໍາ​ນວນ"
+                  :rules="[v => !!v || 'ກະລຸນາປ້ອນລາຄາ/ຈໍາ​ນວນ']"
+                  outlined
+                  dense
+                  class="rounded-md"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-text-field
+                  v-model="modelLost"
+                  @keyup="fotmatLost()"
+                  label="ຄ່າຫຼູ້ຍຫ້ຽນ"
+                  outlined
+                  dense
+                  class="rounded-md"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-form>
+          </v-card-text>
+          <v-card-actions style="height: 60px; justify-content: center">
+            <v-btn
+              style="width: 45%; color: #fff; border-radius: 5px"
+              color="error"
+              @click="clear"
+            >
+              ລຶບທັງໝົດ
+            </v-btn>
+            &nbsp;&nbsp;
+            <v-btn
+              style="width: 45%; color: #fff; border-radius: 5px"
+              color="success"
+              @click="addListItems"
+            >
+              ເພີ່ມ
+              <!-- ເຂົ້າໃນລາຍການຊື້ເຂົ້າ -->
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+      <v-col cols="12" sm="12" md="5" lg="5">
+        <v-card
+          style="
+            height: 700px;
+            border-radius: 10px;
+            box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
+              rgba(17, 17, 26, 0.05) 0px 8px 32px;
+          "
+        >
+          <v-card-title style="height: 60px">
+            <h4>
+              <span style="color: brown">{{ "#" }}</span>
+              &nbsp;ລາຍການຊື້ເຂົ້າ
+            </h4>
+          </v-card-title>
+          <v-card-text
+            class="px-4 py-0"
+            style="height: 580px; overflow-y: auto"
+          >
+            <br />
+            <div v-if="listItems?.length == 0">
+              <WidgetNoData
+                message="ບໍ່​ມີ​ລາຍການຊື້ເຂົ້າ"
+                width="150"
+                height="150"
+              />
+            </div>
+            <v-row
+              v-else
+              class="px-4 py-2"
+              v-for="(item, index) in listItems"
+              :key="index"
+            >
+              <v-col
+                cols="12"
+                style="
+                  background-color: antiquewhite;
+                  border-radius: 4px;
+                  height: 100px;
+                  position: relative;
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  padding: 0 10px;
+                "
+              >
+                <div style="display: flex; align-items: center">
+                  <img
+                    src="/goldbar.png"
+                    width="70"
+                    height="70"
+                    style="border-radius: 5px"
+                    class="hide-on-mobile"
+                  />
+                  <div style="margin-left: 10px">
+                    <p
+                      style="
+                        font-size: 16px;
+                        color: #000;
+                        margin: 0;
+                        width: 180px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                      "
+                    >
+                      {{ item.name }} {{ item?.shape ? "(" + item?.shape : "" }}{{ item?.shapeLine ? item?.shapeLine + ")" :  item?.shape ? ")" : "" }}
+                    </p>
+                    <p style="font-size: 14px; color: #000; margin: 0">
+                      ນ້ຳໜັກ: {{ $formatnumber(item.weight) }}
+                      {{ item.weightType }}
+                    </p>
+                    <p style="font-size: 14px; color: #000; margin: 0">
+                      ລາຄາ/ຈໍາ​ນວນ: {{ $formatnumber(item.price) }}
+                    </p>
+                    <p style="font-size: 14px; color: #000; margin: 0">
+                      ຄ່າຫຼູ້ຍຫ້ຽນ: {{ $formatnumber(item.lost) }}
+                    </p>
+                  </div>
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    position: absolute;
+                    bottom: 8px;
+                    right: 8px;
+                  "
+                >
+                  <v-icon
+                    class="icon ma-0"
+                    small
+                    @click="SET_DECREMENT(index)"
+                    style="color: #000; cursor: pointer; margin-right: 4px"
+                  >
+                    mdi-minus
+                  </v-icon>
+                  <p style="font-size: 18px; color: #000; margin: 0 8px">
+                    <b>{{ item.amount }}</b>
+                  </p>
+                  <v-icon
+                    class="icon ma-0"
+                    small
+                    @click="SET_INCREMENT(index)"
+                    style="color: #000; cursor: pointer; margin-left: 4px"
+                  >
+                    mdi-plus
+                  </v-icon>
+                </div>
+              </v-col>
+            </v-row>
+          </v-card-text>
+          <v-card-actions style="height: 60px">
+            <v-btn
+              :disabled="listItems?.length == 0"
+              style="width: 100%; color: #fff; border-radius: 5px"
+              color="goldColor"
+              @click="buy"
+            >
+              ຊື້ເຂົ້າ
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+  </div>
+</template>
+<script>
+import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
+export default {
+  data() {
+    return {
+      valid: true,
+      modelGoldType: "ທອງຮູບປະພັນ",
+      goldTypes: [
+        {
+          id: 1,
+          typeName: "ທອງຮູບປະພັນ",
+        },
+        {
+          id: 2,
+          typeName: "ທອງຄຳແທ່ງ",
+        },
+      ],
+      modelGoldShape: "",
+      // modelGoldShape: 'ສາຍຄໍ',
+      goldShape: [
+        {
+          id: 1,
+          shapeName: "ສາຍຄໍ",
+        },
+        {
+          id: 2,
+          shapeName: "ສາຍແຂນ",
+        },
+        {
+          id: 3,
+          shapeName: "ແຫວນ",
+        },
+        {
+          id: 4,
+          shapeName: "ກຳໄລ",
+        },
+      ],
+      modelWeightAmount: "",
+      // weightAmount: [
+      //   { id: 1, amount: 1 },
+      //   { id: 2, amount: 2 },
+      //   { id: 3, amount: 3 },
+      //   { id: 4, amount: 4 },
+      //   { id: 5, amount: 5 },
+      //   { id: 6, amount: 6 },
+      //   { id: 7, amount: 7 },
+      //   { id: 8, amount: 8 },
+      //   { id: 9, amount: 9 },
+      //   { id: 10, amount: 10 },
+      // ],
+      modelWeightType: "ກຣາມ(g)",
+      weightType: [
+        {
+          id: 1,
+          weightName: "ກຣາມ(g)",
+        },
+        {
+          id: 2,
+          weightName: "ຫູນ",
+        },
+        {
+          id: 3,
+          weightName: "ສະຫຼຶງ",
+        },
+        {
+          id: 4,
+          weightName: "ບາດ",
+        },
+      ],
+      modelLost: "",
+      modelPrice: "",
+      modelGoldShapeLine: "",
+      // modelGoldShapeLine: 'ລາຍມັງກອນ',
+      goldShapeLine: [
+        {
+          id: 1,
+          shapeLineName: "ລາຍມັງກອນ",
+        },
+        {
+          id: 2,
+          shapeLineName: "ລາຍເສືອ",
+        },
+        {
+          id: 3,
+          shapeLineName: "ລາຍງູ",
+        },
+        {
+          id: 4,
+          shapeLineName: "ລາຍດອກກຸຫຼາບ",
+        },
+        {
+          id: 5,
+          shapeLineName: "ລາຍດອກຊາກຸຣະ",
+        },
+      ],
+      modelAmount: 1,
+      amount: [
+        { id: 1, amount: 1 },
+        { id: 2, amount: 2 },
+        { id: 3, amount: 3 },
+        { id: 4, amount: 4 },
+        { id: 5, amount: 5 },
+        { id: 6, amount: 6 },
+        { id: 7, amount: 7 },
+        { id: 8, amount: 8 },
+        { id: 9, amount: 9 },
+        { id: 10, amount: 10 },
+      ],
+    };
+  },
+  mounted() {},
+  methods: {},
+  computed: {
+    ...mapGetters("buy", ["listItems"]),
+  },
+  methods: {
+    ...mapMutations("buy", ["SET_ITEMS", "SET_DECREMENT", "SET_INCREMENT"]),
+    addListItems() {
+      if (this.$refs.form.validate()) {
+        this.SET_ITEMS({
+          name: this.modelGoldType,
+          shape: this.modelGoldShape,
+          shapeLine: this.modelGoldShapeLine,
+          weight: this.modelWeightAmount?.split(",").join(""),
+          weightType: this.modelWeightType,
+          amount: this.modelAmount,
+          price: this.modelPrice?.split(",").join(""),
+          lost: this.modelLost?.split(",").join(""),
+        });
+        this.$refs.form.reset();
+        // this.modelGoldType = this.modelGoldType;
+        // this.modelGoldShape = "";
+        // this.modelGoldShapeLine = "";
+        // this.modelWeightAmount = "";
+        // this.modelWeightType = this.modelWeightType;
+        // this.modelAmount = 1;
+        // this.modelPrice = "";
+        // this.modelLost = "";
+      }
+      // this.listItems.push({
+      //   name: this.modelGoldType,
+      //   shape: this.modelGoldShape,
+      //   shapeLine: this.modelGoldShapeLine,
+      //   weight: this.modelWeightAmount.split(",").join(""),
+      //   weightType: this.modelWeightType,
+      //   amount: this.modelAmount,
+      //   price: this.modelPrice.split(",").join(""),
+      //   lost: this.modelLost.split(",").join(""),
+      // });
+    },
+    buy() {
+      console.log(this.listItems);
+    },
+    clear() {
+      this.$refs.form.reset()
+    },
+    // removeListItem(item, i) {
+    //   let temp = this.listItems.filter((item, ind) => {
+    //     return i != ind;
+    //   });
+    //   this.listItems = temp;
+    // },
+    // increment(i) {
+    //   this.listItems.forEach((item, index) => {
+    //     if (index === i) {
+    //       item.amount += 1;
+    //     }
+    //   });
+    //   return this.listItems;
+    // },
+    // decreament(i) {
+    //   this.listItems = this.listItems.filter((item, index) => {
+    //     if (index === i) {
+    //       item.amount -= 1;
+    //     }
+    //     return item.amount > 0;
+    //   });
+    //   return this.listItems;
+    // },
+    fotmatWeight() {
+      this.modelWeightAmount = this.modelWeightAmount.split(",").join("");
+      let val;
+      let valArr = [];
+      val = this.modelWeightAmount;
+      val = val.replace(/[^0-9\.]/g, "");
+      if (val != "") {
+        valArr = val.split(".");
+        valArr[0] = parseInt(valArr[0], 10).toLocaleString();
+        val = valArr.join(".");
+      }
+      this.modelWeightAmount = val;
+    },
+    fotmatPrice() {
+      this.modelPrice = this.modelPrice.split(",").join("");
+      let val;
+      let valArr = [];
+      val = this.modelPrice;
+      val = val.replace(/[^0-9\.]/g, "");
+      if (val != "") {
+        valArr = val.split(".");
+        valArr[0] = parseInt(valArr[0], 10).toLocaleString();
+        val = valArr.join(".");
+      }
+      this.modelPrice = val;
+    },
+    fotmatLost() {
+      this.modelLost = this.modelLost.split(",").join("");
+      let val;
+      let valArr = [];
+      val = this.modelLost;
+      val = val.replace(/[^0-9\.]/g, "");
+      if (val != "") {
+        valArr = val.split(".");
+        valArr[0] = parseInt(valArr[0], 10).toLocaleString();
+        val = valArr.join(".");
+      }
+      this.modelLost = val;
+    },
+  },
+};
+</script>
+<style scoped>
+.icon {
+  border: 1px solid #000;
+  color: #000;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 20px;
+}
+@media (max-width: 700px) {
+  .hide-on-mobile {
+    display: none;
+  }
+}
+</style>

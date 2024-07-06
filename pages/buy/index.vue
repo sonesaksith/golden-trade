@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <Profile />
-  </div>
+  <Buy />
 </template>
 <script>
 export default {

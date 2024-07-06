@@ -6,6 +6,7 @@
       permanent
       fixed
       app
+      width="180"
     >
       <v-list-item class="px-2">
         <v-list-item-avatar>
@@ -28,46 +29,35 @@
 
       <v-divider></v-divider>
 
-      <v-list dense>
-        <v-list-item
-          v-for="(item, index) in items"
-          :key="item.title"
-          link
-          @click="myRouting(item.path)"
-        >
-          <v-list-item-icon>
-            <v-icon :color="item.color">{{ item.icon }}</v-icon>
-          </v-list-item-icon>
+      <v-list nav dense>
+        <v-list-item-group>
+          <v-list-item
+            v-for="(item, index) in items"
+            :key="item.title"
+            link
+            @click="myRouting(item.path)"
+          >
+            <v-list-item-icon>
+              <v-icon :color="item.color">{{ item.icon }}</v-icon>
+            </v-list-item-icon>
 
-          <v-list-item-content>
-            <v-list-item-title
-              ><h4>{{ item.title }}</h4></v-list-item-title
-            >
-          </v-list-item-content>
-        </v-list-item>
+            <v-list-item-content>
+              <v-list-item-title
+                ><h4 class="my-1">{{ item.title }}</h4></v-list-item-title
+              >
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item link @click="logout">
+            <v-list-item-icon>
+              <v-icon color="error">mdi-login-variant</v-icon>
+            </v-list-item-icon>
 
-        <v-list-item link @click="logout">
-          <v-list-item-icon>
-            <v-icon>mdi-logout</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title><h4>ອອກ​ຈາກ​ລະ​ບົບ</h4></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+            <v-list-item-content>
+              <v-list-item-title><h4>ອອກ​ຈາກ​ລະ​ບົບ</h4></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
       </v-list>
-
-      <template v-slot:append>
-        <!-- <v-list-item link>
-          <v-list-item-icon>
-            <v-icon>mdi-logout</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content @click="logout">
-            <v-list-item-title><h4>ອອກ​ຈາກ​ລະ​ບົບ</h4></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item> -->
-      </template>
     </v-navigation-drawer>
 
     <v-main>
@@ -83,14 +73,17 @@ import secureStorage from "~/plugins/secure-storage";
 import { mapActions, mapState } from "vuex";
 export default {
   name: "DefaultLayout",
-  // middleware: ["checkAuth"],
   data() {
     return {
       drawer: true,
       items: [
-        { title: "ຂາຍ", icon: "mdi-gold", path: "/sell/", color: "goldColor" },
-        { title: "My Account", icon: "mdi-account" },
-        { title: "Users", icon: "mdi-account-group-outline" },
+        { title: "ຂາຍ", icon: "mdi-gold", path: "/sell", color: "goldColor" },
+        {
+          title: "ຊື້ເຂົ້າ",
+          icon: "mdi-cash-sync",
+          path: "/buy",
+          color: "success",
+        },
       ],
       mini: true,
     };
@@ -113,11 +106,11 @@ export default {
 };
 </script>
 <style scoped>
-.v-list .v-list-item--active .v-icon {
-  color: #17a589 !important;
+/* .v-list .v-list-item--active .v-icon {
+  color: #DAA520 !important;
 }
 .v-list .v-list-item--active {
-  color: #17a589 !important;
+  color: #DAA520 !important;
   font-weight: bold;
-}
+} */
 </style>
