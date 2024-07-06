@@ -3,7 +3,7 @@
 </template>
 <script>
 export default {
-  middleware: ["checkAuth"],
+  // middleware: ["checkAuth"],
   data() {
     return {};
   },
