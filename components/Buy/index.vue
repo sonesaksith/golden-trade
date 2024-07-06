@@ -1,17 +1,13 @@
 <template>
   <div class="ma-2">
     <v-row style="height: 100vh" class="pa-4">
-      <v-col cols="12" sm="12" md="7" lg="7">
-        <v-card
-          style="
-            height: 700px;
-            border-radius: 10px;
-            box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
-              rgba(17, 17, 26, 0.05) 0px 8px 32px;
-            /* display: flex; */
-            /* flex-direction: column; */
-          "
-        >
+      <v-col
+        cols="12"
+        sm="12"
+        :md="listItems.length > 0 ? '7' : '12'"
+        :lg="listItems.length > 0 ? '7' : '12'"
+      >
+        <v-card style="height: 700px" class="rounded-xl" elevation="4">
           <v-card-title style="height: 60px">
             <h4>
               <span style="color: brown">{{ "#" }}</span>
@@ -22,110 +18,143 @@
             class="px-4 py-0"
             style="height: 580px; overflow-y: auto"
           >
-          <v-form
-            ref="form"
-            v-model="valid"
-            lazy-validation
-          >
-            <v-row class="my-2">
-              <v-col cols="6">
-                <v-select
-                  v-model="modelGoldType"
-                  :items="goldTypes"
-                  :item-text="(item) => item.typeName"
-                  :item-value="(item) => item.typeName"
-                  :rules="[v => !!v || 'ກະລຸນາເລືອກປະເພດທອງຄຳ']"
-                  label="ປະເພດທອງຄຳ"
-                  outlined
-                  dense
-                  class="rounded-md"
-                ></v-select>
-              </v-col>
-              <v-col cols="6" v-if="modelGoldType == 'ທອງຮູບປະພັນ'">
-                <v-select
-                  v-model="modelGoldShape"
-                  :items="goldShape"
-                  :item-text="(item) => item.shapeName"
-                  :item-value="(item) => item.shapeName"
-                  :rules="[v => !!v || 'ກະລຸນາເລືອກຮູບປະພັນ']"
-                  label="ຮູບປະພັນ"
-                  outlined
-                  dense
-                  class="rounded-md"
-                ></v-select>
-              </v-col>
-              <v-col cols="6" v-if="modelGoldType == 'ທອງຮູບປະພັນ'">
-                <v-select
-                  v-model="modelGoldShapeLine"
-                  :items="goldShapeLine"
-                  :item-text="(item) => item.shapeLineName"
-                  :item-value="(item) => item.shapeLineName"
-                  label="ລາຍຮູບປະພັນ"
-                  outlined
-                  dense
-                  class="rounded-md"
-                ></v-select>
-              </v-col>
-              <v-col cols="6">
-                <v-text-field
-                  v-model="modelWeightAmount"
-                  @keyup="fotmatWeight()"
-                  label="ນ້ຳໜັກທອງຄຳ"
-                  :rules="[v => !!v || 'ກະລຸນາປ້ອນນ້ຳໜັກທອງຄຳ']"
-                  outlined
-                  dense
-                  class="rounded-md"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-select
-                  v-model="modelWeightType"
-                  :items="weightType"
-                  :item-text="(item) => item.weightName"
-                  :item-value="(item) => item.weightName"
-                  :rules="[v => !!v || 'ກະລຸນາເລືອກປະເພດນ້ຳໜັກ']"
-                  label="ປະເພດນ້ຳໜັກ"
-                  outlined
-                  dense
-                  class="rounded-md"
-                ></v-select>
-              </v-col>
-              <v-col cols="6">
-                <v-select
-                  v-model="modelAmount"
-                  :items="amount"
-                  :item-text="(item) => item.amount"
-                  :item-value="(item) => item.amount"
-                  :rules="[v => !!v || 'ກະລຸນາເລືອກຈໍາ​ນວນ']"
-                  label="ຈໍາ​ນວນ"
-                  outlined
-                  dense
-                  class="rounded-md"
-                ></v-select>
-              </v-col>
-              <v-col cols="6">
-                <v-text-field
-                  v-model="modelPrice"
-                  @keyup="fotmatPrice()"
-                  label="ລາຄາ/ຈໍາ​ນວນ"
-                  :rules="[v => !!v || 'ກະລຸນາປ້ອນລາຄາ/ຈໍາ​ນວນ']"
-                  outlined
-                  dense
-                  class="rounded-md"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-text-field
-                  v-model="modelLost"
-                  @keyup="fotmatLost()"
-                  label="ຄ່າຫຼູ້ຍຫ້ຽນ"
-                  outlined
-                  dense
-                  class="rounded-md"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-form>
+            <v-form ref="form" v-model="valid" lazy-validation>
+              <v-row class="my-2">
+                <v-col cols="6">
+                  <v-text-field
+                    v-model="modelProductCode"
+                    label="ລະຫັດສິນຄ້າ"
+                    :rules="[(v) => !!v || 'ກະລຸນາປ້ອນລະຫັດສິນຄ້າ']"
+                    outlined
+                    dense
+                    class="rounded-md"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="6">
+                  <v-text-field
+                    v-model="modelPurity"
+                    label="ຄວາມບໍລິສຸດທອງ"
+                    append-icon="mdi-percent"
+                    :rules="[(v) => !!v || 'ກະລຸນາປ້ອນຄວາມບໍລິສຸດທອງ']"
+                    outlined
+                    dense
+                    class="rounded-md"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="6">
+                  <v-text-field
+                    v-model="modelLost"
+                    @keyup="fotmatLost()"
+                    label="ຫັກຄ່າຫຼູ້ຍຫ້ຽນ"
+                    outlined
+                    dense
+                    class="rounded-md"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="6">
+                  <v-select
+                    v-model="modelGoldType"
+                    :items="goldTypes"
+                    :item-text="(item) => item.typeName"
+                    :item-value="(item) => item.typeName"
+                    :rules="[(v) => !!v || 'ກະລຸນາເລືອກປະເພດທອງຄຳ']"
+                    label="ປະເພດທອງຄຳ"
+                    outlined
+                    dense
+                    class="rounded-md"
+                  ></v-select>
+                </v-col>
+                <v-col cols="6" v-if="modelGoldType == 'ທອງຮູບປະພັນ'">
+                  <v-select
+                    v-model="modelGoldShape"
+                    :items="goldShape"
+                    :item-text="(item) => item.shapeName"
+                    :item-value="(item) => item.shapeName"
+                    :rules="[(v) => !!v || 'ກະລຸນາເລືອກຮູບປະພັນ']"
+                    label="ຮູບປະພັນ"
+                    outlined
+                    dense
+                    class="rounded-md"
+                  ></v-select>
+                </v-col>
+                <v-col cols="6" v-if="modelGoldType == 'ທອງຮູບປະພັນ'">
+                  <v-select
+                    v-model="modelGoldShapeLine"
+                    :items="goldShapeLine"
+                    :item-text="(item) => item.shapeLineName"
+                    :item-value="(item) => item.shapeLineName"
+                    label="ລາຍຮູບປະພັນ"
+                    outlined
+                    dense
+                    class="rounded-md"
+                  ></v-select>
+                </v-col>
+                <v-col cols="6">
+                  <v-text-field
+                    v-model="modelWeightAmount"
+                    @keyup="fotmatWeight()"
+                    label="ນ້ຳໜັກທອງຄຳ"
+                    :rules="[(v) => !!v || 'ກະລຸນາປ້ອນນ້ຳໜັກທອງຄຳ']"
+                    outlined
+                    dense
+                    class="rounded-md"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="6">
+                  <v-select
+                    v-model="modelWeightType"
+                    :items="weightType"
+                    :item-text="(item) => item.weightName"
+                    :item-value="(item) => item.weightName"
+                    :rules="[(v) => !!v || 'ກະລຸນາເລືອກປະເພດນ້ຳໜັກ']"
+                    label="ປະເພດນ້ຳໜັກ"
+                    outlined
+                    dense
+                    class="rounded-md"
+                  ></v-select>
+                </v-col>
+                <!-- <v-col cols="6">
+                  <v-autocomplete
+                    v-model="modelAmount"
+                    :items="amount"
+                    :item-text="(item) => item.amount"
+                    :item-value="(item) => item.amount"
+                    :rules="[(v) => !!v || 'ກະລຸນາເລືອກຈໍາ​ນວນ']"
+                    label="ຈໍາ​ນວນ"
+                    outlined
+                    dense
+                    class="rounded-md"
+                  ></v-autocomplete>
+                </v-col> -->
+                <v-col cols="6">
+                  <v-text-field
+                    v-model="modelPrice"
+                    :disabled="!manualPrice"
+                    @keyup="fotmatPrice()"
+                    label="ລາຄາ"
+                    outlined
+                    dense
+                    hide-details="auto"
+                    class="rounded-md"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  cols="6"
+                  style="
+                    display: flex;
+                    justify-content: start;
+                    align-items: center;
+                  "
+                >
+                  <v-checkbox
+                    v-model="manualPrice"
+                    class="mt-0"
+                    hide-details="auto"
+                    label="ປ້ອນລາຄາເອງ"
+                  ></v-checkbox>
+                </v-col>
+              </v-row>
+            </v-form>
           </v-card-text>
           <v-card-actions style="height: 60px; justify-content: center">
             <v-btn
@@ -147,15 +176,8 @@
           </v-card-actions>
         </v-card>
       </v-col>
-      <v-col cols="12" sm="12" md="5" lg="5">
-        <v-card
-          style="
-            height: 700px;
-            border-radius: 10px;
-            box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
-              rgba(17, 17, 26, 0.05) 0px 8px 32px;
-          "
-        >
+      <v-col cols="12" sm="12" md="5" lg="5" v-if="listItems.length > 0">
+        <v-card style="height: 700px" class="rounded-xl" elevation="4">
           <v-card-title style="height: 60px">
             <h4>
               <span style="color: brown">{{ "#" }}</span>
@@ -213,7 +235,14 @@
                         text-overflow: ellipsis;
                       "
                     >
-                      {{ item.name }} {{ item?.shape ? "(" + item?.shape : "" }}{{ item?.shapeLine ? item?.shapeLine + ")" :  item?.shape ? ")" : "" }}
+                      {{ item.name }} {{ item?.shape ? "(" + item?.shape : ""
+                      }}{{
+                        item?.shapeLine
+                          ? item?.shapeLine + ")"
+                          : item?.shape
+                          ? ")"
+                          : ""
+                      }}
                     </p>
                     <p style="font-size: 14px; color: #000; margin: 0">
                       ນ້ຳໜັກ: {{ $formatnumber(item.weight) }}
@@ -281,6 +310,9 @@ export default {
     return {
       valid: true,
       modelGoldType: "ທອງຮູບປະພັນ",
+      modelProductCode: "",
+      modelPurity: 99,
+      manualPrice: false,
       goldTypes: [
         {
           id: 1,
@@ -324,27 +356,31 @@ export default {
       //   { id: 9, amount: 9 },
       //   { id: 10, amount: 10 },
       // ],
-      modelWeightType: "ກຣາມ(g)",
+      modelWeightType: "gram",
       weightType: [
         {
           id: 1,
-          weightName: "ກຣາມ(g)",
+          weightName: "gram",
         },
         {
           id: 2,
-          weightName: "ຫູນ",
+          weightName: "kg",
         },
         {
           id: 3,
-          weightName: "ສະຫຼຶງ",
+          weightName: "ຫູນ",
         },
         {
           id: 4,
+          weightName: "ສະຫຼຶງ",
+        },
+        {
+          id: 5,
           weightName: "ບາດ",
         },
       ],
       modelLost: "",
-      modelPrice: "",
+      modelPrice: 0,
       modelGoldShapeLine: "",
       // modelGoldShapeLine: 'ລາຍມັງກອນ',
       goldShapeLine: [
@@ -428,7 +464,7 @@ export default {
       console.log(this.listItems);
     },
     clear() {
-      this.$refs.form.reset()
+      this.$refs.form.reset();
     },
     // removeListItem(item, i) {
     //   let temp = this.listItems.filter((item, ind) => {
