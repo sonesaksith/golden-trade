@@ -455,7 +455,7 @@ export default {
               val?.split(",").join(""),
               this.modelWeightType,
               this.modelPurity,
-              this.modelLost?.split(",").join("")
+              String(this.modelLost)?.split(",").join("")
             )
           );
           this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
@@ -472,7 +472,7 @@ export default {
               this.modelWeightAmount?.split(",").join(""),
               val,
               this.modelPurity,
-              this.modelLost?.split(",").join("")
+              String(this.modelLost)?.split(",").join("")
             )
           );
           this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
@@ -490,7 +490,7 @@ export default {
               this.modelWeightAmount?.split(",").join(""),
               this.modelWeightType,
               val,
-              this.modelLost?.split(",").join("")
+              String(this.modelLost)?.split(",").join("")
             )
           );
           this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
@@ -500,7 +500,7 @@ export default {
               this.modelWeightAmount?.split(",").join(""),
               this.modelWeightType,
               val,
-              this.modelLost?.split(",").join("")
+              String(this.modelLost)?.split(",").join("")
             )
           );
           this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
@@ -541,7 +541,7 @@ export default {
             weightType: this.modelWeightType,
             amount: this.modelAmount,
             price: this.modelPrice?.split(",").join(""),
-            lost: this.modelLost?.split(",").join(""),
+            lost: String(this.modelLost)?.split(",").join(""),
           });
           // this.$refs.form.reset();
           this.modelWeightType = "gram";
@@ -651,7 +651,7 @@ export default {
       return val;
     },
     fotmatLost() {
-      this.modelLost = this.modelLost?.split(",").join("");
+      this.modelLost = String(this.modelLost)?.split(",").join("");
       let val;
       let valArr = [];
       val = this.modelLost;
