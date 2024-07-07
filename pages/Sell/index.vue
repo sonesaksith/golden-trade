@@ -370,18 +370,22 @@ export default {
       weightType: [
         {
           id: 1,
-          weightName: "ກຣາມ(g)",
+          weightName: "gram",
         },
         {
           id: 2,
-          weightName: "ຫຸນ",
+          weightName: "kg",
         },
         {
           id: 3,
-          weightName: "ສະຫຼຶງ",
+          weightName: "ຫູນ",
         },
         {
           id: 4,
+          weightName: "ສະຫຼຶງ",
+        },
+        {
+          id: 5,
           weightName: "ບາດ",
         },
       ],

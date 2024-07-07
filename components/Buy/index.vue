@@ -27,8 +27,8 @@
                     outlined
                     dense
                     class="rounded-md"
-                    ></v-text-field>
-                    <!-- :rules="[(v) => !!v || 'ກະລຸນາປ້ອນລະຫັດສິນຄ້າ']" -->
+                  ></v-text-field>
+                  <!-- :rules="[(v) => !!v || 'ກະລຸນາປ້ອນລະຫັດສິນຄ້າ']" -->
                 </v-col>
                 <v-col cols="6">
                   <v-text-field
@@ -49,7 +49,13 @@
                     outlined
                     dense
                     class="rounded-md"
-                  ></v-text-field>
+                  >
+                    <template #append>
+                      <div class="pt-1">
+                        <span> ກີບ </span>
+                      </div>
+                    </template>
+                  </v-text-field>
                 </v-col>
                 <v-col cols="6">
                   <v-select
@@ -76,8 +82,8 @@
                     dense
                     class="rounded-md"
                     clearable
-                    ></v-select>
-                    <!-- :rules="[(v) => !!v || 'ກະລຸນາເລືອກຮູບປະພັນ']" -->
+                  ></v-select>
+                  <!-- :rules="[(v) => !!v || 'ກະລຸນາເລືອກຮູບປະພັນ']" -->
                 </v-col>
                 <v-col cols="6" v-if="modelGoldType == 'ທອງຮູບປະພັນ'">
                   <v-select
@@ -100,8 +106,8 @@
                     outlined
                     dense
                     class="rounded-md"
-                    ></v-text-field>
-                    <!-- :rules="[(v) => !!v || 'ກະລຸນາປ້ອນນ້ຳໜັກທອງຄຳ']" -->
+                  ></v-text-field>
+                  <!-- :rules="[(v) => !!v || 'ກະລຸນາປ້ອນນ້ຳໜັກທອງຄຳ']" -->
                 </v-col>
                 <v-col cols="6">
                   <v-select
@@ -169,7 +175,15 @@
             </v-btn>
             &nbsp;&nbsp;
             <v-btn
-              :disabled="!modelProductCode || !modelPurity || !modelGoldType || !modelGoldShape || !modelWeightAmount || !modelWeightType || !modelPrice"
+              :disabled="
+                !modelProductCode ||
+                !modelPurity ||
+                !modelGoldType ||
+                !modelGoldShape ||
+                !modelWeightAmount ||
+                !modelWeightType ||
+                !modelPrice
+              "
               style="width: 45%; color: #fff; border-radius: 5px"
               color="success"
               @click="addListItems"
@@ -319,7 +333,7 @@ export default {
       valid: true,
       modelGoldType: "ທອງຮູບປະພັນ",
       modelProductCode: "",
-      modelPurity: 99,
+      modelPurity: 99.99,
       manualPrice: false,
       goldTypes: [
         {
@@ -387,7 +401,7 @@ export default {
           weightName: "ບາດ",
         },
       ],
-      modelLost: "",
+      modelLost: 0,
       modelPrice: 0,
       modelGoldShapeLine: "",
       // modelGoldShapeLine: 'ລາຍມັງກອນ',
@@ -413,7 +427,7 @@ export default {
           shapeLineName: "ລາຍດອກຊາກຸຣະ",
         },
       ],
-      modelAmount: 1, 
+      modelAmount: 1,
       amount: [
         { id: 1, amount: 1 },
         { id: 2, amount: 2 },
