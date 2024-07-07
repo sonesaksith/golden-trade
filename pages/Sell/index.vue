@@ -38,7 +38,7 @@
               label="ປະເພດຄຳ"
             ></v-autocomplete>
           </v-col>
-          <v-col cols="4" sm="2" xs="2" v-if="modelGold != 'ທອງຮູບປະພັນ'">
+          <v-col cols="4" sm="2" xs="2" v-if="modelGold != 'ທອງຄຳແທ່ງ'">
             <v-autocomplete
               label="ລາຍ"
               v-model="modelGoldLine"
@@ -81,8 +81,8 @@
             ></v-autocomplete>
           </v-col>
           <v-col
-            :cols="modelGold != 'ທອງຮູບປະພັນ' ? 4 : 8"
-            :sm="modelGold != 'ທອງຮູບປະພັນ' ? 1 : 3"
+            :cols="modelGold == 'ທອງຄຳແທ່ງ' ? 8 : 4"
+            :sm="modelGold == 'ທອງຄຳແທ່ງ' ? 3 : 1"
             class="d-flex justify-end pr-6 pt-5"
           >
             <v-badge
@@ -123,6 +123,7 @@
           :items="filterTable"
           item-key="name"
           :search="searchGoldTypes"
+          disable-sort
         >
           <template v-slot:item.sell="{ item }">
             <v-icon small @click="onPlusData(item)"> mdi-plus </v-icon>
