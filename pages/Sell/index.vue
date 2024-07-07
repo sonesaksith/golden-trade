@@ -5,7 +5,7 @@
       <v-col
         cols="12"
         style="position: sticky; top: 0; z-index: 1"
-        class="white py-5 elevation-2"
+        class="white py-5"
       >
         <v-row>
           <v-col cols="8" sm="4" xs="4">
@@ -126,7 +126,7 @@
       </v-col>
       <v-col cols="12" :sm="cartStore == true ? 8 : 12">
         <v-data-table
-          height="80vh"
+          height="75vh"
           :headers="headers"
           :items="filterTable"
           item-key="name"
@@ -141,7 +141,7 @@
         </v-data-table>
       </v-col>
       <v-col cols="12" sm="4" v-if="cartStore == true">
-        <v-card height="80vh">
+        <v-card height="100%">
           <v-card-title style="height: 10%">
             <h6>
               <span style="color: brown">{{ "#" }}</span>
@@ -478,7 +478,7 @@ export default {
   },
   computed: {
     ...mapGetters("sellStore", ["listItems"]),
-  
+
     filterTable() {
       if (
         this.modelGold ||
@@ -512,8 +512,7 @@ export default {
     },
   },
   watch: {},
-  mounted() {
-  },
+  mounted() {},
   methods: {
     ...mapActions("sellStore", ["ClearAllData"]),
     ...mapMutations("sellStore", [
