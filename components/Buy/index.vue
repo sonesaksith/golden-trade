@@ -516,7 +516,7 @@ export default {
             this.modelWeightAmount?.split(",").join(""),
             this.modelWeightType,
             this.modelPurity,
-            this.modelLost?.split(",").join("")
+            String(this.modelLost)?.split(",").join("")
           )
         );
         this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
@@ -651,7 +651,7 @@ export default {
       return val;
     },
     fotmatLost() {
-      this.modelLost = this.modelLost.split(",").join("");
+      this.modelLost = this.modelLost?.split(",").join("");
       let val;
       let valArr = [];
       val = this.modelLost;
