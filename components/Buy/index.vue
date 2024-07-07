@@ -192,7 +192,6 @@
             class="px-4 py-0"
             style="height: 580px; overflow-y: auto"
           >
-            <br />
             <div v-if="listItems?.length == 0">
               <WidgetNoData
                 message="ບໍ່​ມີ​ລາຍການຊື້ເຂົ້າ"
@@ -414,7 +413,7 @@ export default {
           shapeLineName: "ລາຍດອກຊາກຸຣະ",
         },
       ],
-      modelAmount: 1,
+      modelAmount: 1, 
       amount: [
         { id: 1, amount: 1 },
         { id: 2, amount: 2 },
