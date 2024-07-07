@@ -152,7 +152,6 @@
             class="px-4 py-0"
             style="height: 580px; overflow-y: auto"
           >
-            <br />
             <div v-if="listItems?.length == 0">
               <WidgetNoData message="ບໍ່​ມີ​ລາຍການຊື້ເຂົ້າ" width="150" height="150" />
             </div>
@@ -336,7 +335,7 @@ export default {
           shapeLineName: "ລາຍດອກຊາກຸຣະ",
         },
       ],
-      modelAmount: 1,
+      modelAmount: 1, 
       amount: [
         { id: 1, amount: 1 },
         { id: 2, amount: 2 },
@@ -354,12 +353,12 @@ export default {
   mounted() {},
   methods: {},
   computed: {
-    ...mapGetters('buy', [
+    ...mapGetters('sellStore', [
       'listItems',
     ]),
   },
   methods: {
-    ...mapMutations('buy', ['SET_ITEMS', 'SET_DECREMENT', 'SET_INCREMENT']),
+    ...mapMutations('sellStore', ['SET_ITEMS', 'SET_DECREMENT', 'SET_INCREMENT']),
     addListItems() {
       this.SET_ITEMS({
         name: this.modelGoldType,
