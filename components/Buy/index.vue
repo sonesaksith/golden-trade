@@ -24,11 +24,11 @@
                   <v-text-field
                     v-model="modelProductCode"
                     label="ລະຫັດສິນຄ້າ"
-                    :rules="[(v) => !!v || 'ກະລຸນາປ້ອນລະຫັດສິນຄ້າ']"
                     outlined
                     dense
                     class="rounded-md"
-                  ></v-text-field>
+                    ></v-text-field>
+                    <!-- :rules="[(v) => !!v || 'ກະລຸນາປ້ອນລະຫັດສິນຄ້າ']" -->
                 </v-col>
                 <v-col cols="6">
                   <v-text-field
@@ -62,6 +62,7 @@
                     outlined
                     dense
                     class="rounded-md"
+                    clearable
                   ></v-select>
                 </v-col>
                 <v-col cols="6" v-if="modelGoldType == 'ທອງຮູບປະພັນ'">
@@ -70,12 +71,13 @@
                     :items="goldShape"
                     :item-text="(item) => item.shapeName"
                     :item-value="(item) => item.shapeName"
-                    :rules="[(v) => !!v || 'ກະລຸນາເລືອກຮູບປະພັນ']"
                     label="ຮູບປະພັນ"
                     outlined
                     dense
                     class="rounded-md"
-                  ></v-select>
+                    clearable
+                    ></v-select>
+                    <!-- :rules="[(v) => !!v || 'ກະລຸນາເລືອກຮູບປະພັນ']" -->
                 </v-col>
                 <v-col cols="6" v-if="modelGoldType == 'ທອງຮູບປະພັນ'">
                   <v-select
@@ -87,6 +89,7 @@
                     outlined
                     dense
                     class="rounded-md"
+                    clearable
                   ></v-select>
                 </v-col>
                 <v-col cols="6">
@@ -94,11 +97,11 @@
                     v-model="modelWeightAmount"
                     @keyup="fotmatWeight()"
                     label="ນ້ຳໜັກທອງຄຳ"
-                    :rules="[(v) => !!v || 'ກະລຸນາປ້ອນນ້ຳໜັກທອງຄຳ']"
                     outlined
                     dense
                     class="rounded-md"
-                  ></v-text-field>
+                    ></v-text-field>
+                    <!-- :rules="[(v) => !!v || 'ກະລຸນາປ້ອນນ້ຳໜັກທອງຄຳ']" -->
                 </v-col>
                 <v-col cols="6">
                   <v-select
@@ -166,6 +169,7 @@
             </v-btn>
             &nbsp;&nbsp;
             <v-btn
+              :disabled="!modelProductCode || !modelPurity || !modelGoldType || !modelGoldShape || !modelWeightAmount || !modelWeightType || !modelPrice"
               style="width: 45%; color: #fff; border-radius: 5px"
               color="success"
               @click="addListItems"
@@ -229,7 +233,7 @@
                         font-size: 16px;
                         color: #000;
                         margin: 0;
-                        width: 180px;
+                        min-width: 180px;
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;
@@ -247,6 +251,11 @@
                     <p style="font-size: 14px; color: #000; margin: 0">
                       ນ້ຳໜັກ: {{ $formatnumber(item.weight) }}
                       {{ item.weightType }}
+                      {{
+                        item.purity
+                          ? `, ທອງຄຳບໍລິສຸດ: ` + item.purity + `%.`
+                          : null
+                      }}
                     </p>
                     <p style="font-size: 14px; color: #000; margin: 0">
                       ລາຄາ/ຈໍາ​ນວນ: {{ $formatnumber(item.price) }}
@@ -421,50 +430,151 @@ export default {
     };
   },
   mounted() {},
-  methods: {},
+  watch: {
+    modelWeightAmount: function (val) {
+      if (this.manualPrice == false) {
+        if (val) {
+          console.log(val);
+          console.log(this.modelWeightType);
+          console.log(this.modelPurity);
+          this.modelPrice = Math.ceil(
+            this.$convertGoldToMoney(
+              val?.split(",").join(""),
+              this.modelWeightType,
+              this.modelPurity,
+              this.modelLost?.split(",").join("")
+            )
+          );
+          this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
+        } else {
+          this.modelPrice = 0;
+        }
+      }
+    },
+    modelWeightType: function (val) {
+      if (this.manualPrice == false) {
+        if (val) {
+          this.modelPrice = Math.ceil(
+            this.$convertGoldToMoney(
+              this.modelWeightAmount?.split(",").join(""),
+              val,
+              this.modelPurity,
+              this.modelLost?.split(",").join("")
+            )
+          );
+          this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
+        } else {
+          // this.modelWeightType = "gram";
+          this.modelPrice = 0;
+        }
+      }
+    },
+    modelPurity: function (val) {
+      if (this.manualPrice == false) {
+        if (val) {
+          this.modelPrice = Math.ceil(
+            this.$convertGoldToMoney(
+              this.modelWeightAmount?.split(",").join(""),
+              this.modelWeightType,
+              val,
+              this.modelLost?.split(",").join("")
+            )
+          );
+          this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
+        } else {
+          this.modelPrice = Math.ceil(
+            this.$convertGoldToMoney(
+              this.modelWeightAmount?.split(",").join(""),
+              this.modelWeightType,
+              val,
+              this.modelLost?.split(",").join("")
+            )
+          );
+          this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
+        }
+      }
+    },
+    manualPrice: function (val) {
+      if (val == true) {
+        this.modelPrice = 0;
+      } else {
+        this.modelPrice = Math.ceil(
+          this.$convertGoldToMoney(
+            this.modelWeightAmount?.split(",").join(""),
+            this.modelWeightType,
+            this.modelPurity,
+            this.modelLost?.split(",").join("")
+          )
+        );
+        this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
+      }
+    },
+  },
   computed: {
     ...mapGetters("buy", ["listItems"]),
   },
   methods: {
     ...mapMutations("buy", ["SET_ITEMS", "SET_DECREMENT", "SET_INCREMENT"]),
     addListItems() {
-      if (this.$refs.form.validate()) {
-        this.SET_ITEMS({
-          name: this.modelGoldType,
-          shape: this.modelGoldShape,
-          shapeLine: this.modelGoldShapeLine,
-          weight: this.modelWeightAmount?.split(",").join(""),
-          weightType: this.modelWeightType,
-          amount: this.modelAmount,
-          price: this.modelPrice?.split(",").join(""),
-          lost: this.modelLost?.split(",").join(""),
-        });
-        this.$refs.form.reset();
-        // this.modelGoldType = this.modelGoldType;
-        // this.modelGoldShape = "";
-        // this.modelGoldShapeLine = "";
-        // this.modelWeightAmount = "";
-        // this.modelWeightType = this.modelWeightType;
-        // this.modelAmount = 1;
-        // this.modelPrice = "";
-        // this.modelLost = "";
+      try {
+        if (this.$refs.form.validate()) {
+          this.SET_ITEMS({
+            codeName: this.modelProductCode,
+            purity: this.modelPurity,
+            name: this.modelGoldType,
+            shape: this.modelGoldShape,
+            shapeLine: this.modelGoldShapeLine,
+            weight: this.modelWeightAmount?.split(",").join(""),
+            weightType: this.modelWeightType,
+            amount: this.modelAmount,
+            price: this.modelPrice?.split(",").join(""),
+            lost: this.modelLost?.split(",").join(""),
+          });
+          // this.$refs.form.reset();
+          this.modelWeightType = "gram";
+          this.modelGoldType = "ທອງຮູບປະພັນ";
+          this.modelPurity = 99;
+          this.modelProductCode = "";
+          this.modelGoldShape = "";
+          this.modelGoldShapeLine = "";
+          this.modelWeightAmount = "";
+          this.modelAmount = 1;
+          this.modelPrice = "";
+          this.modelLost = "";
+        }
+        // this.listItems.push({
+        //   name: this.modelGoldType,
+        //   shape: this.modelGoldShape,
+        //   shapeLine: this.modelGoldShapeLine,
+        //   weight: this.modelWeightAmount.split(",").join(""),
+        //   weightType: this.modelWeightType,
+        //   amount: this.modelAmount,
+        //   price: this.modelPrice.split(",").join(""),
+        //   lost: this.modelLost.split(",").join(""),
+        // });
+      } catch (error) {
+        console.log(error);
       }
-      // this.listItems.push({
-      //   name: this.modelGoldType,
-      //   shape: this.modelGoldShape,
-      //   shapeLine: this.modelGoldShapeLine,
-      //   weight: this.modelWeightAmount.split(",").join(""),
-      //   weightType: this.modelWeightType,
-      //   amount: this.modelAmount,
-      //   price: this.modelPrice.split(",").join(""),
-      //   lost: this.modelLost.split(",").join(""),
-      // });
     },
     buy() {
       console.log(this.listItems);
     },
     clear() {
-      this.$refs.form.reset();
+      try {
+        // this.$refs.form.reset();
+        this.modelWeightType = "gram";
+        this.modelGoldType = "ທອງຮູບປະພັນ";
+        this.modelPurity = 99;
+        this.modelProductCode = "";
+        this.modelGoldShape = "";
+        this.modelGoldShapeLine = "";
+        this.modelWeightAmount = "";
+        this.modelAmount = 1;
+        this.modelPrice = "";
+        this.modelLost = "";
+      } catch (error) {
+        console.log(error);
+      }
     },
     // removeListItem(item, i) {
     //   let temp = this.listItems.filter((item, ind) => {
@@ -503,7 +613,7 @@ export default {
       this.modelWeightAmount = val;
     },
     fotmatPrice() {
-      this.modelPrice = this.modelPrice.split(",").join("");
+      this.modelPrice = this.modelPrice?.split(",").join("");
       let val;
       let valArr = [];
       val = this.modelPrice;
@@ -514,6 +624,18 @@ export default {
         val = valArr.join(".");
       }
       this.modelPrice = val;
+    },
+    fotmatPrice2(price) {
+      let val;
+      let valArr = [];
+      val = price?.split(",").join("");
+      val = val.replace(/[^0-9\.]/g, "");
+      if (val != "") {
+        valArr = val.split(".");
+        valArr[0] = parseInt(valArr[0], 10).toLocaleString();
+        val = valArr.join(".");
+      }
+      return val;
     },
     fotmatLost() {
       this.modelLost = this.modelLost.split(",").join("");
