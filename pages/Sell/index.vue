@@ -8,7 +8,7 @@
         class="white py-5"
       >
         <v-row>
-          <v-col cols="8" sm="4" xs="4">
+          <v-col cols="4" sm="3" xs="2">
             <v-text-field
               outlined
               dense
@@ -24,21 +24,7 @@
               </template>
             </v-text-field>
           </v-col>
-          <v-col cols="4" sm="8" class="d-flex justify-end pr-6 pt-5">
-            <v-badge
-              v-if="numberCart > 0"
-              bordered
-              color="primary"
-              :content="numberCart"
-              @click="ShowCart()"
-            >
-              <v-icon color="goldColor">mdi-cart</v-icon>
-            </v-badge>
-            <v-icon v-else color="goldColor" @click="ShowCart()"
-              >mdi-cart</v-icon
-            >
-          </v-col>
-          <v-col cols="4" sm="2" xs="4">
+          <v-col cols="4" sm="2" xs="2">
             <v-autocomplete
               v-model="modelGold"
               :items="goldTypes"
@@ -51,34 +37,8 @@
               clearable
               label="ປະເພດຄຳ"
             ></v-autocomplete>
-            <!-- <treeselect
-              v-model="multiGold"
-              :multiple="multiple"
-              :clearable="clearable"
-              :searchable="searchable"
-              :open-on-click="openOnClick"
-              :clear-on-select="clearOnSelect"
-              :options="options"
-              :flatten-search-results="true"
-              :limit="15"
-              :max-height="300"
-            /> -->
           </v-col>
-          <v-col cols="4" sm="2" xs="4">
-            <v-autocomplete
-              v-model="modelGoldType"
-              :items="goldShape"
-              :item-text="(item) => item.shapeName"
-              :item-value="(item) => item.shapeName"
-              outlined
-              dense
-              hide-details="auto"
-              class="rounded-lg"
-              clearable
-              label="ປະເພດຮູບປະຄຳ"
-            ></v-autocomplete>
-          </v-col>
-          <v-col cols="4" sm="2" xs="4">
+          <v-col cols="4" sm="2" xs="2" v-if="modelGold != 'ທອງຮູບປະພັນ'">
             <v-autocomplete
               label="ລາຍ"
               v-model="modelGoldLine"
@@ -106,7 +66,7 @@
               clearable
             ></v-autocomplete>
           </v-col>
-          <v-col cols="4" sm="2" xs="4">
+          <v-col cols="4" sm="2" xs="2">
             <v-autocomplete
               label="ປະເພດນ້ຳໜັກ"
               v-model="modelGoldWeightType"
@@ -120,6 +80,38 @@
               clearable
             ></v-autocomplete>
           </v-col>
+          <v-col
+            :cols="modelGold != 'ທອງຮູບປະພັນ' ? 4 : 8"
+            :sm="modelGold != 'ທອງຮູບປະພັນ' ? 1 : 3"
+            class="d-flex justify-end pr-6 pt-5"
+          >
+            <v-badge
+              v-if="numberCart > 0"
+              bordered
+              color="primary"
+              :content="numberCart"
+              @click="ShowCart()"
+            >
+              <v-icon color="goldColor">mdi-cart</v-icon>
+            </v-badge>
+            <v-icon v-else color="goldColor" @click="ShowCart()"
+              >mdi-cart</v-icon
+            >
+          </v-col>
+
+          <!-- <treeselect
+              v-model="multiGold"
+              :multiple="multiple"
+              :clearable="clearable"
+              :searchable="searchable"
+              :open-on-click="openOnClick"
+              :clear-on-select="clearOnSelect"
+              :options="options"
+              :flatten-search-results="true"
+              :limit="15"
+              :max-height="200"
+            /> -->
+
           <!-- {{ multi
             Gold }} -->
         </v-row>
