@@ -145,7 +145,7 @@
             <br />
             <div v-if="listItems?.length == 0">
               <WidgetNoData
-                message="ບໍ່​ມີ​ລາຍການຊື້ເຂົ້າ"
+                message="ບໍ່​ມີ​ລາຍການຂາຍ"
                 width="150"
                 height="150"
               />
