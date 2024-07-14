@@ -331,7 +331,7 @@
     <div style="display: none">
       <PrintBuy
         v-if="listItems != '' && !loading"
-        message="bill"
+        message="ໃບບີນ"
         :setHeader="headerPDF"
         :list="listItems"
         :setFooter="listFooter"
@@ -645,13 +645,10 @@ export default {
         const res = await this.setData(this.listItems)
         let totalPrice = 0;
         let totalAmount = 0;
-        console.log(this.listItems);
         this.listItems.forEach(item => {
           totalPrice += parseInt(item.price, 10);
           totalAmount += item.amount;
         });
-        console.log(totalPrice);
-        console.log(totalAmount);
         this.listFooter = [
           { text: "ທັງໝົດ", value: totalAmount },
           { text: "ລາຄາທັງໝົດ", value: totalPrice },

@@ -21,12 +21,12 @@
       </style>
 
       <v-row>
-        <v-col cols="12" align="center" style="font-size: 11px">
+        <!-- <v-col cols="12" align="center" style="font-size: 11px">
           <div><span>ສາທາລະນະລັດ ປະຊາທິປະໄຕ ປະຊາຊົນລາວ</span></div>
           <div>
             <span>ສັນຕິພາບ ເອກະລາດ ປະຊາທິປະໄຕ ເອກະພາບ ວັດທະນະຖາວອນ</span>
           </div>
-        </v-col>
+        </v-col> -->
       </v-row>
       <br />
       <div style="display: flex; justify-content: space-between">
@@ -40,9 +40,7 @@
                 height="50px"
               />
             </div> -->
-            <div><span>title</span></div>
-            <div><span>ບໍລິສັດລັດ someting</span></div>
-            <div><span>ບໍລິສັດລັດ someting</span></div>
+            <div><span>ຊື່​ຮ້ານ</span></div>
           </div>
           <div style="font-size: 12px">
             <div><span>ເບີໂທ : 02 956 082 29</span></div>
