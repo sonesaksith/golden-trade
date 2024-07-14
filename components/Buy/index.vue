@@ -1,6 +1,6 @@
 <template>
-  <div class="ma-2">
-    <v-row style="height: 100vh" class="pa-4">
+  <div>
+    <v-row style="height: 100vh" class="pa-2">
       <v-col
         cols="12"
         sm="12"
@@ -220,7 +220,7 @@
             </div>
             <v-row
               v-else
-              class="px-4 py-2"
+              class="px-2 py-2"
               v-for="(item, index) in listItems"
               :key="index"
             >
