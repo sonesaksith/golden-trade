@@ -25,6 +25,7 @@ export default {
     "~/plugins/secure-storage",
     "~/plugins/axios.client.js",
     "~/plugins/global.js",
+    { src: '~/plugins/printd.js', ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

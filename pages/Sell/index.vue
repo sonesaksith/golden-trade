@@ -1,14 +1,14 @@
 <template>
   <div>
     <SellShowdetails ref="refShowdetail" />
-    <v-row>
+    <v-row class="px-3">
       <v-col
         cols="12"
         style="position: sticky; top: 0; z-index: 1"
         class="white py-5"
       >
         <v-row>
-          <v-col cols="4" sm="3" xs="2">
+          <v-col cols="10" sm="3" xs="12">
             <v-text-field
               outlined
               dense
@@ -24,81 +24,12 @@
               </template>
             </v-text-field>
           </v-col>
-          <v-col cols="4" sm="2" xs="2">
-            <v-autocomplete
-              v-model="modelGold"
-              :items="goldTypes"
-              :item-text="(item) => item.typeName"
-              :item-value="(item) => item.typeName"
-              outlined
-              dense
-              hide-details="auto"
-              class="rounded-lg"
-              clearable
-              label="ປະເພດຄຳ"
-            ></v-autocomplete>
-          </v-col>
-          <v-col cols="4" sm="2" xs="4" v-if="modelGold != 'ທອງຄຳແທ່ງ'">
-            <v-autocomplete
-              label="ປະເພດຮູບປະພັນ"
-              v-model="modelGoldType"
-              :items="goldShape"
-              :item-text="(item) => item.shapeName"
-              :item-value="(item) => item.shapeName"
-              outlined
-              dense
-              hide-details="auto"
-              class="rounded-lg"
-              clearable
-            ></v-autocomplete>
-          </v-col>
-          <v-col cols="4" sm="2" xs="2" v-if="modelGold != 'ທອງຄຳແທ່ງ'">
-            <v-autocomplete
-              label="ລາຍ"
-              v-model="modelGoldLine"
-              :items="goldShapeLine"
-              :item-text="(item) => item.shapeLineName"
-              :item-value="(item) => item.shapeLineName"
-              outlined
-              dense
-              hide-details="auto"
-              class="rounded-lg"
-              clearable
-            ></v-autocomplete>
-          </v-col>
-          <v-col cols="4" sm="2" xs="4">
-            <v-autocomplete
-              label="ນ້ຳໜັກ"
-              v-model="modelGoldWeigt"
-              :items="amount"
-              :item-text="(item) => item.amount"
-              :item-value="(item) => item.amount"
-              outlined
-              dense
-              hide-details="auto"
-              class="rounded-lg"
-              clearable
-            ></v-autocomplete>
-          </v-col>
-          <v-col cols="4" sm="2" xs="2">
-            <v-autocomplete
-              label="ປະເພດນ້ຳໜັກ"
-              v-model="modelGoldWeightType"
-              :items="weightType"
-              :item-text="(item) => item.weightName"
-              :item-value="(item) => item.weightName"
-              outlined
-              dense
-              hide-details="auto"
-              class="rounded-lg"
-              clearable
-            ></v-autocomplete>
-          </v-col>
           <v-col
-            :cols="modelGold == 'ທອງຄຳແທ່ງ' ? 8 : 4"
-            :sm="modelGold == 'ທອງຄຳແທ່ງ' ? 3 : 1"
-            class="d-flex justify-end pr-6 pt-5"
-            @click="ShowCart()"
+            cols="2"
+            sm="9"
+            xs="12"
+            class="d-flex justify-end pr-5 pt-5"
+            @click="toggleRightDrawer()"
           >
             <!-- v-if="numberCart > 0" -->
             <v-badge
@@ -146,126 +77,254 @@
           </template>
         </v-data-table>
       </v-col>
-      <v-col cols="12" sm="4" v-if="cartStore == true">
-        <v-card height="100%">
-          <v-card-title style="height: 10%">
-            <h6>
-              <span style="color: brown">{{ "#" }}</span>
-              &nbsp;ລາຍການຂາຍຄຳ
-            </h6>
-          </v-card-title>
-          <v-card-text class="px-4 py-0" style="overflow-y: auto; height: 80%">
-            <br />
-            <div v-if="listItems?.length == 0">
-              <WidgetNoData
-                message="ບໍ່​ມີ​ລາຍການຂາຍ"
-                width="150"
-                height="150"
-              />
-            </div>
-            <v-row
-              v-else
-              class="px-4 py-2"
-              v-for="(item, index) in listItems"
-              :key="index"
+
+      <v-navigation-drawer
+        v-model="rightDrawer"
+        right
+        temporary
+        app
+        fix
+        width="50vh"
+        height="110vh"
+      >
+        <v-list>
+          <v-row class="px-2">
+            <v-col
+              cols="12"
+              class="d-flex justify-end pr-6 pt-5"
+              @click="toggleRightDrawer()"
             >
-              <v-col
-                cols="12"
-                style="
-                  background-color: antiquewhite;
-                  border-radius: 4px;
-                  height: 100px;
-                  position: relative;
-                  display: flex;
-                  align-items: center;
-                  justify-content: space-between;
-                  padding: 0 10px;
-                "
+              <!-- v-if="numberCart > 0" -->
+              <v-badge
+                v-if="listItems.length > 0"
+                bordered
+                color="primary"
+                :content="listItems.length"
               >
-                <div style="display: flex; align-items: center">
-                  <!-- <img
+                <v-icon color="goldColor">mdi-cart</v-icon>
+              </v-badge>
+              <v-icon v-else color="goldColor">mdi-cart</v-icon>
+            </v-col>
+            <v-col cols="6" sm="6" xs="12">
+              <v-autocomplete
+                v-model="modelGold"
+                :items="goldTypes"
+                :item-text="(item) => item.typeName"
+                :item-value="(item) => item.typeName"
+                outlined
+                dense
+                hide-details="auto"
+                class="rounded-lg"
+                clearable
+                label="ປະເພດຄຳ"
+              ></v-autocomplete>
+            </v-col>
+            <v-col cols="6" sm="6" xs="12" v-if="modelGold != 'ທອງຄຳແທ່ງ'">
+              <v-autocomplete
+                label="ປະເພດຮູບປະພັນ"
+                v-model="modelGoldType"
+                :items="goldShape"
+                :item-text="(item) => item.shapeName"
+                :item-value="(item) => item.shapeName"
+                outlined
+                dense
+                hide-details="auto"
+                class="rounded-lg"
+                clearable
+              ></v-autocomplete>
+            </v-col>
+            <v-col cols="6" sm="6" xs="12" v-if="modelGold != 'ທອງຄຳແທ່ງ'">
+              <v-autocomplete
+                label="ລາຍ"
+                v-model="modelGoldLine"
+                :items="goldShapeLine"
+                :item-text="(item) => item.shapeLineName"
+                :item-value="(item) => item.shapeLineName"
+                outlined
+                dense
+                hide-details="auto"
+                class="rounded-lg"
+                clearable
+              ></v-autocomplete>
+            </v-col>
+            <v-col cols="6" sm="6" xs="12">
+              <v-autocomplete
+                label="ນ້ຳໜັກ"
+                v-model="modelGoldWeigt"
+                :items="amount"
+                :item-text="(item) => item.amount"
+                :item-value="(item) => item.amount"
+                outlined
+                dense
+                hide-details="auto"
+                class="rounded-lg"
+                clearable
+              ></v-autocomplete>
+            </v-col>
+            <v-col cols="12" sm="6" xs="12">
+              <v-autocomplete
+                label="ປະເພດນ້ຳໜັກ"
+                v-model="modelGoldWeightType"
+                :items="weightType"
+                :item-text="(item) => item.weightName"
+                :item-value="(item) => item.weightName"
+                outlined
+                dense
+                hide-details="auto"
+                class="rounded-lg"
+                clearable
+              ></v-autocomplete>
+            </v-col>
+            <v-col cols="12" sm="12" v-if="rightDrawer == true">
+              <v-card height="100vh">
+                <v-card-title style="height: 10vh">
+                  <h6>
+                    <span style="color: brown">{{ "#" }}</span>
+                    &nbsp;ລາຍການຂາຍຄຳ
+                  </h6>
+                </v-card-title>
+                <v-card-text
+                  class="px-4 py-0"
+                  style="overflow-y: auto; height: 50vh"
+                >
+                  <br />
+                  <div v-if="listItems?.length == 0">
+                    <WidgetNoData
+                      message="ບໍ່​ມີ​ລາຍການຂາຍ"
+                      width="150"
+                      height="150"
+                    />
+                  </div>
+                  <v-row
+                    v-else
+                    class="px-4 py-2"
+                    v-for="(item, index) in listItems"
+                    :key="index"
+                  >
+                    <v-col
+                      cols="12"
+                      style="
+                        background-color: antiquewhite;
+                        border-radius: 4px;
+                        height: 100px;
+                        position: relative;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        padding: 0 10px;
+                      "
+                    >
+                      <div style="display: flex; align-items: center">
+                        <!-- <img
                     src="/goldbar.png"
                     width="80"
                     height="80"
                     style="border-radius: 5px"
                   /> -->
-                  <div style="margin-left: 10px">
-                    <p style="font-size: 16px; color: #000; margin: 0">
-                      {{ item.name }} ({{ item.shape }}{{ item.shapeLine }})
-                    </p>
-                    <p style="font-size: 14px; color: #000; margin: 0">
-                      ນ້ຳໜັກ: {{ $formatnumber(item.weight) }}
-                      {{ item.weightType }}
-                    </p>
-                    <p style="font-size: 14px; color: #000; margin: 0">
-                      ລາຄາ/ຈໍາ​ນວນ: {{ $formatnumber(item.price) }}
-                    </p>
-                    <!-- <p style="font-size: 14px; color: #000; margin: 0">
+                        <div style="margin-left: 10px">
+                          <p style="font-size: 16px; color: #000; margin: 0">
+                            {{ item.name }} ({{ item.shape
+                            }}{{ item.shapeLine }})
+                          </p>
+                          <p style="font-size: 14px; color: #000; margin: 0">
+                            ນ້ຳໜັກ: {{ $formatnumber(item.weight) }}
+                            {{ item.weightType }}
+                          </p>
+                          <p style="font-size: 14px; color: #000; margin: 0">
+                            ລາຄາ/ຈໍາ​ນວນ: {{ $formatnumber(item.price) }}
+                          </p>
+                          <!-- <p style="font-size: 14px; color: #000; margin: 0">
                       ຄ່າຫຼູ້ຍຫ້ຽນ: {{ $formatnumber(item.lost) }}
                     </p> -->
-                  </div>
-                </div>
-                <div
-                  style="
-                    display: flex;
-                    align-items: center;
-                    position: absolute;
-                    bottom: 4px;
-                    right: 4px;
-                  "
-                >
-                  <v-icon
-                    class="icon ma-0"
-                    small
-                    @click="SET_DECREMENT(index)"
-                    style="color: #000; cursor: pointer; margin-right: 4px"
+                        </div>
+                      </div>
+                      <div
+                        style="
+                          display: flex;
+                          align-items: center;
+                          position: absolute;
+                          bottom: 4px;
+                          right: 4px;
+                        "
+                      >
+                        <v-icon
+                          class="icon ma-0"
+                          small
+                          @click="SET_DECREMENT(index)"
+                          style="
+                            color: #000;
+                            cursor: pointer;
+                            margin-right: 4px;
+                          "
+                        >
+                          mdi-minus
+                        </v-icon>
+                        <p style="font-size: 18px; color: #000; margin: 0 8px">
+                          <b>{{ item.amount }}</b>
+                        </p>
+                        <v-icon
+                          class="icon ma-0"
+                          small
+                          @click="SET_INCREMENT(index)"
+                          style="color: #000; cursor: pointer; margin-left: 4px"
+                        >
+                          mdi-plus
+                        </v-icon>
+                      </div>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+                <v-card-actions style="height: 10vh">
+                  <v-btn
+                    :disabled="listItems?.length == 0"
+                    style="width: 48%; color: #fff; border-radius: 5px"
+                    color="error"
+                    @click="ClearAllData"
                   >
-                    mdi-minus
-                  </v-icon>
-                  <p style="font-size: 18px; color: #000; margin: 0 8px">
-                    <b>{{ item.amount }}</b>
-                  </p>
-                  <v-icon
-                    class="icon ma-0"
-                    small
-                    @click="SET_INCREMENT(index)"
-                    style="color: #000; cursor: pointer; margin-left: 4px"
+                    ລົບທັງໝົດ
+                  </v-btn>
+                  <v-btn
+                    :disabled="listItems?.length == 0"
+                    style="width: 48%; color: #fff; border-radius: 5px"
+                    color="goldColor"
+                    @click="myChildFuncPrint()"
                   >
-                    mdi-plus
-                  </v-icon>
-                </div>
-              </v-col>
-            </v-row>
-          </v-card-text>
-          <v-card-actions style="height: 10%">
-            <v-btn
-              :disabled="listItems?.length == 0"
-              style="width: 48%; color: #fff; border-radius: 5px"
-              color="error"
-              @click="ClearAllData"
-            >
-              ລົບທັງໝົດ
-            </v-btn>
-            <v-btn
-              :disabled="listItems?.length == 0"
-              style="width: 48%; color: #fff; border-radius: 5px"
-              color="goldColor"
-            >
-              ຊື້ເຂົ້າ
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
+                    ຂາຍຄຳ
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col></v-row
+          >
+          <!-- <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>Right Drawer Item 1</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>Right Drawer Item 2</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item> -->
+          <!-- Add more items as needed -->
+        </v-list>
+      </v-navigation-drawer>
+      <!-- :style="(isReportSell = true ? 'display:none' : 'display:none')" -->
     </v-row>
+    <div :style="(isReportSell = true ? 'display:none' : 'display:none')">
+      <SellPrintSell ref="myGlobalTable" />
+    </div>
   </div>
 </template>
 <script>
 import Treeselect from "@riophae/vue-treeselect";
+import SellPrintSell from "../Sell/PrintSell.vue";
 import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
 export default {
-  components: { Treeselect },
+  // layout: "sell",
+  components: { Treeselect, SellPrintSell },
   data() {
     return {
+      rightDrawer: false,
       cartStore: false,
       multiGold: null,
       options: [
@@ -526,6 +585,26 @@ export default {
       "SET_DECREMENT",
       "SET_INCREMENT",
     ]),
+    myChildFuncPrint() {
+      // this.loadingPrint = true
+      this.$refs.myGlobalTable.OnPrintBill();
+      // try {
+      //   this.$refs.myGlobalTable.OnPrintBill()
+      // } catch (error) {
+      //   this.$swal({
+      //     text: 'ບໍ່ມີຂໍ້ມູນ',
+      //     type: 'info',
+      //     timer: 5000,
+      //     timerProgressBar: true,
+      //     showConfirmButton: true,
+      //   })
+      // } finally {
+      //   // this.loadingPrint = false
+      // }
+    },
+    toggleRightDrawer() {
+      this.rightDrawer = !this.rightDrawer;
+    },
     onPlusData(item) {
       this.SET_ITEMS({
         id: item.id,
