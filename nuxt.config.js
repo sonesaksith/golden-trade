@@ -14,7 +14,7 @@ export default {
       { hid: "description", name: "description", content: "" },
       { name: "format-detection", content: "telephone=no" },
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+    link: [{ rel: "icon", type: "image/x-icon", href: "/goldbar.png" }],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -25,6 +25,7 @@ export default {
     "~/plugins/secure-storage",
     "~/plugins/axios.client.js",
     "~/plugins/global.js",
+    { src: '~/plugins/printd.js', ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
