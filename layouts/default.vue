@@ -84,6 +84,12 @@ export default {
           path: "/buy",
           color: "success",
         },
+        {
+          title: "ເທີນ",
+          icon: "mdi-swap-horizontal",
+          path: "/change",
+          color: "primary",
+        },
       ],
       mini: true,
     };
