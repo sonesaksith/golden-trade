@@ -284,12 +284,22 @@
                     ລົບທັງໝົດ
                   </v-btn>
                   <v-btn
+                    v-if="!isExchange"
                     :disabled="listItems?.length == 0"
                     style="width: 48%; color: #fff; border-radius: 5px"
                     color="goldColor"
                     @click="myChildFuncPrint()"
                   >
                     ຂາຍຄຳ
+                  </v-btn>
+                  <v-btn
+                    v-else
+                    :disabled="listItems?.length == 0"
+                    style="width: 48%; color: #fff; border-radius: 5px"
+                    color="goldColor"
+                    @click="handlePressNext()"
+                  >
+                    ຕໍ່ໄປ
                   </v-btn>
                 </v-card-actions>
               </v-card>
@@ -322,6 +332,10 @@ import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
 export default {
   // layout: "sell",
   components: { Treeselect, SellPrintSell },
+  props: {
+    isExchange: { type: Boolean, default: false },
+    handlePressNext: { type: Function },
+  },
   data() {
     return {
       rightDrawer: false,
@@ -581,8 +595,11 @@ export default {
     },
   },
   watch: {},
-  mounted() {},
+  mounted() {
+    this.setHeader("ຂາຍອອກ");
+  },
   methods: {
+    ...mapActions("main", ["setHeader"]),
     ...mapActions("sellStore", ["ClearAllData"]),
     ...mapMutations("sellStore", [
       "SET_ITEMS",

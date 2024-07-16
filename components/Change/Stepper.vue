@@ -1,6 +1,11 @@
 <template>
   <div>
-    <v-stepper v-model="stepper" alt-labels>
+    <v-stepper
+      v-model="stepper"
+      alt-labels
+      elevation="0"
+      style="border-radius: 0"
+    >
       <v-stepper-header>
         <template v-for="(item, index) in step">
           <v-stepper-step
@@ -19,8 +24,7 @@
       <v-stepper-items>
         <template v-for="(item, index) in step">
           <v-stepper-content :step="item.id">
-            <component :is="item.content">
-              <slot></slot>
+            <component :is="item.content.component" v-bind="item.content.props">
             </component>
           </v-stepper-content>
         </template>
@@ -37,6 +41,11 @@ export default {
   },
   props: {
     step: Array,
+  },
+  methods: {
+    nextStep() {
+      this.stepper += 1;
+    },
   },
 };
 </script>

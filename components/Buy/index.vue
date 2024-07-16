@@ -1,10 +1,10 @@
 <template>
-  <div class="ma-2">
-    <v-row style="height: 100vh" class="pa-4">
+  <div>
+    <v-row style="height: 100vh" class="pa-2">
       <v-col
         cols="12"
         sm="12"
-        :md="listItems.length > 0 ? '7' : '12'"
+        :md="listItems.length > 0 ? '6' : '12'"
         :lg="listItems.length > 0 ? '7' : '12'"
       >
         <v-card style="height: 700px" class="rounded-xl" elevation="4">
@@ -20,16 +20,6 @@
           >
             <v-form ref="form" v-model="valid" lazy-validation>
               <v-row class="my-2">
-                <v-col cols="6">
-                  <v-text-field
-                    v-model="modelProductCode"
-                    label="ລະຫັດສິນຄ້າ"
-                    outlined
-                    dense
-                    class="rounded-md"
-                  ></v-text-field>
-                  <!-- :rules="[(v) => !!v || 'ກະລຸນາປ້ອນລະຫັດສິນຄ້າ']" -->
-                </v-col>
                 <v-col cols="6">
                   <v-text-field
                     v-model="modelPurity"
@@ -176,10 +166,8 @@
             &nbsp;&nbsp;
             <v-btn
               :disabled="
-                !modelProductCode ||
                 !modelPurity ||
                 !modelGoldType ||
-                !modelGoldShape ||
                 !modelWeightAmount ||
                 !modelWeightType ||
                 !modelPrice
@@ -194,13 +182,37 @@
           </v-card-actions>
         </v-card>
       </v-col>
-      <v-col cols="12" sm="12" md="5" lg="5" v-if="listItems.length > 0">
+      <v-col cols="12" sm="12" md="6" lg="5" v-if="listItems.length > 0">
         <v-card style="height: 700px" class="rounded-xl" elevation="4">
           <v-card-title style="height: 60px">
             <h4>
               <span style="color: brown">{{ "#" }}</span>
               &nbsp;ລາຍການຊື້ເຂົ້າ
             </h4>
+            <v-spacer></v-spacer>
+            <div>
+              <v-btn
+                v-if="!isExchange"
+                :loading="loadingPDF"
+                style="font-size: 14px; margin-top: 10px"
+                class="rounded-lg ml-1 mr-1 btn-pdf"
+                @click="pdf()"
+              >
+                <v-icon>mdi-file-pdf-box</v-icon> &nbsp; PDF
+              </v-btn>
+            </div>
+            <div>
+              <v-btn
+                v-if="!isExchange"
+                :loading="loadingPrint"
+                outlined
+                style="font-size: 14px; margin-top: 10px"
+                class="rounded-lg ml-1 mr-1"
+                @click="print()"
+              >
+                <v-icon>mdi-printer</v-icon> &nbsp; ພິມ
+              </v-btn>
+            </div>
           </v-card-title>
           <v-card-text
             class="px-4 py-0"
@@ -215,7 +227,7 @@
             </div>
             <v-row
               v-else
-              class="px-4 py-2"
+              class="px-2 py-2"
               v-for="(item, index) in listItems"
               :key="index"
             >
@@ -312,6 +324,7 @@
           </v-card-text>
           <v-card-actions style="height: 60px">
             <v-btn
+              v-if="!isExchange"
               :disabled="listItems?.length == 0"
               style="width: 100%; color: #fff; border-radius: 5px"
               color="goldColor"
@@ -319,21 +332,45 @@
             >
               ຊື້ເຂົ້າ
             </v-btn>
+            <v-btn
+              v-else
+              :disabled="listItems?.length == 0"
+              style="width: 100%; color: #fff; border-radius: 5px"
+              color="goldColor"
+              @click="handlePressNext()"
+            >
+              ຕໍ່ໄປ
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
+    <div style="display: none">
+      <PrintBuy
+        v-if="listItems != '' && !loading"
+        message="ໃບບີນ"
+        :setHeader="headerPDF"
+        :list="listItems"
+        :setFooter="listFooter"
+        :mergeTable="mergeTable"
+        setSty="portrait"
+        :key="1"
+        ref="myCompPrint"
+      />
+    </div>
   </div>
 </template>
 <script>
 import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
+import secureStorage from "~/plugins/secure-storage";
 export default {
   data() {
     return {
       valid: true,
+      loadingPDF: false,
+      loadingPrint: false,
       modelGoldType: "ທອງຮູບປະພັນ",
-      modelProductCode: "",
-      modelPurity: 99.99,
+      modelPurity: 99,
       manualPrice: false,
       goldTypes: [
         {
@@ -440,16 +477,71 @@ export default {
         { id: 9, amount: 9 },
         { id: 10, amount: 10 },
       ],
+      items: [
+        {
+          purity: 99,
+          name: "ທອງຮູບປະພັນ",
+          shape: "ສາຍຄໍ",
+          shapeLine: "ລາຍມັງກອນ",
+          weight: "10",
+          weightType: "gram",
+          amount: 1,
+          price: "18833630",
+          lost: "10",
+        },
+      ],
+      headerPDF: [
+        {
+          text: "ທອງຄຳບໍລິສຸດ",
+          value: "purity",
+        },
+        {
+          text: "ປະເພດທອງຄຳ",
+          value: "name",
+        },
+        {
+          text: "ຮູບປະພັນ",
+          value: "shape",
+        },
+        {
+          text: "ລາຍຮູບປະພັນ",
+          value: "shapeLine",
+        },
+        {
+          text: "ນ້ຳໜັກ",
+          value: "weight",
+        },
+        {
+          text: "ປະເພດນ້ຳໜັກ",
+          value: "weightType",
+        },
+        {
+          text: "ລາຄາ",
+          value: "price",
+        },
+        {
+          text: "ຄ່າຫຼູ້ຍຫ້ຽນ",
+          value: "lost",
+        },
+        {
+          text: "ຈໍາ​ນວນ",
+          value: "amount",
+        },
+      ],
+      mergeTable: { text: 9, value: 1 },
+      listFooter: [],
+      loading: false,
     };
+  },
+  props: {
+    isExchange: { type: Boolean, default: false },
+    handlePressNext: { type: Function },
   },
   mounted() {},
   watch: {
     modelWeightAmount: function (val) {
       if (this.manualPrice == false) {
         if (val) {
-          console.log(val);
-          console.log(this.modelWeightType);
-          console.log(this.modelPurity);
           this.modelPrice = Math.ceil(
             this.$convertGoldToMoney(
               val?.split(",").join(""),
@@ -528,11 +620,69 @@ export default {
   },
   methods: {
     ...mapMutations("buy", ["SET_ITEMS", "SET_DECREMENT", "SET_INCREMENT"]),
+    ...mapActions("buy", ["setData"]),
+    async print() {
+      await this.callPDF();
+      try {
+        this.loadingPrint = true;
+        this.$refs.myCompPrint.OnPrintBill();
+      } catch (error) {
+        console.log(error);
+        this.$swal({
+          text: "ບໍ່ມີຂໍ້ມູນ",
+          type: "info",
+          timer: 5000,
+          timerProgressBar: true,
+          showConfirmButton: true,
+        });
+      } finally {
+        this.loadingPrint = false;
+      }
+    },
+    async pdf() {
+      await this.callPDF();
+      try {
+        this.loadingPDF = true;
+        if (this.listItems != "") {
+          this.$refs.myCompPrint.downloadPDF();
+        } else {
+          this.$swal({
+            text: "ບໍ່ມີຂໍ້ມູນ",
+            type: "info",
+            timer: 5000,
+            timerProgressBar: true,
+            showConfirmButton: true,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.loadingPDF = false;
+      }
+    },
+    async callPDF() {
+      this.loading = true;
+      try {
+        const res = await this.setData(this.listItems);
+        let totalPrice = 0;
+        let totalAmount = 0;
+        this.listItems.forEach((item) => {
+          totalPrice += parseInt(item.price, 10);
+          totalAmount += item.amount;
+        });
+        this.listFooter = [
+          { text: "ທັງໝົດ", value: totalAmount },
+          { text: "ລາຄາທັງໝົດ", value: totalPrice },
+        ];
+      } catch (error) {
+      } finally {
+        this.loading = false;
+      }
+    },
     addListItems() {
       try {
         if (this.$refs.form.validate()) {
           this.SET_ITEMS({
-            codeName: this.modelProductCode,
             purity: this.modelPurity,
             name: this.modelGoldType,
             shape: this.modelGoldShape,
@@ -547,7 +697,6 @@ export default {
           this.modelWeightType = "gram";
           this.modelGoldType = "ທອງຮູບປະພັນ";
           this.modelPurity = 99;
-          this.modelProductCode = "";
           this.modelGoldShape = "";
           this.modelGoldShapeLine = "";
           this.modelWeightAmount = "";
@@ -555,16 +704,6 @@ export default {
           this.modelPrice = "";
           this.modelLost = "";
         }
-        // this.listItems.push({
-        //   name: this.modelGoldType,
-        //   shape: this.modelGoldShape,
-        //   shapeLine: this.modelGoldShapeLine,
-        //   weight: this.modelWeightAmount.split(",").join(""),
-        //   weightType: this.modelWeightType,
-        //   amount: this.modelAmount,
-        //   price: this.modelPrice.split(",").join(""),
-        //   lost: this.modelLost.split(",").join(""),
-        // });
       } catch (error) {
         console.log(error);
       }
@@ -578,7 +717,6 @@ export default {
         this.modelWeightType = "gram";
         this.modelGoldType = "ທອງຮູບປະພັນ";
         this.modelPurity = 99;
-        this.modelProductCode = "";
         this.modelGoldShape = "";
         this.modelGoldShapeLine = "";
         this.modelWeightAmount = "";
@@ -589,29 +727,6 @@ export default {
         console.log(error);
       }
     },
-    // removeListItem(item, i) {
-    //   let temp = this.listItems.filter((item, ind) => {
-    //     return i != ind;
-    //   });
-    //   this.listItems = temp;
-    // },
-    // increment(i) {
-    //   this.listItems.forEach((item, index) => {
-    //     if (index === i) {
-    //       item.amount += 1;
-    //     }
-    //   });
-    //   return this.listItems;
-    // },
-    // decreament(i) {
-    //   this.listItems = this.listItems.filter((item, index) => {
-    //     if (index === i) {
-    //       item.amount -= 1;
-    //     }
-    //     return item.amount > 0;
-    //   });
-    //   return this.listItems;
-    // },
     fotmatWeight() {
       this.modelWeightAmount = this.modelWeightAmount.split(",").join("");
       let val;
@@ -678,5 +793,11 @@ export default {
   .hide-on-mobile {
     display: none;
   }
+}
+.btn-pdf {
+  color: white;
+  border-style: solid;
+  border-color: #e20303;
+  background: #e20303 !important;
 }
 </style>
