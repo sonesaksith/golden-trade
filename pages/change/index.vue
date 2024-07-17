@@ -6,14 +6,12 @@
 <script>
 import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
 import Change from "../../components/Change";
-import Buy from "../../components/Buy";
-import Sell from "../Sell";
-import Customer from "../../components/Customer";
+import ChangeBill from "../../components/Change/Bill.vue";
+import ChangeBuyIntoChange from "../../components/Change/BuyIntoChange.vue";
+import ChangeSellOuttoChange from "../../components/Change/SellOuttoChange.vue";
+import CustomerTablecus from "../../components/Customer/Tablecus.vue";
 
 export default {
-  components: {
-    Change,
-  },
   data() {
     return {
       steps: [
@@ -21,7 +19,7 @@ export default {
           id: 1,
           title: "ຊື້ເຂົ້າ",
           content: {
-            component: Buy,
+            component: ChangeBuyIntoChange,
             props: {
               // Add your props here
               isExchange: true,
@@ -35,7 +33,7 @@ export default {
           id: 2,
           title: "ຂາຍອອກ",
           content: {
-            component: Sell,
+            component: ChangeSellOuttoChange,
             props: {
               // Add your props here
               isExchange: true,
@@ -49,9 +47,12 @@ export default {
           id: 3,
           title: "ລູກຄ້າ",
           content: {
-            component: Customer,
+            component: CustomerTablecus,
             props: {
               isExchange: true,
+              handlePressNext: () => {
+                this.$refs.exchangeStepper.nextStep();
+              },
             },
           },
         },
@@ -59,7 +60,7 @@ export default {
           id: 4,
           title: "ສະຫຼຸບບິນ",
           content: {
-            component: Change,
+            component: ChangeBill,
             props: {
               // Add your props here
               isExchange: true,
@@ -71,6 +72,7 @@ export default {
   },
   mounted() {
     this.setHeader("ເທີນຄຳ");
+    this.$store.commit("customer/SET_GOING_TO_BILL", "turn");
   },
   methods: {
     ...mapActions("main", ["setHeader"]),

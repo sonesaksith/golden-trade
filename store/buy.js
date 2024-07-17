@@ -30,8 +30,9 @@ export default {
   },
   actions: {
     async setData({ commit }, data) {
+      console.log(data);
       try {
-        commit('SET_NEW_ITEMS', data)
+        commit("SET_NEW_ITEMS", data);
       } catch (error) {
         console.log(error);
       }
