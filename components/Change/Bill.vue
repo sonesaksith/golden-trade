@@ -86,7 +86,7 @@
                 <v-icon
                   class="icon ma-0"
                   small
-                  @click="SET_DECREMENT(index)"
+                  @click="SET_DECREMENT_BUY_TO_CHANGE(index)"
                   style="color: #000; cursor: pointer; margin-right: 4px"
                 >
                   mdi-minus
@@ -97,16 +97,23 @@
                 <v-icon
                   class="icon ma-0"
                   small
-                  @click="SET_INCREMENT(index)"
+                  @click="SET_INCREMENT_BUY_TO_CHANGE(index)"
                   style="color: #000; cursor: pointer; margin-left: 4px"
                 >
                   mdi-plus
                 </v-icon>
               </div>
             </v-col>
+            <v-col cols="12"> <v-divider class="mt-10"></v-divider></v-col>
+            <v-col cols="12"
+              ><h4>
+                ເປັນເງິນ:
+                {{ $formatnumber(sumAmounts(listItemsBuyinToChange)) }}
+              </h4></v-col
+            >
           </v-row>
         </v-col>
-        <v-divider vertical style="min-height: 60vh"></v-divider>
+
         <v-col cols="6" class="pa-4">
           <h4 class="mb-4">
             <span style="color: brown">{{ "#" }}</span>
@@ -189,7 +196,7 @@
                 <v-icon
                   class="icon ma-0"
                   small
-                  @click="SET_DECREMENT(index)"
+                  @click="SET_DECREMENT_SELL_TO_CHANGE(index)"
                   style="color: #000; cursor: pointer; margin-right: 4px"
                 >
                   mdi-minus
@@ -200,15 +207,50 @@
                 <v-icon
                   class="icon ma-0"
                   small
-                  @click="SET_INCREMENT(index)"
+                  @click="SET_INCREMENT_SELL_TO_CHANGE(index)"
                   style="color: #000; cursor: pointer; margin-left: 4px"
                 >
                   mdi-plus
                 </v-icon>
               </div>
             </v-col>
+            <v-col cols="12"> <v-divider class="mt-10"></v-divider></v-col>
+            <v-col cols="12"
+              ><h4>
+                ເປັນເງິນ:
+                {{ $formatnumber(sumAmounts(listItemsSellOutToChange)) }}
+              </h4></v-col
+            >
           </v-row>
         </v-col>
+        <v-col cols="12"> <v-divider></v-divider></v-col>
+        <v-col cols="12" align="right">
+          <h3>ຊື້ : {{ $formatnumber(sumAmounts(listItemsBuyinToChange)) }}</h3>
+          <h3>
+            ຂາຍ : {{ $formatnumber(sumAmounts(listItemsSellOutToChange)) }}
+          </h3>
+          <h2>
+            ສະຫຼຸບບິນ ({{
+              checkPaymore(
+                sumAmounts(listItemsBuyinToChange),
+                sumAmounts(listItemsSellOutToChange)
+              )
+            }}) :
+            {{
+              $formatnumber(
+                Math.abs(
+                  sumAmounts(listItemsBuyinToChange) -
+                    sumAmounts(listItemsSellOutToChange)
+                )
+              )
+            }}
+          </h2>
+        </v-col>
+        <v-col cols="12" align="right"
+          ><v-btn dark height="50px" width="220px" color="goldColor"
+            >ເທີນຄຳ</v-btn
+          ></v-col
+        >
       </v-row>
     </v-card>
   </div>
@@ -221,6 +263,30 @@ export default {
       "listItemsBuyinToChange",
       "listItemsSellOutToChange",
     ]),
+  },
+  methods: {
+    ...mapMutations("change", [
+      "SET_ITEMS_BUY_TO_CHANGE",
+      "SET_DECREMENT_BUY_TO_CHANGE",
+      "SET_INCREMENT_BUY_TO_CHANGE",
+      "SET_ITEMS_SELL_TO_CHANGE",
+      "SET_DECREMENT_SELL_TO_CHANGE",
+      "SET_INCREMENT_SELL_TO_CHANGE",
+    ]),
+    sumAmounts(objects) {
+      return objects.reduce(
+        (acc, current) => acc + current.price * current.amount,
+        0
+      );
+    },
+    checkPaymore(buyAmount, sellAmount) {
+      console.log(buyAmount - sellAmount);
+      if (buyAmount - sellAmount > 0) {
+        return "ທອນ";
+      } else {
+        return "ຕື່ມ";
+      }
+    },
   },
 };
 </script>

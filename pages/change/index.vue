@@ -9,7 +9,7 @@ import Change from "../../components/Change";
 import ChangeBill from "../../components/Change/Bill.vue";
 import ChangeBuyIntoChange from "../../components/Change/BuyIntoChange.vue";
 import ChangeSellOuttoChange from "../../components/Change/SellOuttoChange.vue";
-import Customer from "../../components/Customer";
+import CustomerTablecus from "../../components/Customer/Tablecus.vue";
 
 export default {
   data() {
@@ -47,9 +47,12 @@ export default {
           id: 3,
           title: "ລູກຄ້າ",
           content: {
-            component: Customer,
+            component: CustomerTablecus,
             props: {
               isExchange: true,
+              handlePressNext: () => {
+                this.$refs.exchangeStepper.nextStep();
+              },
             },
           },
         },
@@ -69,6 +72,7 @@ export default {
   },
   mounted() {
     this.setHeader("ເທີນຄຳ");
+    this.$store.commit("customer/SET_GOING_TO_BILL", "turn");
   },
   methods: {
     ...mapActions("main", ["setHeader"]),

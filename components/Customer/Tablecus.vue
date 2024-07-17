@@ -153,8 +153,12 @@ export default {
         // route to bill sell
       } else {
         // route to bill turn
+        this.handlePressNext();
       }
     },
+  },
+  props: {
+    handlePressNext: { type: Function },
   },
 };
 </script>

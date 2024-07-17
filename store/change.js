@@ -36,8 +36,6 @@ export default {
       state.listItemsSellOutToChange.push(value);
     },
     SET_INCREMENT_SELL_TO_CHANGE(state, value) {
-      console.log("value", value);
-
       state.listItemsSellOutToChange.forEach((item, index) => {
         if (index === value) {
           item.amount += 1;
