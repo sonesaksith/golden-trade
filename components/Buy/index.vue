@@ -190,7 +190,7 @@
               &nbsp;ລາຍການຊື້ເຂົ້າ
             </h4>
             <v-spacer></v-spacer>
-            <div>
+            <!-- <div>
               <v-btn
                 v-if="!isExchange"
                 :loading="loadingPDF"
@@ -212,7 +212,7 @@
               >
                 <v-icon>mdi-printer</v-icon> &nbsp; ພິມ
               </v-btn>
-            </div>
+            </div> -->
           </v-card-title>
           <v-card-text
             class="px-4 py-0"
@@ -328,9 +328,9 @@
               :disabled="listItems?.length == 0"
               style="width: 100%; color: #fff; border-radius: 5px"
               color="goldColor"
-              @click="buy"
+              @click="Next"
             >
-              ຊື້ເຂົ້າ
+              ຕໍ່ໄປ
             </v-btn>
             <v-btn
               v-else
@@ -345,7 +345,8 @@
         </v-card>
       </v-col>
     </v-row>
-    <div style="display: none">
+
+    <!-- <div style="display: none">
       <PrintBuy
         v-if="listItems != '' && !loading"
         message="ໃບບີນ"
@@ -357,7 +358,7 @@
         :key="1"
         ref="myCompPrint"
       />
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -708,8 +709,9 @@ export default {
         console.log(error);
       }
     },
-    buy() {
+    Next() {
       console.log(this.listItems);
+      this.$router.push("/customer/");
     },
     clear() {
       try {

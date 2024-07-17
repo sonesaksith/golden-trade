@@ -4,10 +4,10 @@
       flat
       tile
       elevation="0"
-      style="position: fixed; top: 0; height: 57px; z-index: 99; width: 100%"
+      style="position: sticky; top: 0; height: 57px; z-index: 99; width: 100%"
     >
       <v-toolbar
-        color="#FFD169"
+        color="goldColor"
         dense
         align="center"
         height="57px"

@@ -596,6 +596,17 @@ export default {
       }
     },
   },
+
+  mounted() {
+    this.setHeader("ຂາຍອອກ");
+  },
+  watch: {
+    listItems: function (val) {
+      if (val.length == 1) {
+        this.rightDrawer = true;
+      }
+    },
+  },
   mounted() {
     this.setHeader("ຂາຍອອກ");
   },
@@ -609,6 +620,8 @@ export default {
   },
   methods: {
     ...mapActions("main", ["setHeader"]),
+    ...mapActions("sellStore", ["ClearAllData"]),
+
     ...mapActions("sellStore", ["ClearAllData", "addOrUpdateItem"]),
     ...mapMutations("sellStore", [
       "SET_ITEMS",
