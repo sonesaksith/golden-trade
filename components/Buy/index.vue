@@ -711,7 +711,7 @@ export default {
     },
     Next() {
       console.log(this.listItems);
-      this.$router.replace("/buy/bill");
+      this.$router.push("/customer/");
     },
     clear() {
       try {

@@ -4,6 +4,7 @@
 <script>
 export default {
   // middleware: ["checkAuth"],
+  layout: "empty",
   data() {
     return {};
   },

@@ -597,65 +597,66 @@ export default {
       }
     },
   },
-  watch: {},
+
+  mounted() {
+    this.setHeader("ຂາຍອອກ");
+  },
+  watch: {
+    listItems: function (val) {
+      if (val.length == 1) {
+        this.rightDrawer = true;
+      }
+    },
+  },
   mounted() {
     this.setHeader("ຂາຍອອກ");
   },
   methods: {
     ...mapActions("main", ["setHeader"]),
     ...mapActions("sellStore", ["ClearAllData"]),
-    watch: {
-      listItems: function (val) {
-        if (val.length == 1) {
-          this.rightDrawer = true;
-        }
-      },
+
+    ...mapActions("sellStore", ["ClearAllData", "addOrUpdateItem"]),
+    ...mapMutations("sellStore", [
+      "SET_ITEMS",
+      "SET_DECREMENT",
+      "SET_INCREMENT",
+    ]),
+    myChildFuncPrint() {
+      // this.loadingPrint = true
+      this.$refs.myGlobalTable.OnPrintBill();
+      // try {
+      //   this.$refs.myGlobalTable.OnPrintBill()
+      // } catch (error) {
+      //   this.$swal({
+      //     text: 'ບໍ່ມີຂໍ້ມູນ',
+      //     type: 'info',
+      //     timer: 5000,
+      //     timerProgressBar: true,
+      //     showConfirmButton: true,
+      //   })
+      // } finally {
+      //   // this.loadingPrint = false
+      // }
     },
-    mounted() {},
-    methods: {
-      ...mapActions("sellStore", ["ClearAllData", "addOrUpdateItem"]),
-      ...mapMutations("sellStore", [
-        "SET_ITEMS",
-        "SET_DECREMENT",
-        "SET_INCREMENT",
-      ]),
-      myChildFuncPrint() {
-        // this.loadingPrint = true
-        this.$refs.myGlobalTable.OnPrintBill();
-        // try {
-        //   this.$refs.myGlobalTable.OnPrintBill()
-        // } catch (error) {
-        //   this.$swal({
-        //     text: 'ບໍ່ມີຂໍ້ມູນ',
-        //     type: 'info',
-        //     timer: 5000,
-        //     timerProgressBar: true,
-        //     showConfirmButton: true,
-        //   })
-        // } finally {
-        //   // this.loadingPrint = false
-        // }
-      },
-      toggleRightDrawer() {
-        this.rightDrawer = !this.rightDrawer;
-      },
-      onPlusData(item) {
-        const newItem = {
-          id: item.id,
-          name: item.typGold,
-          shape: item.optionGole,
-          shapeLine: item.typeLine,
-          weight: item.wight,
-          weightType: item.typwight,
-          price: item.sellGold,
-          amount: this.modelAmount,
-        };
-        this.addOrUpdateItem(newItem);
-      },
-      ShowCart() {
-        // console.log("test");
-        this.cartStore = !this.cartStore;
-      },
+    toggleRightDrawer() {
+      this.rightDrawer = !this.rightDrawer;
+    },
+    onPlusData(item) {
+      const newItem = {
+        id: item.id,
+        name: item.typGold,
+        shape: item.optionGole,
+        shapeLine: item.typeLine,
+        weight: item.wight,
+        weightType: item.typwight,
+        price: item.sellGold,
+        amount: this.modelAmount,
+      };
+      this.addOrUpdateItem(newItem);
+    },
+    ShowCart() {
+      // console.log("test");
+      this.cartStore = !this.cartStore;
     },
   },
 };

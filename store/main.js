@@ -3,7 +3,7 @@ export default {
     currentYear: new Date().getFullYear(),
     appVersion: "Version 0.0.0",
     header: {
-      title: "Golden Trade",
+      title: "ຮ້ານຄຳຫວຽດສະຫວັນ",
     },
   }),
   mutations: {

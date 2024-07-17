@@ -61,7 +61,7 @@
     </v-navigation-drawer>
 
     <v-main>
-      <GlobalHeader />
+      <GlobalsHeader />
       <v-container fluid class="pa-0" style="margin-top: 57px">
         <Nuxt />
       </v-container>

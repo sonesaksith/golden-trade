@@ -1,17 +1,22 @@
 <template>
   <div>
-    <div class="d-flex" style="background-color: #DAA520; height: 57px">
+    <!-- <div class="d-flex" style="background-color: #daa520; height: 57px">
       <div
         style="display: flex; align-items: center; cursor: pointer"
-        @click="goBlack"
+        @click="goBack"
       >
         <v-icon large color="white darken-2"> mdi-chevron-left </v-icon>
-        <p style="font-weight: 600; text-align: center; color: white;" class="ma-0">ຍ້ອນກັບ</p>
+        <p
+          style="font-weight: 600; text-align: center; color: white"
+          class="ma-0"
+        >
+          ຍ້ອນກັບ
+        </p>
       </div>
       <v-spacer></v-spacer>
-    </div>
+    </div> -->
     <div class="d-flex">
-        <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
       <div>
         <v-btn
           style="font-size: 14px; margin-top: 10px"
@@ -93,7 +98,7 @@
                     border-bottom-left-radius: 3px;
                   "
                 >
-                  ປ່ຽນ
+                  ຊື້
                 </div>
                 <div
                   style="
@@ -222,12 +227,14 @@
             class="ma-0"
           >
             <div class="pb-0">
-              <h4><u>ຮ້ານຄຳ.........</u></h4>
+              <h4><u>ຮ້ານຄຳ ຫວຽດສະຫວັນ</u></h4>
               <p style="font-size: 14px" class="ma-0">No: {{ billNo }}</p>
               <p style="font-size: 14px" class="ma-0">
                 ວັນທີ: {{ currentDate }}
               </p>
-              <p style="font-size: 14px" class="ma-0">ພະນັກງານ: {{ userinfo.username }}</p>
+              <p style="font-size: 14px" class="ma-0">
+                ພະນັກງານ: {{ userinfo?.username }}
+              </p>
             </div>
             <div
               style="
@@ -252,7 +259,7 @@
                   border-bottom-left-radius: 3px;
                 "
               >
-                ປ່ຽນ
+                ຊື້
               </div>
               <div
                 style="
@@ -273,7 +280,8 @@
           </div>
           <div style="width: 100%">
             <p style="font-size: 14px" class="ma-0">
-              ລ/ຄ: ນ. ເພັດສະໝອນ/2095608229/Barcelona//A7XB9Z3
+              ລ/ຄ: {{ this.selectingCus?.name }}
+              {{ this.selectingCus?.surname }}/{{ this.selectingCus?.tel }}
             </p>
           </div>
           <div
@@ -281,10 +289,14 @@
             class="ma-0"
           >
             <div class="py-0">
-              <p style="font-size: 16px; font-weight: 600" class="ma-0">ລາຍການຊື້ເຂົ້າ</p>
+              <p style="font-size: 16px; font-weight: 600" class="ma-0">
+                ລາຍການຊື້ເຂົ້າ
+              </p>
             </div>
             <div class="text-right py-0">
-              <p style="font-size: 16px; font-weight: 600" class="ma-0">ເປັນເງິນ</p>
+              <p style="font-size: 16px; font-weight: 600" class="ma-0">
+                ເປັນເງິນ
+              </p>
             </div>
           </div>
           <!-- <div
@@ -458,14 +470,15 @@ export default {
       this.totalAmount += item.amount;
       this.totalLost += parseInt(item.lost);
     });
-    this.totalPayment = (this.totalPrice - this.totalLost)
+    this.totalPayment = this.totalPrice - this.totalLost;
     if (this.listItems.length == 0) {
-        this.$router.replace("/buy/");
+      this.$router.replace("/buy/");
     }
   },
   watch: {},
   computed: {
     ...mapGetters("buy", ["listItems"]),
+    ...mapState("customer", ["selectingCus"]),
   },
   methods: {
     async OnPrintBill() {
@@ -577,8 +590,8 @@ export default {
         console.log(error);
       }
     },
-    goBlack() {
-      this.$router.replace("/buy/");
+    goBack() {
+      this.$router.go(-1);
     },
   },
 };
