@@ -82,6 +82,14 @@
       <div style="display: flex; justify-content: flex-end">
         <span>BCEL One Pay (KIP)----</span>
       </div>
+      <div style="display: flex; justify-content: space-between">
+        <div>
+          <span>ຜູ້ກວດບິນ</span>
+        </div>
+        <div>
+          <span>({{ currentDateTime }})</span>
+        </div>
+      </div>
       <!-- detail -->
 
       <!-- table -->
