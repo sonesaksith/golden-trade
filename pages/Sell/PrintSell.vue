@@ -27,18 +27,62 @@
               <span>No:953095</span>
             </div>
             <div>
+              <span>ວັນທີ:08/07/2024</span>
+            </div>
+            <div>
+              <span>ພະນັກງານ: ປີນາ</span>
+            </div>
+            <div>
               <span>ລູກຄ້າ: ມະໄລທອງ/2099887865</span>
             </div>
           </div>
         </div>
         <div>
-          <span>9999999.99:31.200</span>
+          <span>9999999.99 : 31.200</span>
           <div>ຂາຍ</div>
         </div>
       </div>
-
+      <div>
+        <br />
+        <div style="display: flex; justify-content: space-between">
+          <div><u>ລາຍການຂາຍ</u></div>
+          <div><u>ເປັນເງິນ</u></div>
+        </div>
+        <div style="display: flex; justify-content: space-between">
+          <div style="margin-right: 2px"><h5>[ຂາຍ]</h5></div>
+          <div style="width: 100%; align-self: center">
+            <hr />
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between">
+        <div>
+          <span
+            >1- ລາຍແຂນກີ້ຍອດລວມ 1 B <br />
+            &nbsp; &nbsp; &nbsp; 1 x 99RAB
+          </span>
+        </div>
+        <div><span>31,800</span></div>
+      </div>
+      <div>
+        <span>ລາຍລະອຽດການຊຳລະ </span>
+      </div>
+      <div style="display: flex; justify-content: space-between">
+        <div style="margin-right: 2px"><h5>[ໂອນ]</h5></div>
+        <div style="width: 100%; align-self: center">
+          <hr />
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between">
+        <div>
+          <span>1,500 x 512.00 </span>
+        </div>
+        <div><span>768,000 LAK</span></div>
+      </div>
+      <div style="display: flex; justify-content: flex-end">
+        <span>BCEL One Pay (KIP)----</span>
+      </div>
       <!-- detail -->
-      <br />
 
       <!-- table -->
     </div>
