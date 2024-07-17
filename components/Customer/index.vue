@@ -16,7 +16,6 @@
               hide-details="auto"
               class="rounded-lg"
               label="ຄົ້ນຫາ"
-              v-model="searchGoldTypes"
             >
               <template #append>
                 <v-btn small icon class="goldColor" color="white">
