@@ -1,30 +1,32 @@
 <template>
   <div>
-    <v-container>
-      <v-row>
-        <!-- <v-col cols="12" sm="12" md="12" lg="12" xl="12">
-          <h4>
-            <span style="color: brown">{{ "#" }}</span>
-            ລູກຄ້າ
-          </h4>
-        </v-col> -->
-        <v-col cols="10" sm="3" xs="12">
-          <v-text-field
-            outlined
-            dense
-            hide-details="auto"
-            class="rounded-lg"
-            label="ຄົ້ນຫາ"
-            v-model="searchGoldTypes"
-          >
-            <template #append>
-              <v-btn small icon class="goldColor" color="white">
-                <v-icon small>mdi-magnify</v-icon>
-              </v-btn>
-            </template>
-          </v-text-field>
-        </v-col></v-row
-      >
+    <v-container class="pa-2">
+      <v-card class="pa-4">
+        <v-row>
+          <!-- <v-col cols="12" sm="12" md="12" lg="12" xl="12">
+            <h4>
+              <span style="color: brown">{{ "#" }}</span>
+              ລູກຄ້າ
+            </h4>
+          </v-col> -->
+          <v-col cols="10" sm="3" xs="12">
+            <v-text-field
+              outlined
+              dense
+              hide-details="auto"
+              class="rounded-lg"
+              label="ຄົ້ນຫາ"
+              v-model="searchGoldTypes"
+            >
+              <template #append>
+                <v-btn small icon class="goldColor" color="white">
+                  <v-icon small>mdi-magnify</v-icon>
+                </v-btn>
+              </template>
+            </v-text-field>
+          </v-col></v-row
+        >
+      </v-card>
     </v-container>
   </div>
 </template>
