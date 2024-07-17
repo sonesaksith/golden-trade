@@ -16,6 +16,7 @@
     "core-js": "^3.37.1",
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
+    "html2pdf.js": "^0.10.2",
     "moment": "^2.30.1",
     "nuxt": "^2.15.8",
     "nuxt-sweetalert2": "^1.0.0",
