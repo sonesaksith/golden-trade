@@ -121,6 +121,10 @@ export default {
     ADD_CUSTOMER(state, data) {
       state.listCustomer.push(data);
     },
+
+    SET_GOING_TO_BILL(state, data) {
+      state.goingToBill = data;
+    },
     SET_SELECTING_CUSTOMER(state, data) {
       state.selectingCus = data;
     },
