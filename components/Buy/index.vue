@@ -192,6 +192,7 @@
             <v-spacer></v-spacer>
             <!-- <div>
               <v-btn
+                v-if="!isExchange"
                 :loading="loadingPDF"
                 style="font-size: 14px; margin-top: 10px"
                 class="rounded-lg ml-1 mr-1 btn-pdf"
@@ -202,6 +203,7 @@
             </div>
             <div>
               <v-btn
+                v-if="!isExchange"
                 :loading="loadingPrint"
                 outlined
                 style="font-size: 14px; margin-top: 10px"
@@ -322,10 +324,20 @@
           </v-card-text>
           <v-card-actions style="height: 60px">
             <v-btn
+              v-if="!isExchange"
               :disabled="listItems?.length == 0"
               style="width: 100%; color: #fff; border-radius: 5px"
               color="goldColor"
               @click="Next"
+            >
+              ຕໍ່ໄປ
+            </v-btn>
+            <v-btn
+              v-else
+              :disabled="listItems?.length == 0"
+              style="width: 100%; color: #fff; border-radius: 5px"
+              color="goldColor"
+              @click="handlePressNext()"
             >
               ຕໍ່ໄປ
             </v-btn>
@@ -521,6 +533,10 @@ export default {
       listFooter: [],
       loading: false,
     };
+  },
+  props: {
+    isExchange: { type: Boolean, default: false },
+    handlePressNext: { type: Function },
   },
   mounted() {},
   watch: {

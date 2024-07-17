@@ -287,10 +287,20 @@
                     ລົບທັງໝົດ
                   </v-btn>
                   <v-btn
+                    v-if="!isExchange"
                     :disabled="listItems?.length == 0"
                     style="width: 48%; color: #fff; border-radius: 5px"
                     color="goldColor"
                     @click="myChildFuncPrint()"
+                  >
+                    ຕໍ່ໄປ
+                  </v-btn>
+                  <v-btn
+                    v-else
+                    :disabled="listItems?.length == 0"
+                    style="width: 48%; color: #fff; border-radius: 5px"
+                    color="goldColor"
+                    @click="handlePressNext()"
                   >
                     ຕໍ່ໄປ
                   </v-btn>
@@ -325,6 +335,10 @@ import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
 export default {
   // layout: "sell",
   components: { Treeselect, SellPrintSell },
+  props: {
+    isExchange: { type: Boolean, default: false },
+    handlePressNext: { type: Function },
+  },
   data() {
     return {
       rightDrawer: false,
@@ -583,57 +597,65 @@ export default {
       }
     },
   },
-  watch: {
-    listItems: function (val) {
-      if (val.length == 1) {
-        this.rightDrawer = true;
-      }
-    },
+  watch: {},
+  mounted() {
+    this.setHeader("ຂາຍອອກ");
   },
-  mounted() {},
   methods: {
-    ...mapActions("sellStore", ["ClearAllData", "addOrUpdateItem"]),
-    ...mapMutations("sellStore", [
-      "SET_ITEMS",
-      "SET_DECREMENT",
-      "SET_INCREMENT",
-    ]),
-    myChildFuncPrint() {
-      // this.loadingPrint = true
-      this.$refs.myGlobalTable.OnPrintBill();
-      // try {
-      //   this.$refs.myGlobalTable.OnPrintBill()
-      // } catch (error) {
-      //   this.$swal({
-      //     text: 'ບໍ່ມີຂໍ້ມູນ',
-      //     type: 'info',
-      //     timer: 5000,
-      //     timerProgressBar: true,
-      //     showConfirmButton: true,
-      //   })
-      // } finally {
-      //   // this.loadingPrint = false
-      // }
+    ...mapActions("main", ["setHeader"]),
+    ...mapActions("sellStore", ["ClearAllData"]),
+    watch: {
+      listItems: function (val) {
+        if (val.length == 1) {
+          this.rightDrawer = true;
+        }
+      },
     },
-    toggleRightDrawer() {
-      this.rightDrawer = !this.rightDrawer;
-    },
-    onPlusData(item) {
-      const newItem = {
-        id: item.id,
-        name: item.typGold,
-        shape: item.optionGole,
-        shapeLine: item.typeLine,
-        weight: item.wight,
-        weightType: item.typwight,
-        price: item.sellGold,
-        amount: this.modelAmount,
-      };
-      this.addOrUpdateItem(newItem);
-    },
-    ShowCart() {
-      // console.log("test");
-      this.cartStore = !this.cartStore;
+    mounted() {},
+    methods: {
+      ...mapActions("sellStore", ["ClearAllData", "addOrUpdateItem"]),
+      ...mapMutations("sellStore", [
+        "SET_ITEMS",
+        "SET_DECREMENT",
+        "SET_INCREMENT",
+      ]),
+      myChildFuncPrint() {
+        // this.loadingPrint = true
+        this.$refs.myGlobalTable.OnPrintBill();
+        // try {
+        //   this.$refs.myGlobalTable.OnPrintBill()
+        // } catch (error) {
+        //   this.$swal({
+        //     text: 'ບໍ່ມີຂໍ້ມູນ',
+        //     type: 'info',
+        //     timer: 5000,
+        //     timerProgressBar: true,
+        //     showConfirmButton: true,
+        //   })
+        // } finally {
+        //   // this.loadingPrint = false
+        // }
+      },
+      toggleRightDrawer() {
+        this.rightDrawer = !this.rightDrawer;
+      },
+      onPlusData(item) {
+        const newItem = {
+          id: item.id,
+          name: item.typGold,
+          shape: item.optionGole,
+          shapeLine: item.typeLine,
+          weight: item.wight,
+          weightType: item.typwight,
+          price: item.sellGold,
+          amount: this.modelAmount,
+        };
+        this.addOrUpdateItem(newItem);
+      },
+      ShowCart() {
+        // console.log("test");
+        this.cartStore = !this.cartStore;
+      },
     },
   },
 };

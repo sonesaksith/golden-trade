@@ -61,7 +61,8 @@
     </v-navigation-drawer>
 
     <v-main>
-      <v-container fluid class="pa-0">
+      <GlobalHeader />
+      <v-container fluid class="pa-0" style="margin-top: 57px">
         <Nuxt />
       </v-container>
     </v-main>
@@ -83,6 +84,12 @@ export default {
           icon: "mdi-cash-sync",
           path: "/buy",
           color: "success",
+        },
+        {
+          title: "ເທີນ",
+          icon: "mdi-swap-horizontal",
+          path: "/change",
+          color: "primary",
         },
       ],
       mini: true,
