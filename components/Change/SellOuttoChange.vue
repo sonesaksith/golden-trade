@@ -334,7 +334,7 @@
 </template>
 <script>
 import Treeselect from "@riophae/vue-treeselect";
-import SellPrintSell from "../../pages/Sell/PrintSell.vue";
+import SellPrintSell from "../../components/Sell/PrintSell.vue";
 import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
 export default {
   // layout: "sell",

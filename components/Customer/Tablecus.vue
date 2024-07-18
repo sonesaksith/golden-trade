@@ -151,6 +151,7 @@ export default {
         this.$router.push("/buy/bill");
       } else if (this.goingToBill == "sell") {
         // route to bill sell
+        this.$router.push("/sell/bill");
       } else {
         // route to bill turn
         this.handlePressNext();

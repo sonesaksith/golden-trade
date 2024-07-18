@@ -252,7 +252,7 @@
                         <v-icon
                           class="icon ma-0"
                           small
-                          @click="SET_DECREMENT(index)"
+                          @click="SET_DECREMENT(index), SET_AMOUNT_ALL(item)"
                           style="
                             color: #000;
                             cursor: pointer;
@@ -267,7 +267,7 @@
                         <v-icon
                           class="icon ma-0"
                           small
-                          @click="SET_INCREMENT(index)"
+                          @click="SET_INCREMENT(index), SET_AMOUNT_ALL(item)"
                           style="color: #000; cursor: pointer; margin-left: 4px"
                         >
                           mdi-plus
@@ -276,6 +276,24 @@
                     </v-col>
                   </v-row>
                 </v-card-text>
+                <!-- <div>
+                  <v-text-field
+                    value="John Doe"
+                    label="Outlined"
+                    outlined
+                    readonly
+                    dense
+                  ></v-text-field>
+                </div>
+                <div>
+                  <v-text-field
+                    value="John Doe"
+                    label="Outlined"
+                    outlined
+                    readonly
+                    dense
+                  ></v-text-field>
+                </div> -->
                 <v-card-actions style="height: 10vh">
                   <v-btn
                     :disabled="listItems?.length == 0"
@@ -290,7 +308,7 @@
                     :disabled="listItems?.length == 0"
                     style="width: 48%; color: #fff; border-radius: 5px"
                     color="goldColor"
-                    @click="myChildFuncPrint()"
+                    @click="Next()"
                   >
                     ຕໍ່ໄປ
                   </v-btn>
@@ -322,14 +340,14 @@
       </v-navigation-drawer>
       <!-- :style="(isReportSell = true ? 'display:none' : 'display:none')" -->
     </v-row>
-    <div :style="(isReportSell = true ? 'display:none' : 'display:none')">
+    <!-- <div :style="(isReportSell = true ? 'display:none' : 'display:none')">
       <SellPrintSell ref="myGlobalTable" />
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
 import Treeselect from "@riophae/vue-treeselect";
-import SellPrintSell from "../Sell/PrintSell.vue";
+import SellPrintSell from "../../components/Sell/PrintSell.vue";
 import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
 export default {
   // layout: "sell",
@@ -596,19 +614,9 @@ export default {
       }
     },
   },
-
   mounted() {
     this.setHeader("ຂາຍອອກ");
-  },
-  watch: {
-    listItems: function (val) {
-      if (val.length == 1) {
-        this.rightDrawer = true;
-      }
-    },
-  },
-  mounted() {
-    this.setHeader("ຂາຍອອກ");
+    this.$store.commit("customer/SET_GOING_TO_BILL", "sell");
   },
 
   watch: {
@@ -627,7 +635,12 @@ export default {
       "SET_ITEMS",
       "SET_DECREMENT",
       "SET_INCREMENT",
+      "SET_AMOUNT_ALL",
     ]),
+    Next() {
+      console.log(this.listItems);
+      this.$router.push("/customer/");
+    },
     myChildFuncPrint() {
       // this.loadingPrint = true
       this.$refs.myGlobalTable.OnPrintBill();
