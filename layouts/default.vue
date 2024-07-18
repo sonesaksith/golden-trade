@@ -6,6 +6,7 @@
       permanent
       fixed
       app
+      width="180"
     >
       <v-list-item class="px-2">
         <v-list-item-avatar>
@@ -29,37 +30,39 @@
       <v-divider></v-divider>
 
       <v-list nav dense>
-        <v-list-item
-          v-for="(item, index) in items"
-          :key="item.title"
-          link
-          @click="myRouting(item.path)"
-        >
-          <v-list-item-icon>
-            <v-icon :color="item.color">{{ item.icon }}</v-icon>
-          </v-list-item-icon>
+        <v-list-item-group>
+          <v-list-item
+            v-for="(item, index) in items"
+            :key="item.title"
+            link
+            @click="myRouting(item.path)"
+          >
+            <v-list-item-icon>
+              <v-icon :color="item.color">{{ item.icon }}</v-icon>
+            </v-list-item-icon>
 
-          <v-list-item-content>
-            <v-list-item-title
-              ><h4 class="my-1">{{ item.title }}</h4></v-list-item-title
-            >
-          </v-list-item-content>
-        </v-list-item>
+            <v-list-item-content>
+              <v-list-item-title
+                ><h4 class="my-1">{{ item.title }}</h4></v-list-item-title
+              >
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item link @click="logout">
+            <v-list-item-icon>
+              <v-icon color="error">mdi-login-variant</v-icon>
+            </v-list-item-icon>
 
-        <v-list-item link @click="logout">
-          <v-list-item-icon>
-            <v-icon>mdi-logout</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title><h4>ອອກ​ຈາກ​ລະ​ບົບ</h4></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+            <v-list-item-content>
+              <v-list-item-title><h4>ອອກ​ຈາກ​ລະ​ບົບ</h4></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
 
     <v-main>
-      <v-container fluid class="pa-0">
+      <GlobalsHeader />
+      <v-container fluid class="pa-0" style="margin-top: 57px">
         <Nuxt />
       </v-container>
     </v-main>
@@ -76,7 +79,18 @@ export default {
       drawer: true,
       items: [
         { title: "ຂາຍ", icon: "mdi-gold", path: "/sell", color: "goldColor" },
-        { title: "ຊື້ເຂົ້າ", icon: "mdi-cash-sync", path: "/buy", color: "success" },
+        {
+          title: "ຊື້ເຂົ້າ",
+          icon: "mdi-cash-sync",
+          path: "/buy",
+          color: "success",
+        },
+        {
+          title: "ເທີນ",
+          icon: "mdi-swap-horizontal",
+          path: "/change",
+          color: "primary",
+        },
       ],
       mini: true,
     };
@@ -99,11 +113,11 @@ export default {
 };
 </script>
 <style scoped>
-.v-list .v-list-item--active .v-icon {
-  color: #17a589 !important;
+/* .v-list .v-list-item--active .v-icon {
+  color: #DAA520 !important;
 }
 .v-list .v-list-item--active {
-  color: #17a589 !important;
+  color: #DAA520 !important;
   font-weight: bold;
-}
+} */
 </style>

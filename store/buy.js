@@ -7,6 +7,9 @@ export default {
     SET_ITEMS(state, value) {
       state.listItems.push(value);
     },
+    SET_NEW_ITEMS(state, value) {
+      state.listItems = value;
+    },
     SET_INCREMENT(state, value) {
       state.listItems.forEach((item, index) => {
         if (index === value) {
@@ -25,7 +28,16 @@ export default {
       return state.listItems;
     },
   },
-  actions: {},
+  actions: {
+    async setData({ commit }, data) {
+      console.log(data);
+      try {
+        commit("SET_NEW_ITEMS", data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
   getters: {
     listItems: (state) => state.listItems,
   },

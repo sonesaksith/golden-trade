@@ -4,8 +4,8 @@
       <v-col
         cols="12"
         sm="12"
-        :md="listItems.length > 0 ? '6' : '12'"
-        :lg="listItems.length > 0 ? '7' : '12'"
+        :md="listItemsBuyinToChange.length > 0 ? '6' : '12'"
+        :lg="listItemsBuyinToChange.length > 0 ? '7' : '12'"
       >
         <v-card style="height: 700px" class="rounded-xl" elevation="4">
           <v-card-title style="height: 60px">
@@ -182,7 +182,13 @@
           </v-card-actions>
         </v-card>
       </v-col>
-      <v-col cols="12" sm="12" md="6" lg="5" v-if="listItems.length > 0">
+      <v-col
+        cols="12"
+        sm="12"
+        md="6"
+        lg="5"
+        v-if="listItemsBuyinToChange.length > 0"
+      >
         <v-card style="height: 700px" class="rounded-xl" elevation="4">
           <v-card-title style="height: 60px">
             <h4>
@@ -190,7 +196,7 @@
               &nbsp;ລາຍການຊື້ເຂົ້າ
             </h4>
             <v-spacer></v-spacer>
-            <!-- <div>
+            <div>
               <v-btn
                 v-if="!isExchange"
                 :loading="loadingPDF"
@@ -212,13 +218,13 @@
               >
                 <v-icon>mdi-printer</v-icon> &nbsp; ພິມ
               </v-btn>
-            </div> -->
+            </div>
           </v-card-title>
           <v-card-text
             class="px-4 py-0"
             style="height: 580px; overflow-y: auto"
           >
-            <div v-if="listItems?.length == 0">
+            <div v-if="listItemsBuyinToChange?.length == 0">
               <WidgetNoData
                 message="ບໍ່​ມີ​ລາຍການຊື້ເຂົ້າ"
                 width="150"
@@ -228,7 +234,7 @@
             <v-row
               v-else
               class="px-2 py-2"
-              v-for="(item, index) in listItems"
+              v-for="(item, index) in listItemsBuyinToChange"
               :key="index"
             >
               <v-col
@@ -302,7 +308,7 @@
                   <v-icon
                     class="icon ma-0"
                     small
-                    @click="SET_DECREMENT(index)"
+                    @click="SET_DECREMENT_BUY_TO_CHANGE(index)"
                     style="color: #000; cursor: pointer; margin-right: 4px"
                   >
                     mdi-minus
@@ -313,7 +319,7 @@
                   <v-icon
                     class="icon ma-0"
                     small
-                    @click="SET_INCREMENT(index)"
+                    @click="SET_INCREMENT_BUY_TO_CHANGE(index)"
                     style="color: #000; cursor: pointer; margin-left: 4px"
                   >
                     mdi-plus
@@ -325,16 +331,16 @@
           <v-card-actions style="height: 60px">
             <v-btn
               v-if="!isExchange"
-              :disabled="listItems?.length == 0"
+              :disabled="listItemsBuyinToChange?.length == 0"
               style="width: 100%; color: #fff; border-radius: 5px"
               color="goldColor"
-              @click="Next"
+              @click="buy"
             >
-              ຕໍ່ໄປ
+              ຊື້ເຂົ້າ
             </v-btn>
             <v-btn
               v-else
-              :disabled="listItems?.length == 0"
+              :disabled="listItemsBuyinToChange?.length == 0"
               style="width: 100%; color: #fff; border-radius: 5px"
               color="goldColor"
               @click="handlePressNext()"
@@ -345,20 +351,19 @@
         </v-card>
       </v-col>
     </v-row>
-
-    <!-- <div style="display: none">
+    <div style="display: none">
       <PrintBuy
-        v-if="listItems != '' && !loading"
+        v-if="listItemsBuyinToChange != '' && !loading"
         message="ໃບບີນ"
         :setHeader="headerPDF"
-        :list="listItems"
+        :list="listItemsBuyinToChange"
         :setFooter="listFooter"
         :mergeTable="mergeTable"
         setSty="portrait"
         :key="1"
         ref="myCompPrint"
       />
-    </div> -->
+    </div>
   </div>
 </template>
 <script>
@@ -617,11 +622,15 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("buy", ["listItems"]),
+    ...mapGetters("change", ["listItemsBuyinToChange"]),
   },
   methods: {
-    ...mapMutations("buy", ["SET_ITEMS", "SET_DECREMENT", "SET_INCREMENT"]),
-    ...mapActions("buy", ["setData"]),
+    ...mapMutations("change", [
+      "SET_ITEMS_BUY_TO_CHANGE",
+      "SET_DECREMENT_BUY_TO_CHANGE",
+      "SET_INCREMENT_BUY_TO_CHANGE",
+    ]),
+    ...mapActions("change", ["setDataBuytoChange"]),
     async print() {
       await this.callPDF();
       try {
@@ -644,7 +653,7 @@ export default {
       await this.callPDF();
       try {
         this.loadingPDF = true;
-        if (this.listItems != "") {
+        if (this.listItemsBuyinToChange != "") {
           this.$refs.myCompPrint.downloadPDF();
         } else {
           this.$swal({
@@ -664,10 +673,10 @@ export default {
     async callPDF() {
       this.loading = true;
       try {
-        const res = await this.setData(this.listItems);
+        const res = await this.setDataBuytoChange(this.listItemsBuyinToChange);
         let totalPrice = 0;
         let totalAmount = 0;
-        this.listItems.forEach((item) => {
+        this.listItemsBuyinToChange.forEach((item) => {
           totalPrice += parseInt(item.price, 10);
           totalAmount += item.amount;
         });
@@ -683,7 +692,7 @@ export default {
     addListItems() {
       try {
         if (this.$refs.form.validate()) {
-          this.SET_ITEMS({
+          this.SET_ITEMS_BUY_TO_CHANGE({
             purity: this.modelPurity,
             name: this.modelGoldType,
             shape: this.modelGoldShape,
@@ -709,9 +718,8 @@ export default {
         console.log(error);
       }
     },
-    Next() {
-      console.log(this.listItems);
-      this.$router.push("/customer/");
+    buy() {
+      console.log(this.listItemsBuyinToChange);
     },
     clear() {
       try {
