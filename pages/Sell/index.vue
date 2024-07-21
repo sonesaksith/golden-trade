@@ -65,7 +65,7 @@
           <v-data-table
             height="75vh"
             :headers="headers"
-            :items="filterTable"
+            :items="listGold"
             item-key="name"
             disable-sort
           >
@@ -581,7 +581,7 @@ export default {
   },
   computed: {
     ...mapGetters("sellStore", ["listItems"]),
-
+    ...mapState("gold", ["listGold"]),
     filterTable() {
       if (
         this.modelGold ||
