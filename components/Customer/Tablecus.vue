@@ -67,6 +67,11 @@
             <template #item.name="{ index, item }">
               <div>{{ item.name }} {{ item.surname }}</div>
             </template>
+            <template #item.no="{ index, item }">
+              <div>
+                {{ index + 1 }}
+              </div>
+            </template>
             <template #item.action="{ index, item }">
               <v-container align="center">
                 <v-icon @click="onSelectCustomer(item)" color="success">

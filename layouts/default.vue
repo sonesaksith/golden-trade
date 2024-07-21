@@ -78,7 +78,12 @@ export default {
     return {
       drawer: true,
       items: [
-        { title: "ຂາຍ", icon: "mdi-gold", path: "/sell", color: "goldColor" },
+        {
+          title: "ຂາຍ",
+          icon: "mdi-cash-multiple",
+          path: "/sell",
+          color: "goldColor",
+        },
         {
           title: "ຊື້ເຂົ້າ",
           icon: "mdi-cash-sync",
@@ -90,6 +95,18 @@ export default {
           icon: "mdi-swap-horizontal",
           path: "/change",
           color: "primary",
+        },
+        {
+          title: "ລູກຄ້າ",
+          icon: "mdi-account-group-outline",
+          path: "/customer/list",
+          color: "black",
+        },
+        {
+          title: "ທອງ",
+          icon: "mdi-gold",
+          path: "/gold",
+          color: "goldColor",
         },
       ],
       mini: true,

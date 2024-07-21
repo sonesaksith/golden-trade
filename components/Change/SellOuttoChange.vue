@@ -452,7 +452,7 @@ export default {
       headers: [
         { text: "ລະຫັດ", value: "id" },
         { text: "ປະເພດຄຳ", value: "typGold" },
-        { text: "ປະເພດຮູບປະຄຳ", value: "optionGole" },
+        { text: "ປະເພດຮູບປະພັນ", value: "optionGole" },
         { text: "ລາຍ", value: "typeLine" },
         { text: "ນ້ຳໜັກ", value: "wight" },
         { text: "ປະເພດນ້ຳໜັກ", value: "typwight" },
@@ -489,7 +489,7 @@ export default {
           optionGole: "ສາຍຄໍ",
           typeLine: "ລາຍງູ",
           wight: 2,
-          typwight: "ຫຸນ",
+          typwight: "ຫູນ",
           sellGold: 1500000,
         },
         {

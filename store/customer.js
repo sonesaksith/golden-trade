@@ -121,6 +121,20 @@ export default {
     ADD_CUSTOMER(state, data) {
       state.listCustomer.push(data);
     },
+    UPDATE_CUSTOMER_BY_NO(state, data) {
+      for (let index = 0; index < state.listCustomer.length; index++) {
+        const element = state.listCustomer[index];
+        if (element.no == data.no) {
+          state.listCustomer[index].name = data.name;
+          state.listCustomer[index].surname = data.surname;
+          state.listCustomer[index].tel = data.tel;
+          state.listCustomer[index].address = data.address;
+        }
+      }
+    },
+    DELETE_CUSTOMER_BY_NO(state, cusNo) {
+      state.listCustomer = state.listCustomer.filter((x) => x.no != cusNo);
+    },
 
     SET_GOING_TO_BILL(state, data) {
       state.goingToBill = data;
