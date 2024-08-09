@@ -84,6 +84,12 @@ export default {
           path: "/buy",
           color: "success",
         },
+        {
+          title: "ປະຫວັດການຊື້ເຂົ້າ",
+          icon: "mdi-cash-clock",
+          path: "/historybuy",
+          color: "info",
+        },
       ],
       mini: true,
     };
