@@ -35,13 +35,20 @@
               </v-data-table>
             </v-card-text>
             <v-card-actions>
-              <v-spacer></v-spacer>
+              <v-btn
+                outlined
+                class="rounded-lg"
+                style="width: 50%"
+                @click="print()"
+              >
+                <v-icon>mdi-printer</v-icon> ພິມໃບບິນໃໝ່
+              </v-btn>
               <v-btn
                 style="
                   color: #fff;
                   border-radius: 10px;
                   background-color: #e53935;
-                  width: 100%;
+                  width: 50%;
                 "
                 text
                 @click="dialog = false"
@@ -53,6 +60,19 @@
         </v-dialog>
       </v-row>
     </v-form>
+    <div v-if="items" style="display: none">
+      <BuyBill
+        :key="1"
+        :myCus="items?.cus"
+        :billNo="items?.billNo"
+        :currentDateTime="items?.date"
+        :currentDate="items?.date?.substring(0, 10)"
+        :totalPrice="totalPrice"
+        :totalLost="totalLost"
+        :totalPayment="totalPayment"
+        ref="myCompBill"
+        />
+    </div>
   </div>
 </template>
 
@@ -63,6 +83,9 @@ export default {
     return {
       dialog: false,
       items: [],
+      totalPrice: 0,
+      totalLost: 0,
+      totalPayment: 0,
       headers: [
         {
           text: "ລຳດັບ",
@@ -91,10 +114,26 @@ export default {
     };
   },
   mounted() {
-    // console.log(this.items);
+    console.log(this.items);
   },
   computed: {},
-  methods: {},
+  methods: {
+    async print() {
+      try {
+        console.log(this.items);
+        this.$refs.myCompBill.OnPrintBill();
+      } catch (error) {
+        console.log(error);
+        this.$swal({
+          text: "ບໍ່ມີຂໍ້ມູນ",
+          type: "info",
+          timer: 5000,
+          timerProgressBar: true,
+          showConfirmButton: true,
+        });
+      } 
+    },
+  },
 };
 </script>
 

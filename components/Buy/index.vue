@@ -181,16 +181,15 @@
         </v-card>
       </v-col>
       <v-col cols="12" sm="12" md="7" lg="7">
-        <v-card style="height: 395px" class="rounded-lg mb-2" elevation="4">
+        <v-card style="height: 230px" class="rounded-lg mb-2" elevation="4">
           <v-card-text>
             <v-row>
-              <v-col cols="8">
+              <v-col cols="8" v-if="!selectedCustomer" class="pb-0">
                 <v-text-field
                   v-model="search"
                   outlined
                   dense
                   hide-details="auto"
-                  class="rounded-lg"
                   label="ຄົ້ນຫາ"
                 >
                   <template #append>
@@ -200,7 +199,7 @@
                   </template>
                 </v-text-field>
               </v-col>
-              <v-col cols="4">
+              <v-col cols="4" v-if="!selectedCustomer" class="pb-0">
                 <v-btn
                   style="width: 100%; color: #fff; border-radius: 5px"
                   color="success"
@@ -209,23 +208,32 @@
                   ເພີ່ມລູກຄ້າ
                 </v-btn>
               </v-col>
-              <v-col cols="12" v-if="!selectedCustomer">
+              <v-col cols="12" v-if="!selectedCustomer" class="py-0">
                 <v-data-table
                   :headers="headers"
                   :items="listCustomer || []"
-                  class="elevation-1 rounded-lg"
-                  :page.sync="page"
-                  :items-per-page="limit"
+                  class="elevation-1"
+                  :items-per-page="listCustomer.length"
                   fixed-header
                   hide-default-footer
-                  height="250"
+                  hide-default-header
+                  height="150"
                   loading-text="ກຳລັງໂຫລດຂໍ້ມູນ..."
                   no-data-text="ບໍ່ມີຂໍ້ມູນ"
                   :search="search"
-                  @page-count="length = $event"
                 >
+                  <template v-slot:header="{ props }" style="background-color: white">
+                    <th
+                      v-for="head in props.headers"
+                      class="pa-1 rounded-t-lg"
+                      style="position: sticky; top: 0; background-color: white; z-index: 1"
+                    >
+                      {{ head.text.toUpperCase() }}
+                    </th>
+                  </template>
+
                   <template #[`item.no`]="{ index }">
-                    <span>{{ index + 1 + gotoPage }} </span>
+                    <span>{{ index + 1 }} </span>
                   </template>
                   <template #item.name="{ index, item }">
                     <div>{{ item.name }} {{ item.surname }}</div>
@@ -244,55 +252,56 @@
                     </v-container>
                   </template>
                 </v-data-table>
-                <v-pagination
-                  v-model="page"
-                  :length="length"
-                  :total-visible="limit"
-                  @input="NextPage"
-                  circle
-                  color="goldColor"
-                ></v-pagination>
               </v-col>
               <v-col cols="12" v-else>
-                <v-card
-                  style="
-                    height: auto;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                  "
-                >
-                  <v-card-text
+                <v-row style="height: auto">
+                  <v-col cols="12">
+                    <p style="font-size: 18px; font-weight: 600; color: #000;text-align: center;">
+                      ຂໍ້ມູນລູກຄ້າ
+                    </p>
+                    <p style="font-size: 16px; font-weight: 600; color: #000">
+                      ຊື່ ແລະ ນາມສະກຸນ: {{ myCustomer.name }}
+                      {{ myCustomer.surname }}
+                    </p>
+                    <p style="font-size: 16px; font-weight: 600; color: #000">
+                      ເບີໂທ: {{ myCustomer.tel }}
+                    </p>
+                    <p style="font-size: 16px; font-weight: 600; color: #000">
+                      ທີ່ຢູ່: {{ myCustomer.address }}
+                    </p>
+                  </v-col>
+                  <!-- <v-col
+                    cols="12"
                     style="
                       display: flex;
                       align-items: center;
-                      justify-content: space-between;
+                      justify-content: center;
                     "
                   >
-                    <div>
-                      <p style="font-size: 16px; font-weight: 600; color: #000">
-                        ຊື່ ແລະ ນາມສະກຸນ: {{ myCustomer.name }}
-                        {{ myCustomer.surname }}
-                      </p>
-                      <p style="font-size: 16px; font-weight: 600; color: #000">
-                        ເບີໂທ: {{ myCustomer.tel }}
-                      </p>
-                      <p style="font-size: 16px; font-weight: 600; color: #000">
-                        ທີ່ຢູ່: {{ myCustomer.address }}
-                      </p>
-                    </div>
-                  </v-card-text>
-                </v-card>
-                <img
-                  src="../../assets/images/icon-cancel.png"
-                  class="remove_cus"
-                  @click="removeMyCustomer()"
-                />
+                    <v-btn @click="removeMyCustomer()">
+                      ປ່ຽນລູກຄ້າ
+                    </v-btn>
+                  </v-col> -->
+                </v-row>
               </v-col>
             </v-row>
           </v-card-text>
+          <v-card-actions
+            cols="12"
+            class="px-4"
+            v-if="selectedCustomer"
+            style="
+              display: flex;
+              justify-content: center;
+              position: absolute;
+              bottom: 10px;
+              width: 100%;
+            "
+          >
+            <v-btn color="info" @click="removeMyCustomer()"> ປ່ຽນລູກຄ້າ </v-btn>
+          </v-card-actions>
         </v-card>
-        <v-card style="height: 395px" class="rounded-lg" elevation="4">
+        <v-card style="height: 565px" class="rounded-lg" elevation="4">
           <v-card-title>
             <h4>
               <span style="color: brown">{{ "#" }}</span>
@@ -302,7 +311,7 @@
           </v-card-title>
           <v-card-text
             class="px-4 py-0"
-            style="overflow-y: auto; height: 270px"
+            style="overflow-y: auto; height: 440px"
           >
             <div v-if="listItems?.length == 0">
               <WidgetNoData
@@ -321,13 +330,13 @@
                 cols="12"
                 style="
                   background-color: antiquewhite;
-                  border-radius: 4px;
+                  border-radius: 5px;
                   height: auto;
                   position: relative;
                   display: flex;
                   align-items: center;
                   justify-content: space-between;
-                  padding: 0 10px;
+                  padding: 5px;
                 "
               >
                 <div style="display: flex; align-items: center">
@@ -435,7 +444,7 @@
               style="width: 25%"
               @click="print()"
             >
-              <v-icon>mdi-printer</v-icon> ພິມ
+              <v-icon>mdi-printer</v-icon> ພິມໃບບິນ
             </v-btn>
             <v-btn
               :disabled="listItems?.length == 0 || !selectedCustomer"
@@ -450,11 +459,7 @@
       </v-col>
     </v-row>
 
-    <BuyAddCustomer
-      ref="myCompAddCus"
-      @selectMyCustomer="selectMyCustomer"
-      @setLength="setLength"
-    />
+    <BuyAddCustomer ref="myCompAddCus" @selectMyCustomer="selectMyCustomer" />
     <div style="display: none">
       <BuyBill
         :key="1"
@@ -481,10 +486,6 @@ export default {
       loadingPrint: false,
       loadingPdf: false,
       search: "",
-      page: 1,
-      length: 0,
-      limit: 10,
-      gotoPage: 0,
       headers: [
         {
           text: "ລຳດັບ",
@@ -699,7 +700,6 @@ export default {
   },
   mounted() {
     this.myBillOn = this.generateRandomNumber(10);
-    this.setLength();
   },
   watch: {
     modelWeightAmount: function (val) {
@@ -944,6 +944,7 @@ export default {
             };
             this.SET_HISTORY_ITEMS(item);
             this.setData([]);
+            this.removeMyCustomer();
           } else {
             let item = {
               listItems: this.listItems,
@@ -1023,12 +1024,6 @@ export default {
         console.log(error);
       }
     },
-    NextPage() {
-      this.gotoPage = this.page * this.limit - this.limit;
-    },
-    setLength() {
-      this.length = Math.ceil(this.listCustomer?.length / this.limit);
-    },
   },
 };
 </script>
@@ -1044,17 +1039,6 @@ export default {
   .hide-on-mobile {
     display: none;
   }
-}
-
-.remove_cus {
-  cursor: pointer;
-  width: 25px;
-  height: 25px;
-  position: absolute;
-  top: 17.5%;
-  right: 1%;
-  overflow: hidden;
-  text-indent: -9999px;
 }
 
 .btn-pdf {

@@ -80,7 +80,6 @@ export default {
       };
       this.$store.commit("customer/ADD_CUSTOMER", data);
       this.$emit("selectMyCustomer", data);
-      this.$emit("setLength");
       this.dialog = false;
       this.$refs.form.reset();
     },
