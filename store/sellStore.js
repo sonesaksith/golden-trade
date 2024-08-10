@@ -11,8 +11,6 @@ export default {
   }),
   mutations: {
     SET_CUSTOMER(state, value) {
-      console.log("SET_CUSTOMER", value);
-
       state.myCustomer = value;
     },
     SET_CUSTOMER_BOOL(state, value) {

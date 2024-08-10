@@ -9,7 +9,7 @@
           class="white py-5"
         >
           <v-row>
-            <v-col cols="12" sm="3" xs="12">
+            <v-col cols="12" sm="4" xs="12">
               <v-text-field
                 outlined
                 dense
@@ -25,7 +25,7 @@
                 </template>
               </v-text-field>
             </v-col>
-            <v-col cols="6" sm="3" xs="6">
+            <v-col cols="6" sm="4" xs="6">
               <v-autocomplete
                 v-model="modelGold"
                 :items="goldTypes"
@@ -39,7 +39,8 @@
                 label="ປະເພດຄຳ"
               ></v-autocomplete>
             </v-col>
-            <v-col cols="6" sm="3" xs="12" v-if="modelGold != 'ທອງຄຳແທ່ງ'">
+            <!-- v-if="modelGold != 'ທອງຄຳແທ່ງ'" -->
+            <v-col cols="6" sm="4" xs="12">
               <v-autocomplete
                 label="ປະເພດຮູບປະພັນ"
                 v-model="modelGoldType"
@@ -53,7 +54,7 @@
                 clearable
               ></v-autocomplete>
             </v-col>
-            <v-col cols="6" sm="3" xs="3" v-if="modelGold != 'ທອງຄຳແທ່ງ'">
+            <v-col cols="6" sm="4" xs="3">
               <v-autocomplete
                 label="ລາຍ"
                 v-model="modelGoldLine"
@@ -67,7 +68,7 @@
                 clearable
               ></v-autocomplete>
             </v-col>
-            <v-col cols="6" sm="6" xs="12">
+            <v-col cols="6" sm="4" xs="12">
               <v-autocomplete
                 label="ນ້ຳໜັກ"
                 v-model="modelGoldWeigt"
@@ -81,7 +82,7 @@
                 clearable
               ></v-autocomplete>
             </v-col>
-            <v-col cols="12" sm="6" xs="12">
+            <v-col cols="12" sm="4" xs="12">
               <v-autocomplete
                 label="ປະເພດນ້ຳໜັກ"
                 v-model="modelGoldWeightType"
@@ -98,7 +99,7 @@
           </v-row>
         </v-col>
         <!-- :sm="cartStore == true ? 8 : 12" -->
-        <v-col cols="12" :sm="cartStore == true ? 8 : 12">
+        <v-col cols="12">
           <v-card class="elavation-1">
             <v-data-table
               :search="searchGoldTypes"
@@ -121,117 +122,170 @@
       <v-col cols="12" sm="4">
         <v-list>
           <v-row class="px-2">
-            <v-col cols="12" v-if="!selectedCustomer">
-              <v-row
-                ><v-col cols="8">
-                  <v-text-field
-                    v-model="search"
-                    outlined
-                    dense
-                    hide-details="auto"
-                    class="rounded-lg"
-                    label="ຄົ້ນຫາ"
-                  >
-                    <template #append>
-                      <v-btn small icon class="goldColor" color="white">
-                        <v-icon small>mdi-magnify</v-icon>
-                      </v-btn>
-                    </template>
-                  </v-text-field>
-                </v-col>
-                <v-col cols="4">
-                  <v-btn
-                    style="width: 100%; color: #fff; border-radius: 5px"
-                    color="success"
-                    @click="openAdd"
-                  >
-                    ເພີ່ມລູກຄ້າ
-                  </v-btn>
-                </v-col></v-row
-              >
-              <br />
-              <v-data-table
-                :headers="headersCus"
-                :items="listCustomer || []"
-                class="elevation-1 rounded-lg"
-                :page.sync="page"
-                :items-per-page="limit"
-                fixed-header
-                hide-default-footer
-                height="250"
-                loading-text="ກຳລັງໂຫລດຂໍ້ມູນ..."
-                no-data-text="ບໍ່ມີຂໍ້ມູນ"
-                :search="search"
-                @page-count="length = $event"
-              >
-                <template #[`item.no`]="{ index }">
-                  <span>{{ index + 1 + gotoPage }} </span>
-                </template>
-                <template #item.name="{ index, item }">
-                  <div>{{ item.name }} {{ item.surname }}</div>
-                </template>
-                <template #item.tel="{ index, item }">
-                  <div>{{ item.tel ? item.tel : "-" }}</div>
-                </template>
-                <template #item.address="{ index, item }">
-                  <div>{{ item.address ? item.address : "-" }}</div>
-                </template>
-                <template #item.action="{ index, item }">
-                  <v-container align="center">
-                    <v-icon @click="selectMyCustomer(item)" color="success">
-                      mdi-check-bold
-                    </v-icon>
-                  </v-container>
-                </template>
-              </v-data-table>
-              <v-pagination
-                v-model="page"
-                :length="length"
-                :total-visible="limit"
-                @input="NextPage"
-                circle
-                color="goldColor"
-              ></v-pagination>
-            </v-col>
-            <v-col cols="12" v-else>
+            <v-col cols="12">
               <v-card
-                style="
-                  height: auto;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  width: 500px;
-                "
+                style="height: 230px"
+                class="rounded-lg mb-2"
+                elevation="4"
               >
-                <v-card-text
+                <v-card-text>
+                  <v-row>
+                    <v-col cols="8" v-if="!selectedCustomer" class="pb-0">
+                      <v-text-field
+                        v-model="search"
+                        outlined
+                        dense
+                        hide-details="auto"
+                        label="ຄົ້ນຫາ"
+                      >
+                        <template #append>
+                          <v-btn small icon class="goldColor" color="white">
+                            <v-icon small>mdi-magnify</v-icon>
+                          </v-btn>
+                        </template>
+                      </v-text-field>
+                    </v-col>
+                    <v-col cols="4" v-if="!selectedCustomer" class="pb-0">
+                      <v-btn
+                        style="width: 100%; color: #fff; border-radius: 5px"
+                        color="success"
+                        @click="openAdd"
+                      >
+                        ເພີ່ມລູກຄ້າ
+                      </v-btn>
+                    </v-col>
+                    <v-col cols="12" v-if="!selectedCustomer" class="py-0">
+                      <v-data-table
+                        :headers="headersCus"
+                        :items="listCustomer || []"
+                        class="elevation-1"
+                        :items-per-page="listCustomer.length"
+                        fixed-header
+                        hide-default-footer
+                        hide-default-header
+                        height="150"
+                        loading-text="ກຳລັງໂຫລດຂໍ້ມູນ..."
+                        no-data-text="ບໍ່ມີຂໍ້ມູນ"
+                        :search="search"
+                      >
+                        <template
+                          v-slot:header="{ props }"
+                          style="background-color: white"
+                        >
+                          <th
+                            v-for="head in props.headers"
+                            class="pa-1 rounded-t-lg"
+                            style="
+                              position: sticky;
+                              top: 0;
+                              background-color: white;
+                              z-index: 1;
+                            "
+                            :key="head"
+                          >
+                            {{ head.text.toUpperCase() }}
+                          </th>
+                        </template>
+
+                        <template #[`item.no`]="{ index }">
+                          <span>{{ index + 1 }} </span>
+                        </template>
+                        <template #item.name="{ index, item }">
+                          <div>{{ item.name }} {{ item.surname }}</div>
+                        </template>
+                        <template #item.tel="{ index, item }">
+                          <div>{{ item.tel ? item.tel : "-" }}</div>
+                        </template>
+                        <template #item.address="{ index, item }">
+                          <div>{{ item.address ? item.address : "-" }}</div>
+                        </template>
+                        <template #item.action="{ index, item }">
+                          <v-container align="center">
+                            <v-icon
+                              @click="selectMyCustomer(item)"
+                              color="success"
+                            >
+                              mdi-check-bold
+                            </v-icon>
+                          </v-container>
+                        </template>
+                      </v-data-table>
+                    </v-col>
+                    <v-col cols="12" v-else>
+                      <v-row style="height: auto">
+                        <v-col cols="12">
+                          <p
+                            style="
+                              font-size: 18px;
+                              font-weight: 600;
+                              color: #000;
+                              text-align: center;
+                            "
+                          >
+                            ຂໍ້ມູນລູກຄ້າ
+                          </p>
+                          <p
+                            style="
+                              font-size: 16px;
+                              font-weight: 600;
+                              color: #000;
+                            "
+                          >
+                            ຊື່ ແລະ ນາມສະກຸນ: {{ myCustomer.name }}
+                            {{ myCustomer.surname }}
+                          </p>
+                          <p
+                            style="
+                              font-size: 16px;
+                              font-weight: 600;
+                              color: #000;
+                            "
+                          >
+                            ເບີໂທ: {{ myCustomer.tel }}
+                          </p>
+                          <p
+                            style="
+                              font-size: 16px;
+                              font-weight: 600;
+                              color: #000;
+                            "
+                          >
+                            ທີ່ຢູ່: {{ myCustomer.address }}
+                          </p>
+                        </v-col>
+                        <!-- <v-col
+                    cols="12"
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
+                    <v-btn @click="removeMyCustomer()">
+                      ປ່ຽນລູກຄ້າ
+                    </v-btn>
+                  </v-col> -->
+                      </v-row>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+                <v-card-actions
+                  cols="12"
+                  class="px-4"
+                  v-if="selectedCustomer"
                   style="
                     display: flex;
-                    align-items: center;
-                    justify-content: space-between;
+                    justify-content: center;
+                    position: absolute;
+                    bottom: 10px;
+                    width: 100%;
                   "
                 >
-                  <div>
-                    <p style="font-size: 16px; font-weight: 600; color: #000">
-                      ຊື່ ແລະ ນາມສະກຸນ: {{ myCustomer.name }}
-                      {{ myCustomer.surname }}
-                    </p>
-                    <p style="font-size: 16px; font-weight: 600; color: #000">
-                      ເບີໂທ: {{ myCustomer.tel }}
-                    </p>
-                    <p style="font-size: 16px; font-weight: 600; color: #000">
-                      ທີ່ຢູ່: {{ myCustomer.address }}
-                    </p>
-                  </div>
-                </v-card-text>
+                  <v-btn color="info" @click="removeMyCustomer()">
+                    ປ່ຽນລູກຄ້າ
+                  </v-btn>
+                </v-card-actions>
               </v-card>
-              <br />
-              <div style="display: flex; justify-content: space-around">
-                <v-btn
-                  @click="removeMyCustomer()"
-                  style="background-color: #daa520; color: white"
-                  >ປ່ຽນລູກຄ້າ</v-btn
-                >
-              </div>
             </v-col>
             <v-col cols="12">
               <v-btn
@@ -333,51 +387,6 @@
                     </v-col>
                   </v-row>
                 </v-card-text>
-                <!-- <div>
-                  <v-text-field
-                    value="John Doe"
-                    label="Outlined"
-                    outlined
-                    readonly
-                    dense
-                  ></v-text-field>
-                </div>
-                <div>
-                  <v-text-field
-                    value="John Doe"
-                    label="Outlined"
-                    outlined
-                    readonly
-                    dense
-                  ></v-text-field>
-                </div> -->
-                <!-- <v-card-actions style="height: 10%">
-                  <v-btn
-                    v-if="!isExchange"
-                    :disabled="listItems?.length == 0"
-                    style="width: 48%; color: #fff; border-radius: 5px"
-                    color="goldColor"
-                    @click="Next()"
-                  >
-                    ຕໍ່ໄປ
-                  </v-btn>
-                  <v-btn
-                    v-else
-                    :disabled="listItems?.length == 0"
-                    style="width: 48%; color: #fff; border-radius: 5px"
-                    color="goldColor"
-                    @click="handlePressNext()"
-                  >
-                    ຕໍ່ໄປ
-                  </v-btn>
-                </v-card-actions> -->
-                <!-- 
-                <v-card-text>
-                  <div style="display: ">
-                    {{ $formatnumber(priceAll) }}
-                  </div>
-                  </v-card-text
-                > -->
                 <v-card-actions>
                   <div
                     style="
@@ -426,12 +435,7 @@
           >
         </v-list>
       </v-col>
-
-      <!-- :style="(isReportSell = true ? 'display:none' : 'display:none')" -->
     </v-row>
-    <!-- <div :style="(isReportSell = true ? 'display:none' : 'display:none')">
-      <SellPrintSell ref="myGlobalTable" />
-    </div> -->
     <BuyAddCustomer
       ref="myCompAddCus"
       @selectMyCustomer="selectMyCustomer"
