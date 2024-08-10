@@ -5,10 +5,14 @@ export default {
     header: {
       title: "ຮ້ານຄຳຫວຽດສະຫວັນ",
     },
+    focusingMenu: 4,
   }),
   mutations: {
     SET_HEADER(state, value) {
       state.header.title = value;
+    },
+    async SET_FOCUSING_MENU(state, data) {
+      state.focusingMenu = data;
     },
   },
   actions: {
