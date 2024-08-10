@@ -3,7 +3,7 @@
     <div style="display: flex; align-items: center; justify-content: center">
         <img
             src="../../assets/images/icons/empty.gif"
-            style="text-align: center"
+            style="text-align: center; user-select: none;"
             :width="width"
             :height="height"
             alt=""
@@ -11,7 +11,7 @@
     </div>
     <br />
     <label
-      style="display: flex; align-items: center; justify-content: center"
+      style="display: flex; align-items: center; justify-content: center; user-select: none;"
       >{{ message }}</label
     >
   </div>
