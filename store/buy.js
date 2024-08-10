@@ -2,10 +2,22 @@ import secureStorage from "~/plugins/secure-storage";
 export default {
   state: () => ({
     listItems: [],
+    historyItems: [],
+    selectedCustomer: false,
+    myCustomer: {},
   }),
   mutations: {
+    SET_CUSTOMER(state, value) {
+      state.myCustomer = value;
+    },
+    SET_CUSTOMER_BOOL(state, value) {
+      state.selectedCustomer = value;
+    },
     SET_ITEMS(state, value) {
       state.listItems.push(value);
+    },
+    SET_HISTORY_ITEMS(state, value) {
+      state.historyItems.push(value);
     },
     SET_NEW_ITEMS(state, value) {
       state.listItems = value;
@@ -40,5 +52,6 @@ export default {
   },
   getters: {
     listItems: (state) => state.listItems,
+    historyItems: (state) => state.historyItems,
   },
 };

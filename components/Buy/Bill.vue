@@ -1,20 +1,5 @@
 <template>
   <div>
-    <!-- <div class="d-flex" style="background-color: #daa520; height: 57px">
-      <div
-        style="display: flex; align-items: center; cursor: pointer"
-        @click="goBack"
-      >
-        <v-icon large color="white darken-2"> mdi-chevron-left </v-icon>
-        <p
-          style="font-weight: 600; text-align: center; color: white"
-          class="ma-0"
-        >
-          ຍ້ອນກັບ
-        </p>
-      </div>
-      <v-spacer></v-spacer>
-    </div> -->
     <div class="d-flex">
       <v-spacer></v-spacer>
       <div>
@@ -57,163 +42,6 @@
           }
         }
       </style>
-      <!-- <v-card
-        class="hide-on-mobile"
-        style="margin-block: 40px; margin-inline: 10px"
-        outlined
-      >
-        <v-card-title class="pa-2">
-          <v-row class="mx-0">
-            <v-col cols="12" md="6" sm="6" class="pb-0">
-              <h4><u>ຮ້ານຄຳ.........</u></h4>
-              <p style="font-size: 14px" class="ma-0">No: {{ billNo }}</p>
-              <p style="font-size: 14px" class="ma-0">
-                ວັນທີ: {{ currentDate }}
-              </p>
-              <p style="font-size: 14px" class="ma-0">ພະນັກງານ: Luna</p>
-            </v-col>
-            <v-col cols="12" md="6" sm="6" class="text-right">
-              <p style="font-size: 14px" class="ma-0">
-                {{ "." }}
-              </p>
-              <div
-                style="
-                  display: flex;
-                  max-width: 300px;
-                  height: 80px;
-                  justify-content: center;
-                "
-              >
-                <div
-                  style="
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    font-weight: 600;
-                    border: 1px solid gray;
-                    width: 50%;
-                    text-align: center;
-                    font-size: 24px;
-                    border-top-left-radius: 3px;
-                    border-bottom-left-radius: 3px;
-                  "
-                >
-                  ຊື້
-                </div>
-                <div
-                  style="
-                    font-weight: 600;
-                    border: 1px solid gray;
-                    width: 50%;
-                    text-align: left;
-                    font-size: 14px;
-                    border-top-right-radius: 3px;
-                    border-bottom-right-radius: 3px;
-                    padding-left: 10px;
-                  "
-                >
-                  No:
-                </div>
-              </div>
-            </v-col>
-            <v-col cols="12" class="py-0">
-              <p style="font-size: 14px" class="ma-0">
-                ລ/ຄ: ນ. ເພັດສະໝອນ/2095608229/Barcelona//A7XB9Z3
-              </p>
-            </v-col>
-          </v-row>
-        </v-card-title>
-        <br />
-        <v-card-title class="pa-2">
-          <v-row class="mx-0">
-            <v-col cols="8" md="10" sm="10" class="py-0">
-              <p style="font-size: 14px" class="ma-0">ລາຍການຊື້ເຂົ້າ</p>
-            </v-col>
-            <v-col cols="4" md="2" sm="2" class="text-right py-0">
-              <p style="font-size: 14px" class="ma-0">ເປັນເງິນ</p>
-            </v-col>
-            <v-col
-              cols="3"
-              md="2"
-              sm="2"
-              class="py-0"
-              style="display: flex; align-items: center"
-            >
-              <p style="font-size: 15px; font-weight: 600" class="ma-0">
-                [ຊື້ເຂົ້າ]
-              </p>
-            </v-col>
-            <v-col cols="9" md="10" sm="10">
-              <div class="dot-divider"></div>
-            </v-col>
-
-            <v-col cols="12">
-              <v-row v-for="(n, index) in items" :key="index">
-                <v-col cols="8" md="10" sm="10" class="text-left py-0">
-                  <span style="font-size: 16px" class="ma-0"
-                    >{{ index + 1 }}- {{ n?.shape ? "(" + n?.shape : ""
-                    }}{{
-                      n?.shapeLine ? n?.shapeLine + ")" : n?.shape ? ")" : ""
-                    }}
-                    {{ n.weight + n.weightType }}
-                  </span>
-                </v-col>
-                <v-col cols="4" md="2" sm="2" class="text-right py-0">
-                  <span style="font-size: 14px; font-weight: 400" class="ma-0">
-                    {{ $formatnumber(n.price) }}
-                  </span>
-                </v-col>
-                <v-col cols="12" class="pa-2">
-                  <v-divider></v-divider>
-                </v-col>
-              </v-row>
-            </v-col>
-            <v-col cols="5" md="5" sm="5" class="text-left py-0">
-              <span style="font-size: 16px; font-weight: 600" class="ma-0">
-                ລາ​ຄາ​ລວມ:
-              </span>
-            </v-col>
-            <v-col cols="7" md="7" sm="7" class="text-right py-0">
-              <span style="font-size: 16px; font-weight: 600" class="ma-0">
-                {{ $formatnumber(32100) }}
-              </span>
-            </v-col>
-            <v-col cols="12" class="pa-2">
-              <v-divider></v-divider>
-            </v-col>
-            <v-col cols="12" class="text-left py-0">
-              <span style="font-size: 16px" class="ma-0"
-                >ລາຍ​ລະ​ອຽດ​ການ​ຊໍາ​ລະ​ເງິນ
-              </span>
-            </v-col>
-            <v-col cols="6" md="6" sm="6" class="text-left py-0">
-              <span style="font-size: 16px; font-weight: 600" class="ma-0">
-                {{ $formatnumber(32100) }} x {{ $formatnumber2(750) }}
-              </span>
-            </v-col>
-            <v-col cols="6" md="6" sm="6" class="text-right py-0">
-              <span style="font-size: 16px; font-weight: 600" class="ma-0">
-                {{ $formatnumber(32100 * 750) }} LAK
-              </span>
-            </v-col>
-
-            <v-col cols="5" md="5" sm="5" class="text-left">
-              <span style="font-size: 16px; font-weight: 600" class="ma-0">
-                ຜູ້ກວດບິນ
-              </span>
-            </v-col>
-            <v-col cols="7" md="7" sm="7" class="text-right">
-              <span style="font-size: 16px; font-weight: 600" class="ma-0">
-                {{ currentDateTime }}
-              </span>
-            </v-col>
-          </v-row>
-          <br />
-          <br />
-          <br />
-        </v-card-title>
-      </v-card> -->
-
       <v-card
         class="hide-on-mobile mx-auto"
         style="margin-block: 40px; margin-inline: 10px"
@@ -280,8 +108,7 @@
           </div>
           <div style="width: 100%">
             <p style="font-size: 14px" class="ma-0">
-              ລ/ຄ: {{ this.selectingCus?.name }}
-              {{ this.selectingCus?.surname }}/{{ this.selectingCus?.tel }}
+              ລ/ຄ: {{myCus.name + myCus.surname}}/{{myCus.tel}}/{{ myCus.address }}
             </p>
           </div>
           <div
@@ -424,56 +251,27 @@ import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
 import html2pdf from "html2pdf.js";
 import secureStorage from "~/plugins/secure-storage";
 export default {
+  props: {
+    myCus: {
+      type: Object,
+      required: true,
+    },
+    billNo: { type: String, required: true },
+
+    totalPrice: { type: Number, required: true },
+    totalLost: { type: Number, required: true },
+    totalPayment: { type: Number, required: true },
+    currentDateTime: { type: String, required: true },
+    currentDate: { type: String, required: true },
+  },
   data() {
     return {
-      items: [
-        {
-          purity: 99,
-          name: "ທອງຮູບປະພັນ",
-          shape: "ສາຍຄໍ",
-          shapeLine: "ລາຍມັງກອນ",
-          weight: "10",
-          weightType: "gram",
-          amount: 1,
-          price: "18833630",
-          lost: "10",
-        },
-        {
-          purity: 99,
-          name: "ທອງຮູບປະພັນ",
-          shape: "ສາຍຄໍ",
-          shapeLine: "ລາຍມັງກອນ",
-          weight: "10",
-          weightType: "gram",
-          amount: 1,
-          price: "18833630",
-          lost: "10",
-        },
-      ],
-      billNo: "",
-      currentDateTime: "",
-      currentDate: "",
-      totalPrice: 0,
-      totalAmount: 0,
-      totalLost: 0,
-      totalPayment: 0,
-      data: [],
       userinfo: [],
+      setSty: "portrait",
     };
   },
   mounted() {
     this.userinfo = secureStorage.getItem("userinfo");
-    this.billNo = this.generateRandomNumber(10);
-    this.updateDateTime();
-    this.listItems.forEach((item) => {
-      this.totalPrice += parseInt(item.price * item.amount, 10);
-      this.totalAmount += item.amount;
-      this.totalLost += parseInt(item.lost);
-    });
-    this.totalPayment = this.totalPrice - this.totalLost;
-    if (this.listItems.length == 0) {
-      this.$router.replace("/buy/");
-    }
   },
   watch: {},
   computed: {
@@ -492,6 +290,7 @@ export default {
                   margin-left: 0.5cm;
                   margin-right: 0.5cm;
                   padding: 0;
+                  size: ${this.setSty};
                 }
               }
               body {
@@ -564,42 +363,12 @@ export default {
         console.log(error);
       }
     },
-    generateRandomNumber(length) {
-      let result = "";
-      const characters = "0123456789";
-      const charactersLength = characters.length;
-      for (let i = 0; i < length; i++) {
-        result += characters.charAt(
-          Math.floor(Math.random() * charactersLength)
-        );
-      }
-      return result;
-    },
-    updateDateTime() {
-      try {
-        const now = new Date();
-        const day = String(now.getDate()).padStart(2, "0");
-        const month = String(now.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
-        const year = now.getFullYear();
-        const hours = String(now.getHours()).padStart(2, "0");
-        const minutes = String(now.getMinutes()).padStart(2, "0");
-        const seconds = String(now.getSeconds()).padStart(2, "0");
-        this.currentDateTime = `${day}/${month}/${year},${hours}:${minutes}:${seconds}`;
-        this.currentDate = `${day}/${month}/${year}`;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    goBack() {
-      this.$router.go(-1);
-    },
   },
 };
 </script>
 <style scoped>
 @media (max-width: 700px) {
   .hide-on-mobile {
-    /* display: none; */
     margin: 0;
   }
 }

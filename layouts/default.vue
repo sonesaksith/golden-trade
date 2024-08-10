@@ -74,6 +74,7 @@ import secureStorage from "~/plugins/secure-storage";
 import { mapActions, mapState } from "vuex";
 export default {
   name: "DefaultLayout",
+  middleware: ["checkAuth"],
   data() {
     return {
       drawer: true,
@@ -91,22 +92,10 @@ export default {
           color: "success",
         },
         {
-          title: "ເທີນ",
-          icon: "mdi-swap-horizontal",
-          path: "/change",
-          color: "primary",
-        },
-        {
-          title: "ລູກຄ້າ",
-          icon: "mdi-account-group-outline",
-          path: "/customer/list",
-          color: "black",
-        },
-        {
-          title: "ທອງ",
-          icon: "mdi-gold",
-          path: "/gold",
-          color: "goldColor",
+          title: "ປະຫວັດການຊື້ເຂົ້າ",
+          icon: "mdi-cash-clock",
+          path: "/historybuy",
+          color: "info",
         },
       ],
       mini: true,
