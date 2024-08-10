@@ -98,6 +98,12 @@ export default {
           color: "info",
         },
         {
+          title: "ປະຫວັດການຂາຍ",
+          icon: "mdi-cash-clock",
+          path: "/historysell",
+          color: "info",
+        },
+        {
           title: "ເທີນ",
           icon: "mdi-swap-horizontal",
           path: "/change",
