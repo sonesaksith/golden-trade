@@ -11,12 +11,29 @@
               <v-data-table
                 :headers="headers"
                 :items="items?.listItems"
+                :items-per-page="items?.listItems?.length"
                 class="elevation-1"
                 disable-sort
+                fixed-header
+                hide-default-footer
                 no-data-text="ບໍ່ມີຂໍ້ມູນ"
                 loading-text="Loading..."
                 width="400"
               >
+                <template v-slot:header>
+                  <tr style="background-color: rgba(0, 0, 0, 0.09)">
+                    <td colspan="12">
+                      <h3 style="font-size: 16px; color: gray; padding-left: 15px">
+                        ຍອດລວມທັງໝົດ:
+                        <b
+                          style="color: #c62828; font-size: 16px"
+                        >
+                          {{ $formatnumber(totalPayment) }}
+                        </b>
+                      </h3>
+                    </td>
+                  </tr>
+                </template>
                 <template #[`item.no`]="{ index }">
                   <span>{{ index + 1 }} </span>
                 </template>
@@ -31,6 +48,15 @@
                 </template>
                 <template #item.lost="{ index, item }">
                   <div>{{ item.lost ? $formatnumber(item.lost) : "-" }}</div>
+                </template>
+                <template #item.weight="{ index, item }">
+                  <div>{{ item.weight ? $formatnumber(item.weight) : "-" }}</div>
+                </template>
+                <template #item.price="{ index, item }">
+                  <div>{{ item.price ? $formatnumber(item.price) : "-" }}</div>
+                </template>
+                <template #item.amount="{ index, item }">
+                  <div>{{ item.amount ? $formatnumber(item.amount) : "-" }}</div>
                 </template>
               </v-data-table>
             </v-card-text>
@@ -51,7 +77,7 @@
                   width: 50%;
                 "
                 text
-                @click="dialog = false"
+                @click="close"
               >
                 ອອກ
               </v-btn>
@@ -63,10 +89,10 @@
     <div v-if="items" style="display: none">
       <BuyBill
         :key="1"
-        :myCus="items?.cus"
-        :billNo="items?.billNo"
-        :currentDateTime="items?.date"
-        :currentDate="items?.date?.substring(0, 10)"
+        :myCus="myCus"
+        :billNo="billNo"
+        :currentDateTime="currentDateTime"
+        :currentDate="currentDate"
         :totalPrice="totalPrice"
         :totalLost="totalLost"
         :totalPayment="totalPayment"
@@ -77,12 +103,16 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapState } from "vuex";
+import { mapGetters, mapActions, mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
       dialog: false,
       items: [],
+      myCus: {},
+      billNo: "",
+      currentDateTime: "",
+      currentDate: "",
       totalPrice: 0,
       totalLost: 0,
       totalPayment: 0,
@@ -118,6 +148,7 @@ export default {
   },
   computed: {},
   methods: {
+    ...mapMutations("buy", ["SET_NEW_ITEMS"]),
     async print() {
       try {
         console.log(this.items);
@@ -132,6 +163,10 @@ export default {
           showConfirmButton: true,
         });
       } 
+    },
+    close() {
+      this.dialog = false;
+      this.SET_NEW_ITEMS([]);
     },
   },
 };
