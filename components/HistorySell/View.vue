@@ -20,16 +20,16 @@
                 <template #[`item.no`]="{ index }">
                   <span>{{ index + 1 }} </span>
                 </template>
-                <template #item.name="{ index, item }">
+                <template #[`item.name`]="{ item }">
                   <div>{{ item.name ? item.name : "-" }}</div>
                 </template>
-                <template #item.shape="{ index, item }">
+                <template #[`item.shape`]="{ item }">
                   <div>{{ item.shape ? item.shape : "-" }}</div>
                 </template>
-                <template #item.shapeLine="{ index, item }">
+                <template #[`item.shapeLine`]="{ item }">
                   <div>{{ item.shapeLine ? item.shapeLine : "-" }}</div>
                 </template>
-                <template #item.price="{ index, item }">
+                <template #[`item.price`]="{ item }">
                   <div>{{ item.price ? $formatnumber(item.price) : "-" }}</div>
                 </template>
               </v-data-table>
@@ -73,18 +73,54 @@ export default {
           class: " darken-2 text-subtitle-2 font-weight-black",
         },
         {
-          text: 'ປະເພດທອງຄຳ',
-          align: 'center',
-          value: 'name',
-          width: '120px',
-          class: ' darken-2 text-subtitle-2 font-weight-black',
+          text: "ປະເພດທອງຄຳ",
+          align: "center",
+          value: "name",
+          width: "120px",
+          class: " darken-2 text-subtitle-2 font-weight-black",
         },
-        { text: 'ຮູບປະພັນ', align: 'center', value: 'shape', width: '100px', class: ' darken-2 text-subtitle-2 font-weight-black', },
-        { text: 'ລາຍຮູບປະພັນ', align: 'center', value: 'shapeLine', width: '120px', class: ' darken-2 text-subtitle-2 font-weight-black', },
-        { text: 'ນ້ຳໜັກທອງຄຳ', align: 'center', value: 'weight', width: '120px', class: ' darken-2 text-subtitle-2 font-weight-black', },
-        { text: 'ປະເພດນ້ຳໜັກ', align: 'center', value: 'weightType', width: '120px', class: ' darken-2 text-subtitle-2 font-weight-black', },
-        { text: 'ລາຄາ', align: 'center', value: 'price', width: '120px', class: ' darken-2 text-subtitle-2 font-weight-black', },
-        { text: 'ຈໍາ​ນວນ', align: 'center', value: 'amount', width: '80px', class: ' darken-2 text-subtitle-2 font-weight-black', },
+        {
+          text: "ຮູບປະພັນ",
+          align: "center",
+          value: "shape",
+          width: "100px",
+          class: " darken-2 text-subtitle-2 font-weight-black",
+        },
+        {
+          text: "ລາຍຮູບປະພັນ",
+          align: "center",
+          value: "shapeLine",
+          width: "120px",
+          class: " darken-2 text-subtitle-2 font-weight-black",
+        },
+        {
+          text: "ນ້ຳໜັກທອງຄຳ",
+          align: "center",
+          value: "weight",
+          width: "120px",
+          class: " darken-2 text-subtitle-2 font-weight-black",
+        },
+        {
+          text: "ປະເພດນ້ຳໜັກ",
+          align: "center",
+          value: "weightType",
+          width: "120px",
+          class: " darken-2 text-subtitle-2 font-weight-black",
+        },
+        {
+          text: "ລາຄາ",
+          align: "center",
+          value: "price",
+          width: "120px",
+          class: " darken-2 text-subtitle-2 font-weight-black",
+        },
+        {
+          text: "ຈໍາ​ນວນ",
+          align: "center",
+          value: "amount",
+          width: "80px",
+          class: " darken-2 text-subtitle-2 font-weight-black",
+        },
       ],
     };
   },

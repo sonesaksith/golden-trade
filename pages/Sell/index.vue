@@ -109,7 +109,7 @@
               item-key="name"
               disable-sort
             >
-              <template v-slot:item.sell="{ item }">
+              <template v-slot:[`item.sell`]="{ item }">
                 <v-icon small @click="onPlusData(item)"> mdi-plus </v-icon>
               </template>
               <template #[`item.sellGold`]="{ item }">
@@ -170,7 +170,6 @@
                       >
                         <template
                           v-slot:header="{ props }"
-                          style="background-color: white"
                         >
                           <th
                             v-for="head in props.headers"
@@ -190,16 +189,16 @@
                         <template #[`item.no`]="{ index }">
                           <span>{{ index + 1 }} </span>
                         </template>
-                        <template #item.name="{ index, item }">
+                        <template #[`item.name`]="{ item }">
                           <div>{{ item.name }} {{ item.surname }}</div>
                         </template>
-                        <template #item.tel="{ index, item }">
+                        <template #[`item.tel`]="{ item }">
                           <div>{{ item.tel ? item.tel : "-" }}</div>
                         </template>
-                        <template #item.address="{ index, item }">
+                        <template #[`item.address`]="{ item }">
                           <div>{{ item.address ? item.address : "-" }}</div>
                         </template>
-                        <template #item.action="{ index, item }">
+                        <template #[`item.action`]="{ item }">
                           <v-container align="center">
                             <v-icon
                               @click="selectMyCustomer(item)"
