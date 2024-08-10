@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer
+    <!-- <v-navigation-drawer
       v-model="drawer"
       :mini-variant.sync="mini"
       permanent
@@ -58,10 +58,117 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
-    </v-navigation-drawer>
+    </v-navigation-drawer> -->
+    <v-app-bar
+      :clipped-left="false"
+      fixed
+      app
+      elevation="5"
+      color="goldColor"
+      class="white--text"
+    >
+      <v-row>
+        <v-col cols="12" sm="4" class="d-flex align-center justify-start">
+          <h3 style="cursor: pointer">ຮ້ານຄຳ ຫວຽດສະຫວັນ</h3>
+        </v-col>
+
+        <v-col cols="12" sm="8" style="overflow-x: auto">
+          <div class="d-flex align-center justify-end">
+            <div :class="focusingMenu === 1 ? 'onFocusMenu' : ''">
+              <v-menu offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn text v-bind="attrs" v-on="on" class="white--text">
+                    ການຂາຍ
+                    <v-icon>mdi-chevron-down</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item @click="myRouting('/sell', 1)">
+                    <v-list-item-title>ຂາຍ</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item @click="myRouting('/historysell', 1)">
+                    <v-list-item-title>ປະຫວັດການຂາຍ</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </div>
+            <div :class="focusingMenu === 2 ? 'onFocusMenu' : ''">
+              <v-menu offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn text v-bind="attrs" v-on="on" class="white--text">
+                    ການຊື້
+                    <v-icon>mdi-chevron-down</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item @click="myRouting('/buy', 2)">
+                    <v-list-item-title>ຊື້</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item @click="myRouting('/historybuy', 2)">
+                    <v-list-item-title>ປະຫວັດການຊື້</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </div>
+            <div :class="focusingMenu === 3 ? 'onFocusMenu' : ''">
+              <v-menu offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn text v-bind="attrs" v-on="on" class="white--text">
+                    ການປ່ຽນ
+                    <v-icon>mdi-chevron-down</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item @click="myRouting('/change', 3)">
+                    <v-list-item-title>ປ່ຽນ</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item @click="myRouting('/change', 3)">
+                    <v-list-item-title>ປະຫວັດການປ່ຽນ</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </div>
+            <div :class="focusingMenu === 4 ? 'onFocusMenu' : ''">
+              <v-btn text class="white--text" @click="myRouting('/gold', 4)">
+                ທອງ
+              </v-btn>
+            </div>
+            <div :class="focusingMenu === 5 ? 'onFocusMenu' : ''">
+              <v-btn
+                text
+                class="white--text"
+                @click="myRouting('/customer/list', 5)"
+              >
+                ລູກຄ້າ
+              </v-btn>
+            </div>
+            <v-menu offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn icon v-bind="attrs" v-on="on">
+                  <v-icon size="40" color="white">
+                    mdi-account-circle-outline
+                  </v-icon>
+                </v-btn>
+              </template>
+
+              <v-list>
+                <v-list-item @click="logout">
+                  <v-list-item-icon>
+                    <v-icon color="error">mdi-logout-variant</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>ອອກ​ຈາກ​ລະ​ບົບ</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </div>
+        </v-col>
+      </v-row>
+    </v-app-bar>
 
     <v-main>
-      <GlobalsHeader />
+      <!-- <GlobalsHeader /> -->
       <v-container fluid>
         <Nuxt />
       </v-container>
@@ -98,6 +205,12 @@ export default {
           color: "info",
         },
         {
+          title: "ປະຫວັດການຂາຍ",
+          icon: "mdi-cash-clock",
+          path: "/historysell",
+          color: "info",
+        },
+        {
           title: "ເທີນ",
           icon: "mdi-swap-horizontal",
           path: "/change",
@@ -107,18 +220,19 @@ export default {
       mini: true,
     };
   },
-  computed: {},
+  computed: {
+    ...mapState("main", ["focusingMenu"]),
+  },
   created() {},
   destroyed() {},
   mounted() {},
   methods: {
-    myRouting(path) {
+    myRouting(path, focusing) {
+      this.$store.commit("main/SET_FOCUSING_MENU", focusing);
       this.$router.push(path);
     },
     logout() {
       secureStorage.removeItem("token");
-      secureStorage.removeItem("userinfo");
-      this.$axios.setHeader("Authorization", null);
       this.$router.replace("/authen/login");
     },
   },
@@ -132,4 +246,11 @@ export default {
   color: #DAA520 !important;
   font-weight: bold;
 } */
+.onFocusMenu {
+  border-bottom: 2px solid white;
+  transition: border-bottom 0.1s ease;
+}
+.onHover:hover {
+  background-color: whitesmoke;
+}
 </style>
