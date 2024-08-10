@@ -61,7 +61,8 @@
     </v-navigation-drawer>
 
     <v-main>
-      <v-container fluid class="pa-0">
+      <GlobalsHeader />
+      <v-container fluid>
         <Nuxt />
       </v-container>
     </v-main>
@@ -73,11 +74,17 @@ import secureStorage from "~/plugins/secure-storage";
 import { mapActions, mapState } from "vuex";
 export default {
   name: "DefaultLayout",
+  middleware: ["checkAuth"],
   data() {
     return {
       drawer: true,
       items: [
-        { title: "ຂາຍ", icon: "mdi-gold", path: "/sell", color: "goldColor" },
+        {
+          title: "ຂາຍ",
+          icon: "mdi-cash-multiple",
+          path: "/sell",
+          color: "goldColor",
+        },
         {
           title: "ຊື້ເຂົ້າ",
           icon: "mdi-cash-sync",
@@ -89,6 +96,12 @@ export default {
           icon: "mdi-cash-clock",
           path: "/historybuy",
           color: "info",
+        },
+        {
+          title: "ເທີນ",
+          icon: "mdi-swap-horizontal",
+          path: "/change",
+          color: "primary",
         },
       ],
       mini: true,

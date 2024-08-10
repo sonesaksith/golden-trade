@@ -72,7 +72,7 @@
           "
         >
           <div>
-            <span>ຜູ້ພິມ: {{ userinfo.username }} &nbsp; </span>
+            <span>ຜູ້ພິມ: {{ userinfo?.username }} &nbsp; </span>
           </div>
           <div>
             <span>ວັນທີພິມ: {{ currentDateTime }}</span>
@@ -177,21 +177,20 @@ export default {
       this.filteredData.push(a);
     }
     let newData = {
-      "column0": "",
-      "column1": "",
-      "column2": "",
-      "column3": "",
-      "column4": "",
-      "column5": "",
-      "column6": "",
-      "column7": "",
-      "column8": ""
+      column0: "",
+      column1: "",
+      column2: "",
+      column3: "",
+      column4: "",
+      column5: "",
+      column6: "",
+      column7: "",
+      column8: "",
     };
     while (this.filteredData.length < 10) {
       let newOne = { ...newData };
       this.filteredData.push(newOne);
     }
-
   },
   created() {
     this.updateDateTime();

@@ -16,7 +16,7 @@ Vue.prototype.$formatnumber2 = (value) => {
 Vue.prototype.$convertGoldToGrams = (number, unit, purity) => {
   const gramPerBaht = 15.244;
   if (!purity) {
-    purity = 99;
+    purity = 99.99;
   }
   let grams;
 
@@ -34,14 +34,14 @@ Vue.prototype.$convertGoldToGrams = (number, unit, purity) => {
       throw new Error("ຫົວໜ່ວຍບໍ່ຖືກຕ້ອງ ກະລຸນາໃຊ້ ບາດ, ຫູນ ຫລື ສະຫຼຶງ");
   }
 
-  const pureGoldWeight = grams * (purity / 100);
+  const pureGoldWeight = grams * (purity / 99.99);
 
   return pureGoldWeight;
 };
 Vue.prototype.$convertGramsToGold = (weight, unit, purity) => {
   const gramPerBaht = 15.244;
   if (!purity) {
-    purity = 99;
+    purity = 99.99;
   }
   let weightInGrams;
 
@@ -56,7 +56,7 @@ Vue.prototype.$convertGramsToGold = (weight, unit, purity) => {
       throw new Error("ຫົວໜ່ວຍບໍ່ຖືກຕ້ອງ ກະລຸນາໃຊ້ ບາດ, ຫູນ ຫລື ສະຫຼຶງ");
   }
 
-  const pureGoldWeight = weightInGrams / (purity / 100);
+  const pureGoldWeight = weightInGrams / (purity / 99.99);
 
   const baht = Math.floor(pureGoldWeight / gramPerBaht);
   const remainingGramsAfterBaht = pureGoldWeight % gramPerBaht;
@@ -80,7 +80,7 @@ Vue.prototype.$convertGoldToMoney = (
   deductBroken = 0
 ) => {
   if (!purity) {
-    purity = 99;
+    purity = 99.99;
   }
   const gramPerBaht = 15.244;
   const pricePerBaht = 29000000;
@@ -110,7 +110,7 @@ Vue.prototype.$convertGoldToMoney = (
     throw new Error("ນ້ຳໜັກບໍ່ສາມາດຕ່ຳກວ່າ 0 ໄດ້");
   }
 
-  const pureGoldWeight = weightInGrams * (purity / 100);
+  const pureGoldWeight = weightInGrams * (purity / 99.99);
 
   const goldValuePerGram = pricePerBaht / gramPerBaht;
   const goldValue = pureGoldWeight * goldValuePerGram;

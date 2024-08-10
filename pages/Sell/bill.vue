@@ -1,10 +1,10 @@
 <template>
-  <BuyBill />
+  <SellPrintSell />
 </template>
 <script>
 export default {
   // middleware: ["checkAuth"],
-  layout: "empty",
+  // layout: "empty",
   data() {
     return {};
   },

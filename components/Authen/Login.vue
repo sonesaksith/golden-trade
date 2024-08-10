@@ -7,13 +7,14 @@
     >
       <v-row class="mt-15 px-6 pt-4 pb-8">
         <v-col cols="12" class="img">
-          <img
+          <!-- <img
             width="250"
             height="250"
             style="border-radius: 50px"
             src="../../assets/images/kimbup.jpeg"
             draggable="false"
-          />
+          /> -->
+          <v-card color="primary" style="width: 200px; height: 200px"> </v-card>
         </v-col>
         <v-col cols="12" class="img">
           <v-row>
@@ -91,7 +92,11 @@ export default {
       },
     };
   },
-  mounted() {},
+  mounted() {
+    if (secureStorage.getItem("token")) {
+      this.$router.replace("/Sell");
+    }
+  },
   methods: {},
   computed: {
     ...mapGetters("authen", ["isLoading"]),
@@ -101,28 +106,56 @@ export default {
     async login() {
       try {
         if (this.username || this.password) {
-          const res = await this.Login({
+          const body = {
             username: this.username,
             password: this.password,
-          });
-          if (res?.message == "success") {
-            setTimeout(() => {
-              this.$router.replace({ path: "/Sell" });
-            }, 1000);
+          };
+          const resp = await this.Login(body);
+          if (resp?.data?.access_token && resp.status == 201) {
+            secureStorage.setItem("token", resp?.data?.access_token);
+            this.$swal({
+              toast: true,
+              text: "ເຂົ້າສູ່ລະບົບສຳເລັດ!",
+              type: "success",
+              timer: 1500,
+              timerProgressBar: true,
+              showConfirmButton: false,
+              position: "top-end",
+            });
+            this.$router.replace("/Sell");
           } else {
             this.$swal({
-              title: res?.message,
-              text: res?.message,
-              type: "warning",
-              allowOutsideClick: false,
-              allowEscapeKey: false,
-              timer: 4000,
+              toast: true,
+              text: "ກະລຸນາລອງໃຫມ່ອີກຄັ້ງ!",
+              type: "error",
+              timer: 1500,
               timerProgressBar: true,
+              showConfirmButton: false,
+              position: "top-end",
             });
           }
+        } else {
+          this.$swal({
+            toast: true,
+            text: "ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ!",
+            type: "warning",
+            timer: 1500,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            position: "top-end",
+          });
         }
       } catch (error) {
         console.log(error);
+        this.$swal({
+          toast: true,
+          text: "ກະລຸນາລອງໃຫມ່ອີກຄັ້ງ!",
+          type: "error",
+          timer: 1500,
+          timerProgressBar: true,
+          showConfirmButton: false,
+          position: "top-end",
+        });
       }
     },
   },

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex">
-        <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
       <div>
         <v-btn
           style="font-size: 14px; margin-top: 10px"
@@ -60,7 +60,9 @@
               <p style="font-size: 14px" class="ma-0">
                 ວັນທີ: {{ currentDate }}
               </p>
-              <p style="font-size: 14px" class="ma-0">ພະນັກງານ: {{ userinfo.username }}</p>
+              <p style="font-size: 14px" class="ma-0">
+                ພະນັກງານ: {{ userinfo?.username }}
+              </p>
             </div>
             <div
               style="
@@ -85,7 +87,7 @@
                   border-bottom-left-radius: 3px;
                 "
               >
-                ປ່ຽນ
+                ຊື້
               </div>
               <div
                 style="
@@ -114,10 +116,14 @@
             class="ma-0"
           >
             <div class="py-0">
-              <p style="font-size: 16px; font-weight: 600" class="ma-0">ລາຍການຊື້ເຂົ້າ</p>
+              <p style="font-size: 16px; font-weight: 600" class="ma-0">
+                ລາຍການຊື້ເຂົ້າ
+              </p>
             </div>
             <div class="text-right py-0">
-              <p style="font-size: 16px; font-weight: 600" class="ma-0">ເປັນເງິນ</p>
+              <p style="font-size: 16px; font-weight: 600" class="ma-0">
+                ເປັນເງິນ
+              </p>
             </div>
           </div>
           <!-- <div
@@ -270,6 +276,7 @@ export default {
   watch: {},
   computed: {
     ...mapGetters("buy", ["listItems"]),
+    ...mapState("customer", ["selectingCus"]),
   },
   methods: {
     async OnPrintBill() {

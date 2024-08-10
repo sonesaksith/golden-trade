@@ -33,10 +33,10 @@
           >
             <!-- v-if="numberCart > 0" -->
             <v-badge
-              v-if="listItems.length > 0"
+              v-if="listItemsSellOutToChange.length > 0"
               bordered
               color="primary"
-              :content="listItems.length"
+              :content="listItemsSellOutToChange.length"
             >
               <v-icon color="goldColor">mdi-cart</v-icon>
             </v-badge>
@@ -44,20 +44,20 @@
           </v-col>
 
           <!-- <treeselect
-              v-model="multiGold"
-              :multiple="multiple"
-              :clearable="clearable"
-              :searchable="searchable"
-              :open-on-click="openOnClick"
-              :clear-on-select="clearOnSelect"
-              :options="options"
-              :flatten-search-results="true"
-              :limit="15"
-              :max-height="200"
-            /> -->
+                v-model="multiGold"
+                :multiple="multiple"
+                :clearable="clearable"
+                :searchable="searchable"
+                :open-on-click="openOnClick"
+                :clear-on-select="clearOnSelect"
+                :options="options"
+                :flatten-search-results="true"
+                :limit="15"
+                :max-height="200"
+              /> -->
 
           <!-- {{ multi
-            Gold }} -->
+              Gold }} -->
         </v-row>
       </v-col>
       <v-col cols="12" :sm="cartStore == true ? 8 : 12">
@@ -98,10 +98,10 @@
             >
               <!-- v-if="numberCart > 0" -->
               <v-badge
-                v-if="listItems.length > 0"
+                v-if="listItemsSellOutToChange.length > 0"
                 bordered
                 color="primary"
-                :content="listItems.length"
+                :content="listItemsSellOutToChange.length"
               >
                 <v-icon color="goldColor">mdi-cart</v-icon>
               </v-badge>
@@ -190,7 +190,7 @@
                   style="overflow-y: auto; height: 50vh"
                 >
                   <br />
-                  <div v-if="listItems?.length == 0">
+                  <div v-if="listItemsSellOutToChange?.length == 0">
                     <WidgetNoData
                       message="ບໍ່​ມີ​ລາຍການຂາຍ"
                       width="150"
@@ -200,7 +200,7 @@
                   <v-row
                     v-else
                     class="px-4 py-1"
-                    v-for="(item, index) in listItems"
+                    v-for="(item, index) in listItemsSellOutToChange"
                     :key="index"
                   >
                     <v-col
@@ -218,11 +218,11 @@
                     >
                       <div style="display: flex; align-items: center">
                         <!-- <img
-                    src="/goldbar.png"
-                    width="80"
-                    height="80"
-                    style="border-radius: 5px"
-                  /> -->
+                      src="/goldbar.png"
+                      width="80"
+                      height="80"
+                      style="border-radius: 5px"
+                    /> -->
                         <div style="margin-left: 10px">
                           <p style="font-size: 16px; color: #000; margin: 0">
                             {{ item.name }} ({{ item.shape
@@ -236,8 +236,8 @@
                             ລາຄາ/ຈໍາ​ນວນ: {{ $formatnumber(item.price) }}
                           </p>
                           <!-- <p style="font-size: 14px; color: #000; margin: 0">
-                      ຄ່າຫຼູ້ຍຫ້ຽນ: {{ $formatnumber(item.lost) }}
-                    </p> -->
+                        ຄ່າຫຼູ້ຍຫ້ຽນ: {{ $formatnumber(item.lost) }}
+                      </p> -->
                         </div>
                       </div>
                       <div
@@ -252,7 +252,7 @@
                         <v-icon
                           class="icon ma-0"
                           small
-                          @click="SET_DECREMENT(index), SET_AMOUNT_ALL(item)"
+                          @click="SET_DECREMENT_SELL_TO_CHANGE(index)"
                           style="
                             color: #000;
                             cursor: pointer;
@@ -267,7 +267,7 @@
                         <v-icon
                           class="icon ma-0"
                           small
-                          @click="SET_INCREMENT(index), SET_AMOUNT_ALL(item)"
+                          @click="SET_INCREMENT_SELL_TO_CHANGE(index)"
                           style="color: #000; cursor: pointer; margin-left: 4px"
                         >
                           mdi-plus
@@ -276,48 +276,35 @@
                     </v-col>
                   </v-row>
                 </v-card-text>
-                <!-- <div>
-                  <v-text-field
-                    value="John Doe"
-                    label="Outlined"
-                    outlined
-                    readonly
-                    dense
-                  ></v-text-field>
-                </div>
-                <div>
-                  <v-text-field
-                    value="John Doe"
-                    label="Outlined"
-                    outlined
-                    readonly
-                    dense
-                  ></v-text-field>
-                </div> -->
                 <v-card-actions style="height: 10vh">
                   <v-btn
-                    :disabled="listItems?.length == 0"
+                    :disabled="listItemsSellOutToChange?.length == 0"
                     style="width: 48%; color: #fff; border-radius: 5px"
                     color="error"
-                    @click="ClearAllData"
+                    @click="ClearAllDataSellToChange"
                   >
                     ລົບທັງໝົດ
                   </v-btn>
                   <v-btn
                     v-if="!isExchange"
-                    :disabled="listItems?.length == 0"
+                    :disabled="listItemsSellOutToChange?.length == 0"
                     style="width: 48%; color: #fff; border-radius: 5px"
                     color="goldColor"
-                    @click="Next()"
+                    @click="myChildFuncPrint()"
                   >
                     ຕໍ່ໄປ
                   </v-btn>
                   <v-btn
                     v-else
-                    :disabled="listItems?.length == 0"
+                    :disabled="listItemsSellOutToChange?.length == 0"
                     style="width: 48%; color: #fff; border-radius: 5px"
                     color="goldColor"
-                    @click="handlePressNext()"
+                    @click="
+                      () => {
+                        this.rightDrawer = !this.rightDrawer;
+                        handlePressNext();
+                      }
+                    "
                   >
                     ຕໍ່ໄປ
                   </v-btn>
@@ -326,23 +313,23 @@
             </v-col></v-row
           >
           <!-- <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>Right Drawer Item 1</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>Right Drawer Item 2</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item> -->
+              <v-list-item-content>
+                <v-list-item-title>Right Drawer Item 1</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>Right Drawer Item 2</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item> -->
           <!-- Add more items as needed -->
         </v-list>
       </v-navigation-drawer>
       <!-- :style="(isReportSell = true ? 'display:none' : 'display:none')" -->
     </v-row>
-    <!-- <div :style="(isReportSell = true ? 'display:none' : 'display:none')">
+    <div :style="(isReportSell = true ? 'display:none' : 'display:none')">
       <SellPrintSell ref="myGlobalTable" />
-    </div> -->
+    </div>
   </div>
 </template>
 <script>
@@ -580,7 +567,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("sellStore", ["listItems"]),
+    ...mapGetters("change", ["listItemsSellOutToChange"]),
 
     filterTable() {
       if (
@@ -616,11 +603,10 @@ export default {
   },
   mounted() {
     this.setHeader("ຂາຍອອກ");
-    this.$store.commit("customer/SET_GOING_TO_BILL", "sell");
   },
 
   watch: {
-    listItems: function (val) {
+    listItemsSellOutToChange: function (val) {
       if (val.length == 1) {
         this.rightDrawer = true;
       }
@@ -628,19 +614,15 @@ export default {
   },
   methods: {
     ...mapActions("main", ["setHeader"]),
-    ...mapActions("sellStore", ["ClearAllData"]),
-
-    ...mapActions("sellStore", ["ClearAllData", "addOrUpdateItem"]),
-    ...mapMutations("sellStore", [
-      "SET_ITEMS",
-      "SET_DECREMENT",
-      "SET_INCREMENT",
-      "SET_AMOUNT_ALL",
+    ...mapActions("change", [
+      "ClearAllDataSellToChange",
+      "addOrUpdateItemSellToChange",
     ]),
-    Next() {
-      console.log(this.listItems);
-      this.$router.push("/customer/");
-    },
+    ...mapMutations("change", [
+      "SET_ITEMS_SELL_TO_CHANGE",
+      "SET_DECREMENT_SELL_TO_CHANGE",
+      "SET_INCREMENT_SELL_TO_CHANGE",
+    ]),
     myChildFuncPrint() {
       // this.loadingPrint = true
       this.$refs.myGlobalTable.OnPrintBill();
@@ -672,7 +654,8 @@ export default {
         price: item.sellGold,
         amount: this.modelAmount,
       };
-      this.addOrUpdateItem(newItem);
+      console.log(newItem);
+      this.addOrUpdateItemSellToChange(newItem);
     },
     ShowCart() {
       // console.log("test");

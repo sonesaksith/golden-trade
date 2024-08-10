@@ -1,18 +1,26 @@
 <template>
   <div>
     <v-row style="height: 100vh" class="pa-2">
-      <v-col cols="12" sm="12" md="5" lg="5">
-        <v-card style="height: 800px" class="rounded-lg" elevation="4">
-          <v-card-title>
+      <v-col
+        cols="12"
+        sm="12"
+        :md="listItemsBuyinToChange.length > 0 ? '6' : '12'"
+        :lg="listItemsBuyinToChange.length > 0 ? '7' : '12'"
+      >
+        <v-card style="height: 700px" class="rounded-xl" elevation="4">
+          <v-card-title style="height: 60px">
             <h4>
               <span style="color: brown">{{ "#" }}</span>
               &nbsp;ເພີ່ມລາຍການຊື້ເຂົ້າ
             </h4>
           </v-card-title>
-          <v-card-text class="px-4 py-0" style="overflow-y: auto">
+          <v-card-text
+            class="px-4 py-0"
+            style="height: 580px; overflow-y: auto"
+          >
             <v-form ref="form" v-model="valid" lazy-validation>
               <v-row class="my-2">
-                <v-col cols="12">
+                <v-col cols="6">
                   <v-text-field
                     v-model="modelPurity"
                     label="ຄວາມບໍລິສຸດທອງ"
@@ -23,7 +31,7 @@
                     class="rounded-md"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12">
+                <v-col cols="6">
                   <v-text-field
                     v-model="modelLost"
                     @keyup="fotmatLost()"
@@ -39,7 +47,7 @@
                     </template>
                   </v-text-field>
                 </v-col>
-                <v-col cols="12">
+                <v-col cols="6">
                   <v-select
                     v-model="modelGoldType"
                     :items="goldTypes"
@@ -53,7 +61,7 @@
                     clearable
                   ></v-select>
                 </v-col>
-                <v-col cols="12" v-if="modelGoldType == 'ທອງຮູບປະພັນ'">
+                <v-col cols="6" v-if="modelGoldType == 'ທອງຮູບປະພັນ'">
                   <v-select
                     v-model="modelGoldShape"
                     :items="goldShape"
@@ -67,7 +75,7 @@
                   ></v-select>
                   <!-- :rules="[(v) => !!v || 'ກະລຸນາເລືອກຮູບປະພັນ']" -->
                 </v-col>
-                <v-col cols="12" v-if="modelGoldType == 'ທອງຮູບປະພັນ'">
+                <v-col cols="6" v-if="modelGoldType == 'ທອງຮູບປະພັນ'">
                   <v-select
                     v-model="modelGoldShapeLine"
                     :items="goldShapeLine"
@@ -147,21 +155,15 @@
               </v-row>
             </v-form>
           </v-card-text>
-          <v-card-actions
-            style="
-              justify-content: center;
-              position: absolute;
-              bottom: 10px;
-              width: 100%;
-            "
-          >
+          <v-card-actions style="height: 60px; justify-content: center">
             <v-btn
-              style="width: 50%; color: #fff; border-radius: 5px"
+              style="width: 45%; color: #fff; border-radius: 5px"
               color="error"
               @click="clear"
             >
               ລຶບທັງໝົດ
             </v-btn>
+            &nbsp;&nbsp;
             <v-btn
               :disabled="
                 !modelPurity ||
@@ -170,7 +172,7 @@
                 !modelWeightType ||
                 !modelPrice
               "
-              style="width: 50%; color: #fff; border-radius: 5px"
+              style="width: 45%; color: #fff; border-radius: 5px"
               color="success"
               @click="addListItems"
             >
@@ -180,131 +182,49 @@
           </v-card-actions>
         </v-card>
       </v-col>
-      <v-col cols="12" sm="12" md="7" lg="7">
-        <v-card style="height: 395px" class="rounded-lg mb-2" elevation="4">
-          <v-card-text>
-            <v-row>
-              <v-col cols="8">
-                <v-text-field
-                  v-model="search"
-                  outlined
-                  dense
-                  hide-details="auto"
-                  class="rounded-lg"
-                  label="ຄົ້ນຫາ"
-                >
-                  <template #append>
-                    <v-btn small icon class="goldColor" color="white">
-                      <v-icon small>mdi-magnify</v-icon>
-                    </v-btn>
-                  </template>
-                </v-text-field>
-              </v-col>
-              <v-col cols="4">
-                <v-btn
-                  style="width: 100%; color: #fff; border-radius: 5px"
-                  color="success"
-                  @click="openAdd"
-                >
-                  ເພີ່ມລູກຄ້າ
-                </v-btn>
-              </v-col>
-              <v-col cols="12" v-if="!selectedCustomer">
-                <v-data-table
-                  :headers="headers"
-                  :items="listCustomer || []"
-                  class="elevation-1 rounded-lg"
-                  :page.sync="page"
-                  :items-per-page="limit"
-                  fixed-header
-                  hide-default-footer
-                  height="250"
-                  loading-text="ກຳລັງໂຫລດຂໍ້ມູນ..."
-                  no-data-text="ບໍ່ມີຂໍ້ມູນ"
-                  :search="search"
-                  @page-count="length = $event"
-                >
-                  <template #[`item.no`]="{ index }">
-                    <span>{{ index + 1 + gotoPage }} </span>
-                  </template>
-                  <template #item.name="{ index, item }">
-                    <div>{{ item.name }} {{ item.surname }}</div>
-                  </template>
-                  <template #item.tel="{ index, item }">
-                    <div>{{ item.tel ? item.tel : "-" }}</div>
-                  </template>
-                  <template #item.address="{ index, item }">
-                    <div>{{ item.address ? item.address : "-" }}</div>
-                  </template>
-                  <template #item.action="{ index, item }">
-                    <v-container align="center">
-                      <v-icon @click="selectMyCustomer(item)" color="success">
-                        mdi-check-bold
-                      </v-icon>
-                    </v-container>
-                  </template>
-                </v-data-table>
-                <v-pagination
-                  v-model="page"
-                  :length="length"
-                  :total-visible="limit"
-                  @input="NextPage"
-                  circle
-                  color="goldColor"
-                ></v-pagination>
-              </v-col>
-              <v-col cols="12" v-else>
-                <v-card
-                  style="
-                    height: auto;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                  "
-                >
-                  <v-card-text
-                    style="
-                      display: flex;
-                      align-items: center;
-                      justify-content: space-between;
-                    "
-                  >
-                    <div>
-                      <p style="font-size: 16px; font-weight: 600; color: #000">
-                        ຊື່ ແລະ ນາມສະກຸນ: {{ myCustomer.name }}
-                        {{ myCustomer.surname }}
-                      </p>
-                      <p style="font-size: 16px; font-weight: 600; color: #000">
-                        ເບີໂທ: {{ myCustomer.tel }}
-                      </p>
-                      <p style="font-size: 16px; font-weight: 600; color: #000">
-                        ທີ່ຢູ່: {{ myCustomer.address }}
-                      </p>
-                    </div>
-                  </v-card-text>
-                </v-card>
-                <img
-                  src="../../assets/images/icon-cancel.png"
-                  class="remove_cus"
-                  @click="removeMyCustomer()"
-                />
-              </v-col>
-            </v-row>
-          </v-card-text>
-        </v-card>
-        <v-card style="height: 395px" class="rounded-lg" elevation="4">
-          <v-card-title>
+      <v-col
+        cols="12"
+        sm="12"
+        md="6"
+        lg="5"
+        v-if="listItemsBuyinToChange.length > 0"
+      >
+        <v-card style="height: 700px" class="rounded-xl" elevation="4">
+          <v-card-title style="height: 60px">
             <h4>
               <span style="color: brown">{{ "#" }}</span>
               &nbsp;ລາຍການຊື້ເຂົ້າ
             </h4>
             <v-spacer></v-spacer>
+            <div>
+              <v-btn
+                v-if="!isExchange"
+                :loading="loadingPDF"
+                style="font-size: 14px; margin-top: 10px"
+                class="rounded-lg ml-1 mr-1 btn-pdf"
+                @click="pdf()"
+              >
+                <v-icon>mdi-file-pdf-box</v-icon> &nbsp; PDF
+              </v-btn>
+            </div>
+            <div>
+              <v-btn
+                v-if="!isExchange"
+                :loading="loadingPrint"
+                outlined
+                style="font-size: 14px; margin-top: 10px"
+                class="rounded-lg ml-1 mr-1"
+                @click="print()"
+              >
+                <v-icon>mdi-printer</v-icon> &nbsp; ພິມ
+              </v-btn>
+            </div>
           </v-card-title>
           <v-card-text
             class="px-4 py-0"
-            style="overflow-y: auto; height: 270px"
+            style="height: 580px; overflow-y: auto"
           >
-            <div v-if="listItems?.length == 0">
+            <div v-if="listItemsBuyinToChange?.length == 0">
               <WidgetNoData
                 message="ບໍ່​ມີ​ລາຍການຊື້ເຂົ້າ"
                 width="150"
@@ -314,7 +234,7 @@
             <v-row
               v-else
               class="px-2 py-2"
-              v-for="(item, index) in listItems"
+              v-for="(item, index) in listItemsBuyinToChange"
               :key="index"
             >
               <v-col
@@ -322,7 +242,7 @@
                 style="
                   background-color: antiquewhite;
                   border-radius: 4px;
-                  height: auto;
+                  height: 100px;
                   position: relative;
                   display: flex;
                   align-items: center;
@@ -341,7 +261,7 @@
                   <div style="margin-left: 10px">
                     <p
                       style="
-                        font-size: 14px;
+                        font-size: 16px;
                         color: #000;
                         margin: 0;
                         min-width: 180px;
@@ -362,11 +282,9 @@
                     <p style="font-size: 14px; color: #000; margin: 0">
                       ນ້ຳໜັກ: {{ $formatnumber(item.weight) }}
                       {{ item.weightType }}
-                    </p>
-                    <p style="font-size: 14px; color: #000; margin: 0">
                       {{
                         item.purity
-                          ? `ທອງຄຳບໍລິສຸດ: ` + item.purity + `%`
+                          ? `, ທອງຄຳບໍລິສຸດ: ` + item.purity + `%.`
                           : null
                       }}
                     </p>
@@ -383,14 +301,14 @@
                     display: flex;
                     align-items: center;
                     position: absolute;
-                    bottom: 4px;
-                    right: 4px;
+                    bottom: 8px;
+                    right: 8px;
                   "
                 >
                   <v-icon
                     class="icon ma-0"
                     small
-                    @click="SET_DECREMENT(index)"
+                    @click="SET_DECREMENT_BUY_TO_CHANGE(index)"
                     style="color: #000; cursor: pointer; margin-right: 4px"
                   >
                     mdi-minus
@@ -401,7 +319,7 @@
                   <v-icon
                     class="icon ma-0"
                     small
-                    @click="SET_INCREMENT(index)"
+                    @click="SET_INCREMENT_BUY_TO_CHANGE(index)"
                     style="color: #000; cursor: pointer; margin-left: 4px"
                   >
                     mdi-plus
@@ -410,62 +328,40 @@
               </v-col>
             </v-row>
           </v-card-text>
-          <v-card-actions
-            style="
-              justify-content: center;
-              position: absolute;
-              bottom: 10px;
-              width: 100%;
-            "
-          >
+          <v-card-actions style="height: 60px">
             <v-btn
-              :disabled="listItems?.length == 0 || !selectedCustomer"
-              :loading="loadingPdf"
-              class="rounded-lg btn-pdf"
-              style="width: 25%"
-              @click="pdf()"
+              v-if="!isExchange"
+              :disabled="listItemsBuyinToChange?.length == 0"
+              style="width: 100%; color: #fff; border-radius: 5px"
+              color="goldColor"
+              @click="buy"
             >
-              <v-icon>mdi-file-pdf-box</v-icon> PDF
+              ຊື້ເຂົ້າ
             </v-btn>
             <v-btn
-              :disabled="listItems?.length == 0 || !selectedCustomer"
-              :loading="loadingPrint"
-              outlined
-              class="rounded-lg"
-              style="width: 25%"
-              @click="print()"
+              v-else
+              :disabled="listItemsBuyinToChange?.length == 0"
+              style="width: 100%; color: #fff; border-radius: 5px"
+              color="goldColor"
+              @click="handlePressNext()"
             >
-              <v-icon>mdi-printer</v-icon> ພິມ
-            </v-btn>
-            <v-btn
-              :disabled="listItems?.length == 0 || !selectedCustomer"
-              style="width: 45%; color: #fff; border-radius: 5px"
-              color="success"
-              @click="comfirm"
-            >
-              ຢືນຢັນ
+              ຕໍ່ໄປ
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
-
-    <BuyAddCustomer
-      ref="myCompAddCus"
-      @selectMyCustomer="selectMyCustomer"
-      @setLength="setLength"
-    />
     <div style="display: none">
-      <BuyBill
+      <PrintBuy
+        v-if="listItemsBuyinToChange != '' && !loading"
+        message="ໃບບີນ"
+        :setHeader="headerPDF"
+        :list="listItemsBuyinToChange"
+        :setFooter="listFooter"
+        :mergeTable="mergeTable"
+        setSty="portrait"
         :key="1"
-        :myCus="myCustomer"
-        :billNo="myBillOn"
-        :totalPrice="totalPrice"
-        :totalLost="totalLost"
-        :totalPayment="totalPayment"
-        :currentDateTime="updateDateTime().currentDateTime"
-        :currentDate="updateDateTime().currentDate"
-        ref="myCompBill"
+        ref="myCompPrint"
       />
     </div>
   </div>
@@ -479,54 +375,6 @@ export default {
       valid: true,
       loadingPDF: false,
       loadingPrint: false,
-      loadingPdf: false,
-      search: "",
-      page: 1,
-      length: 0,
-      limit: 10,
-      gotoPage: 0,
-      headers: [
-        {
-          text: "ລຳດັບ",
-          value: "no",
-          width: "50px",
-          class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-2",
-          sortable: false,
-          align: "center",
-        },
-        {
-          text: "ຊື່ ແລະ ນາມສະກຸນ",
-          value: "name",
-          width: "120px",
-          class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-2",
-          sortable: false,
-          align: "center",
-        },
-        {
-          text: "ເບີໂທ",
-          value: "tel",
-          width: "120px",
-          class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-5",
-          align: "center",
-          sortable: false,
-        },
-        {
-          text: "ທີ່ຢູ່",
-          value: "address",
-          width: "120px",
-          class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-5",
-          sortable: false,
-          align: "center",
-        },
-        {
-          text: "ເລືອກລູກຄ້າ",
-          value: "action",
-          width: "120px",
-          class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-5",
-          sortable: false,
-          align: "center",
-        },
-      ],
       modelGoldType: "ທອງຮູບປະພັນ",
       modelPurity: 99,
       manualPrice: false,
@@ -689,18 +537,13 @@ export default {
       mergeTable: { text: 9, value: 1 },
       listFooter: [],
       loading: false,
-      totalPrice: 0,
-      totalLost: 0,
-      totalPayment: 0,
-      currentDateTime: "",
-      currentDate: "",
-      myBillOn: "",
     };
   },
-  mounted() {
-    this.myBillOn = this.generateRandomNumber(10);
-    this.setLength();
+  props: {
+    isExchange: { type: Boolean, default: false },
+    handlePressNext: { type: Function },
   },
+  mounted() {},
   watch: {
     modelWeightAmount: function (val) {
       if (this.manualPrice == false) {
@@ -777,37 +620,79 @@ export default {
         this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
       }
     },
-    modelGoldType: function (val) {
-      if (val !== "ທອງຮູບປະພັນ") {
-        this.modelGoldShape = "";
-        this.modelGoldShapeLine = "";
-      }
-    },
-    listItems: function (val) {
-      if (val.length == 0) {
-        this.myBillOn = this.generateRandomNumber(10);
-      }
-    },
   },
   computed: {
-    ...mapGetters("buy", ["listItems"]),
-    ...mapState("buy", ["selectedCustomer", "myCustomer"]),
-    ...mapState("customer", ["listCustomer"]),
+    ...mapGetters("change", ["listItemsBuyinToChange"]),
   },
   methods: {
-    ...mapMutations("buy", [
-      "SET_ITEMS",
-      "SET_DECREMENT",
-      "SET_INCREMENT",
-      "SET_HISTORY_ITEMS",
-      "SET_CUSTOMER",
-      "SET_CUSTOMER_BOOL",
+    ...mapMutations("change", [
+      "SET_ITEMS_BUY_TO_CHANGE",
+      "SET_DECREMENT_BUY_TO_CHANGE",
+      "SET_INCREMENT_BUY_TO_CHANGE",
     ]),
-    ...mapActions("buy", ["setData"]),
+    ...mapActions("change", ["setDataBuytoChange"]),
+    async print() {
+      await this.callPDF();
+      try {
+        this.loadingPrint = true;
+        this.$refs.myCompPrint.OnPrintBill();
+      } catch (error) {
+        console.log(error);
+        this.$swal({
+          text: "ບໍ່ມີຂໍ້ມູນ",
+          type: "info",
+          timer: 5000,
+          timerProgressBar: true,
+          showConfirmButton: true,
+        });
+      } finally {
+        this.loadingPrint = false;
+      }
+    },
+    async pdf() {
+      await this.callPDF();
+      try {
+        this.loadingPDF = true;
+        if (this.listItemsBuyinToChange != "") {
+          this.$refs.myCompPrint.downloadPDF();
+        } else {
+          this.$swal({
+            text: "ບໍ່ມີຂໍ້ມູນ",
+            type: "info",
+            timer: 5000,
+            timerProgressBar: true,
+            showConfirmButton: true,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.loadingPDF = false;
+      }
+    },
+    async callPDF() {
+      this.loading = true;
+      try {
+        const res = await this.setDataBuytoChange(this.listItemsBuyinToChange);
+        let totalPrice = 0;
+        let totalAmount = 0;
+        this.listItemsBuyinToChange.forEach((item) => {
+          totalPrice += parseInt(item.price, 10);
+          totalAmount += item.amount;
+        });
+        this.listFooter = [
+          { text: "ທັງໝົດ", value: totalAmount },
+          { text: "ລາຄາທັງໝົດ", value: totalPrice },
+        ];
+      } catch (error) {
+      } finally {
+        this.loading = false;
+      }
+    },
     addListItems() {
       try {
         if (this.$refs.form.validate()) {
-          this.SET_ITEMS({
+          this.SET_ITEMS_BUY_TO_CHANGE({
             purity: this.modelPurity,
             name: this.modelGoldType,
             shape: this.modelGoldShape,
@@ -828,21 +713,13 @@ export default {
           this.modelAmount = 1;
           this.modelPrice = "";
           this.modelLost = "";
-          this.totalPrice = 0;
-          this.totalLost = 0;
-          this.totalPayment = 0;
-          this.listItems.forEach((item) => {
-            this.totalPrice += parseInt(
-              Number(item.price) * Number(item.amount),
-              10
-            );
-            this.totalLost += parseInt(Number(item.lost));
-          });
-          this.totalPayment = this.totalPrice - this.totalLost;
         }
       } catch (error) {
         console.log(error);
       }
+    },
+    buy() {
+      console.log(this.listItemsBuyinToChange);
     },
     clear() {
       try {
@@ -911,124 +788,6 @@ export default {
       }
       this.modelLost = val;
     },
-    openAdd() {
-      this.$refs.myCompAddCus.dialog = true;
-    },
-    selectMyCustomer(cus) {
-      this.SET_CUSTOMER(cus);
-      this.SET_CUSTOMER_BOOL(true);
-    },
-    removeMyCustomer() {
-      this.SET_CUSTOMER({});
-      this.SET_CUSTOMER_BOOL(false);
-    },
-    comfirm() {
-      try {
-        this.$swal({
-          text: "ເຈົ້າຕ້ອງການພິມໃບບີນບໍ?",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          cancelButtonText: "ຍົກເລີກ",
-          confirmButtonText: "ຕົກລົງ",
-          allowOutsideClick: false,
-        }).then(async (result) => {
-          if (result.value) {
-            this.print();
-            let item = {
-              listItems: this.listItems,
-              cus: this.myCustomer,
-              billNo: this.myBillOn,
-              date: this.updateDateTime().currentDateTime,
-            };
-            this.SET_HISTORY_ITEMS(item);
-            this.setData([]);
-          } else {
-            let item = {
-              listItems: this.listItems,
-              cus: this.myCustomer,
-              billNo: this.myBillOn,
-              date: this.updateDateTime().currentDateTime,
-            };
-            this.SET_HISTORY_ITEMS(item);
-            this.setData([]);
-            this.removeMyCustomer();
-          }
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    async print() {
-      this.loadingPrint = true;
-      try {
-        this.$refs.myCompBill.OnPrintBill();
-      } catch (error) {
-        this.$swal({
-          text: "ບໍ່ມີຂໍ້ມູນ",
-          type: "info",
-          timer: 5000,
-          timerProgressBar: true,
-          showConfirmButton: true,
-        });
-      } finally {
-        this.loadingPrint = false;
-      }
-    },
-    async pdf() {
-      this.loadingPdf = true;
-      try {
-        this.$refs.myCompBill.OnPrintPdf();
-      } catch (error) {
-        this.$swal({
-          text: "ບໍ່ມີຂໍ້ມູນ",
-          type: "info",
-          timer: 5000,
-          timerProgressBar: true,
-          showConfirmButton: true,
-        });
-      } finally {
-        this.loadingPdf = false;
-      }
-    },
-    generateRandomNumber(length) {
-      let result = "";
-      const characters = "0123456789";
-      const charactersLength = characters.length;
-      for (let i = 0; i < length; i++) {
-        result += characters.charAt(
-          Math.floor(Math.random() * charactersLength)
-        );
-      }
-      return result;
-    },
-    updateDateTime() {
-      try {
-        const now = new Date();
-        const day = String(now.getDate()).padStart(2, "0");
-        const month = String(now.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
-        const year = now.getFullYear();
-        const hours = String(now.getHours()).padStart(2, "0");
-        const minutes = String(now.getMinutes()).padStart(2, "0");
-        const seconds = String(now.getSeconds()).padStart(2, "0");
-        this.currentDateTime = `${day}/${month}/${year},${hours}:${minutes}:${seconds}`;
-        this.currentDate = `${day}/${month}/${year}`;
-        let date = {
-          currentDate: this.currentDate,
-          currentDateTime: this.currentDateTime,
-        };
-        return date;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    NextPage() {
-      this.gotoPage = this.page * this.limit - this.limit;
-    },
-    setLength() {
-      this.length = Math.ceil(this.listCustomer?.length / this.limit);
-    },
   },
 };
 </script>
@@ -1045,20 +804,10 @@ export default {
     display: none;
   }
 }
-
-.remove_cus {
-  cursor: pointer;
-  width: 25px;
-  height: 25px;
-  position: absolute;
-  top: 17.5%;
-  right: 1%;
-  overflow: hidden;
-  text-indent: -9999px;
-}
-
 .btn-pdf {
   color: white;
+  border-style: solid;
+  border-color: #e20303;
   background: #e20303 !important;
 }
 </style>
