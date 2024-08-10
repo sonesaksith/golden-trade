@@ -106,34 +106,34 @@ export default {
     async login() {
       try {
         if (this.username || this.password) {
-          const body = {
-            username: this.username,
-            password: this.password,
-          };
-          const resp = await this.Login(body);
-          if (resp?.data?.access_token && resp.status == 201) {
-            secureStorage.setItem("token", resp?.data?.access_token);
-            this.$swal({
-              toast: true,
-              text: "ເຂົ້າສູ່ລະບົບສຳເລັດ!",
-              type: "success",
-              timer: 1500,
-              timerProgressBar: true,
-              showConfirmButton: false,
-              position: "top-end",
-            });
-            this.$router.replace("/Sell");
-          } else {
-            this.$swal({
-              toast: true,
-              text: "ກະລຸນາລອງໃຫມ່ອີກຄັ້ງ!",
-              type: "error",
-              timer: 1500,
-              timerProgressBar: true,
-              showConfirmButton: false,
-              position: "top-end",
-            });
-          }
+          // const body = {
+          //   username: this.username,
+          //   password: this.password,
+          // };
+          // const resp = await this.Login(body);
+          // if (resp?.data?.access_token && resp.status == 201) {
+          //   secureStorage.setItem("token", resp?.data?.access_token);
+          //   this.$swal({
+          //     toast: true,
+          //     text: "ເຂົ້າສູ່ລະບົບສຳເລັດ!",
+          //     type: "success",
+          //     timer: 1500,
+          //     timerProgressBar: true,
+          //     showConfirmButton: false,
+          //     position: "top-end",
+          //   });
+          this.$router.replace("/Sell");
+          // } else {
+          //   this.$swal({
+          //     toast: true,
+          //     text: "ກະລຸນາລອງໃຫມ່ອີກຄັ້ງ!",
+          //     type: "error",
+          //     timer: 1500,
+          //     timerProgressBar: true,
+          //     showConfirmButton: false,
+          //     position: "top-end",
+          //   });
+          // }
         } else {
           this.$swal({
             toast: true,
