@@ -117,8 +117,6 @@ export default {
     },
     logout() {
       secureStorage.removeItem("token");
-      secureStorage.removeItem("userinfo");
-      this.$axios.setHeader("Authorization", null);
       this.$router.replace("/authen/login");
     },
   },
