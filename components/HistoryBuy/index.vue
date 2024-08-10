@@ -139,7 +139,6 @@ export default {
     };
   },
   mounted() {
-    // console.log(this.historyItems);
   },
   watch: {},
 
@@ -150,7 +149,6 @@ export default {
     ...mapMutations("buy", ["SET_NEW_ITEMS"]),
     viewDetail(item) {
       try {
-        console.log(item);
         this.SET_NEW_ITEMS(item?.listItems);
         let totalPrice = 0;
         let totalLost = 0;
@@ -163,7 +161,6 @@ export default {
           totalLost += parseInt(Number(item.lost));
         });
         totalPayment = totalPrice - totalLost;
-  
         this.$refs["myCompHisView"].dialog = true;
         this.$refs["myCompHisView"].items = item;
         this.$refs["myCompHisView"].myCus = item?.cus;

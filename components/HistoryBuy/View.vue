@@ -143,15 +143,12 @@ export default {
       ],
     };
   },
-  mounted() {
-    console.log(this.items);
-  },
+  mounted() {},
   computed: {},
   methods: {
     ...mapMutations("buy", ["SET_NEW_ITEMS"]),
     async print() {
       try {
-        console.log(this.items);
         this.$refs.myCompBill.OnPrintBill();
       } catch (error) {
         console.log(error);
