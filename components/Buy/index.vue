@@ -270,18 +270,6 @@
                       ທີ່ຢູ່: {{ myCustomer.address }}
                     </p>
                   </v-col>
-                  <!-- <v-col
-                    cols="12"
-                    style="
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
-                    "
-                  >
-                    <v-btn @click="removeMyCustomer()">
-                      ປ່ຽນລູກຄ້າ
-                    </v-btn>
-                  </v-col> -->
                 </v-row>
               </v-col>
             </v-row>
