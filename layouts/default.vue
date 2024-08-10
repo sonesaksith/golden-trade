@@ -62,7 +62,7 @@
 
     <v-main>
       <GlobalsHeader />
-      <v-container fluid class="pa-0" style="margin-top: 57px">
+      <v-container fluid>
         <Nuxt />
       </v-container>
     </v-main>
@@ -96,6 +96,12 @@ export default {
           icon: "mdi-cash-clock",
           path: "/historybuy",
           color: "info",
+        },
+        {
+          title: "ເທີນ",
+          icon: "mdi-swap-horizontal",
+          path: "/change",
+          color: "primary",
         },
       ],
       mini: true,
