@@ -445,21 +445,16 @@
             >
               ຢືນຢັນ
             </v-btn>
-            <v-btn
-              v-else
-              :disabled="listItems?.length == 0"
-              style="width: 100%; color: #fff; border-radius: 5px"
-              color="goldColor"
-              @click="handlePressNext()"
-            >
-              ຕໍ່ໄປ
-            </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
 
-    <BuyAddCustomer ref="myCompAddCus" @selectMyCustomer="selectMyCustomer" @setLength="setLength" />
+    <BuyAddCustomer
+      ref="myCompAddCus"
+      @selectMyCustomer="selectMyCustomer"
+      @setLength="setLength"
+    />
     <div style="display: none">
       <BuyBill
         :key="1"
@@ -494,7 +489,7 @@ export default {
         {
           text: "ລຳດັບ",
           value: "no",
-          width: '50px',
+          width: "50px",
           class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-2",
           sortable: false,
           align: "center",
@@ -946,7 +941,7 @@ export default {
               cus: this.myCustomer,
               billNo: this.myBillOn,
               date: this.updateDateTime().currentDateTime,
-            }
+            };
             this.SET_HISTORY_ITEMS(item);
             this.setData([]);
           } else {
@@ -955,7 +950,7 @@ export default {
               cus: this.myCustomer,
               billNo: this.myBillOn,
               date: this.updateDateTime().currentDateTime,
-            }
+            };
             this.SET_HISTORY_ITEMS(item);
             this.setData([]);
             this.removeMyCustomer();
