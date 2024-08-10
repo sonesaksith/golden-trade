@@ -35,13 +35,20 @@
               </v-data-table>
             </v-card-text>
             <v-card-actions>
-              <v-spacer></v-spacer>
+              <v-btn
+                outlined
+                class="rounded-lg"
+                style="width: 50%"
+                @click="print()"
+              >
+                <v-icon>mdi-printer</v-icon> ພິມໃບບິນໃໝ່
+              </v-btn>
               <v-btn
                 style="
                   color: #fff;
                   border-radius: 10px;
                   background-color: #e53935;
-                  width: 100%;
+                  width: 50%;
                 "
                 text
                 @click="dialog = false"
@@ -90,11 +97,24 @@ export default {
       ],
     };
   },
-  mounted() {
-    // console.log(this.items);
-  },
+  mounted() {},
   computed: {},
-  methods: {},
+  methods: {
+    async print() {
+      try {
+        console.log(this.items);
+        // this.$refs.myCompBill.OnPrintBill();
+      } catch (error) {
+        this.$swal({
+          text: "ບໍ່ມີຂໍ້ມູນ",
+          type: "info",
+          timer: 5000,
+          timerProgressBar: true,
+          showConfirmButton: true,
+        });
+      } 
+    },
+  },
 };
 </script>
 
