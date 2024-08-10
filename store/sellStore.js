@@ -5,19 +5,28 @@ export default {
     listItems: [],
     amountAll: "",
     priceAll: 0,
+    myCustomer: {},
+    selectedCustomer: false,
+    historyItems: [],
   }),
   mutations: {
+    SET_CUSTOMER(state, value) {
+      console.log("SET_CUSTOMER", value);
+
+      state.myCustomer = value;
+    },
+    SET_CUSTOMER_BOOL(state, value) {
+      state.selectedCustomer = value;
+    },
     SET_CLEAR_ALL(state, value) {
       state.listItems = value;
     },
     SET_ITEMS(state, value) {
       state.listItems.push(value);
       state.priceAll += value.amount * value.price;
-      console.log(" state.listItems.", state.listItems);
     },
     SET_AMOUNT_ALL(state, value) {
       state.priceAll = value.price * value.amount;
-      console.log(" state.priceAll ", state.priceAll);
     },
     SET_INCREMENT(state, value) {
       state.listItems.forEach((item, index) => {
@@ -46,6 +55,9 @@ export default {
       });
       return state.listItems;
     },
+    SET_HISTORY_ITEMS(state, value) {
+      state.historyItems.push(value);
+    },
   },
   actions: {
     ClearAllData({ commit }) {
@@ -63,5 +75,6 @@ export default {
   getters: {
     listItems: (state) => state.listItems,
     priceAll: (state) => state.priceAll,
+    historyItems: (state) => state.historyItems,
   },
 };

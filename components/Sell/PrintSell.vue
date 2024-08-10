@@ -63,10 +63,9 @@
                   <span>ພະນັກງານ: {{ userinfo?.username }}</span>
                 </div>
                 <div>
-                  <span
-                    >ລູກຄ້າ: {{ selectingCus?.name
-                    }}{{ selectingCus?.surname }}/{{ selectingCus?.tel }}
-                  </span>
+                  ລ/ຄ: {{ myCus.name + myCus.surname }}/{{ myCus.tel }}/{{
+                    myCus.address
+                  }}
                 </div>
               </div>
             </div>
@@ -188,47 +187,27 @@ import secureStorage from "~/plugins/secure-storage";
 import html2pdf from "html2pdf.js";
 export default {
   props: {
-    //   message: { type: String, required: true },
-    //   listTable: {
-    //     type: Array,
-    //     required: true,
-    //   },
-    //   Myheader: {
-    //     type: Array,
-    //     required: true,
-    //   },
-    //   listtableFooter: {
-    //     type: Array,
-    //     required: true,
-    //   },
-    //   detial: {
-    //     type: Array,
-    //     required: true,
-    //   },
-    //   mergeTable: {
-    //     type: Object,
-    //     required: true,
-    //   },
-    //   setSty: {
-    //     type: String,
-    //     required: true,
-    //   },
+    myCus: {
+      type: Object,
+      required: true,
+    },
+    billNo: { type: String, required: true },
+    currentDateTime: { type: String, required: true },
+    currentDate: { type: String, required: true },
   },
   data() {
     return {
       listSecure: "",
-      currentDateTime: "",
+      // currentDateTime: "",
       header: [],
       filteredData: [],
       dialogSuccess: false,
-      currentDate: "",
+      // currentDate: "",
       userinfo: [],
-      billNo: "",
     };
   },
   async mounted() {
     this.userinfo = secureStorage.getItem("userinfo");
-    this.billNo = this.generateRandomNumber(10);
     //   this.listSecure = secureStorage.getItem('userinfo')
     // table
     //   for (let index = 0; index < this.Myheader.length; index++) {
@@ -274,8 +253,8 @@ export default {
       const hours = String(now.getHours()).padStart(2, "0");
       const minutes = String(now.getMinutes()).padStart(2, "0");
       const seconds = String(now.getSeconds()).padStart(2, "0");
-      this.currentDateTime = `${day}/${month}/${year}, ${hours}:${minutes}:${seconds}`;
-      this.currentDate = `${day}/${month}/${year}`;
+      // this.currentDateTime = `${day}/${month}/${year}, ${hours}:${minutes}:${seconds}`;
+      // this.currentDate = `${day}/${month}/${year}`;
     },
     generateRandomNumber(length) {
       let result = "";
