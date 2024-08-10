@@ -74,6 +74,7 @@ import secureStorage from "~/plugins/secure-storage";
 import { mapActions, mapState } from "vuex";
 export default {
   name: "DefaultLayout",
+  middleware: ["checkAuth"],
   data() {
     return {
       drawer: true,

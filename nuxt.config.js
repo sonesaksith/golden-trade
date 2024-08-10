@@ -25,7 +25,7 @@ export default {
     "~/plugins/secure-storage",
     "~/plugins/axios.client.js",
     "~/plugins/global.js",
-    { src: '~/plugins/printd.js', ssr: false }
+    { src: "~/plugins/printd.js", ssr: false },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -36,18 +36,16 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: ["@nuxtjs/axios", "@nuxtjs/dotenv", "nuxt-sweetalert2"],
-
-  // axios: {
-  //   retry: { retries: 3 },
-  //   proxy: true,
-  // },
-  // proxy: {
-  //   '/api/': {
-  //     target: process.env.BASE_URL,
-  //     pathRewrite: { '^/api/': '/' },
-  //   },
-  // },
-
+  axios: {
+    retry: { retries: 3 },
+    proxy: true,
+  },
+  proxy: {
+    "/api/": {
+      target: process.env.BASE_URL,
+      pathRewrite: { "^/api/": "/" },
+    },
+  },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   vuetify: {
     theme: {
