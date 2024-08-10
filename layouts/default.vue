@@ -77,7 +77,7 @@ export default {
   middleware: ["checkAuth"],
   data() {
     return {
-      drawer: true,
+      drawer: false,
       items: [
         {
           title: "ຂາຍ",
