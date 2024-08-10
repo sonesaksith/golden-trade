@@ -29,8 +29,8 @@
                 <template #item.shapeLine="{ index, item }">
                   <div>{{ item.shapeLine ? item.shapeLine : "-" }}</div>
                 </template>
-                <template #item.lost="{ index, item }">
-                  <div>{{ item.lost ? $formatnumber(item.lost) : "-" }}</div>
+                <template #item.price="{ index, item }">
+                  <div>{{ item.price ? $formatnumber(item.price) : "-" }}</div>
                 </template>
               </v-data-table>
             </v-card-text>
