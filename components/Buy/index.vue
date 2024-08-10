@@ -286,7 +286,7 @@
               </v-col>
             </v-row>
           </v-card-text>
-          <v-card-acti
+          <v-card-actions
             cols="12"
             class="px-4"
             v-if="selectedCustomer"
@@ -299,7 +299,7 @@
             "
           >
             <v-btn color="info" @click="removeMyCustomer()"> ປ່ຽນລູກຄ້າ </v-btn>
-          </v-card-acti>
+          </v-card-actions>
         </v-card>
         <v-card style="height: 565px" class="rounded-lg" elevation="4">
           <v-card-title>

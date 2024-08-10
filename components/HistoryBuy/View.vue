@@ -60,6 +60,19 @@
         </v-dialog>
       </v-row>
     </v-form>
+    <div v-if="items" style="display: none">
+      <BuyBill
+        :key="1"
+        :myCus="items?.cus"
+        :billNo="items?.billNo"
+        :currentDateTime="items?.date"
+        :currentDate="items?.date?.substring(0, 10)"
+        :totalPrice="totalPrice"
+        :totalLost="totalLost"
+        :totalPayment="totalPayment"
+        ref="myCompBill"
+        />
+    </div>
   </div>
 </template>
 
@@ -70,6 +83,9 @@ export default {
     return {
       dialog: false,
       items: [],
+      totalPrice: 0,
+      totalLost: 0,
+      totalPayment: 0,
       headers: [
         {
           text: "ລຳດັບ",
@@ -97,14 +113,17 @@ export default {
       ],
     };
   },
-  mounted() {},
+  mounted() {
+    console.log(this.items);
+  },
   computed: {},
   methods: {
     async print() {
       try {
         console.log(this.items);
-        // this.$refs.myCompBill.OnPrintBill();
+        this.$refs.myCompBill.OnPrintBill();
       } catch (error) {
+        console.log(error);
         this.$swal({
           text: "ບໍ່ມີຂໍ້ມູນ",
           type: "info",
