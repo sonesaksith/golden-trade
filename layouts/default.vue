@@ -60,7 +60,7 @@
       </v-list>
     </v-navigation-drawer> -->
     <v-app-bar
-      :clipped-left="clipped"
+      :clipped-left="false"
       fixed
       app
       elevation="5"
@@ -68,11 +68,7 @@
       class="white--text"
     >
       <v-row>
-        <v-col
-          :cols="mobileDevice ? '8' : '12'"
-          sm="4"
-          class="d-flex align-center justify-start"
-        >
+        <v-col cols="12" sm="4" class="d-flex align-center justify-start">
           <h3 style="cursor: pointer">ຮ້ານຄຳ ຫວຽດສະຫວັນ</h3>
         </v-col>
 
