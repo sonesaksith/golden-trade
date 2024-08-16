@@ -130,6 +130,10 @@
                 <v-card-title> {{ item.typGold }} </v-card-title>
                 <v-card-subtitle>
                   <div>
+                    <span>ລະຫັດ :</span>
+                    <span> {{ item.id || "--" }}</span>
+                  </div>
+                  <div>
                     <span>ປະເພດຄຳ :</span>
                     <span> {{ item.optionGole || "--" }}</span>
                   </div>
@@ -183,12 +187,11 @@
                   </div>
                 </v-card-subtitle>
                 <v-card-actions>
-                  <v-spacer></v-spacer>
                   <v-btn
                     rounded
                     block
                     color="goldColor"
-                    style="color: white"
+                    style="color: white;text-align: left;"
                     class="py-3 px-1"
                     @click="onPlusData(item, index)"
                   >
@@ -197,7 +200,6 @@
                     </v-icon>
                     &nbsp; ເພີ່ມເຂົ້າກະຕ່າ
                   </v-btn>
-                  <v-spacer></v-spacer>
                 </v-card-actions>
               </v-card>
               <!-- <v-card class="elavation-1">
