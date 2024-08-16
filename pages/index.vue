@@ -1,25 +1,26 @@
 <template>
   <div
     class="d-flex justify-center align-center"
-    style="width: 100vw; height: 93vh"
+    style="width: 100vw; height: 93vh; margin-top: 20px"
   >
     <v-container>
       <v-row>
-        <v-col v-for="(item, index) in menus" :key="index" cols="4">
+        <v-col v-for="(item, index) in menus" :key="index" cols="6" sm="4">
           <v-card
             @click="myRouting(item.path)"
             color="goldColor"
             style="
               width: 100%;
-              height: 250px;
+              max-height: 190px;
+              height: 100%;
               display: flex;
               align-items: center;
               justify-content: center;
             "
             rounded="xl"
           >
-            <div style="text-align: center">
-              <v-icon v-text="item.icon" color="white" size="90"></v-icon>
+            <div style="text-align: center; padding: 8px">
+              <v-icon v-text="item.icon" color="white" size="80"></v-icon>
 
               <h1 class="white--text">{{ item.title }}</h1>
             </div>

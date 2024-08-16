@@ -5,8 +5,8 @@
         <v-app-bar
           v-if="isMenuPage"
           color="goldColor"
-          height="100"
-          style="margin-bottom: 20px"
+          height="70"
+          style="margin-bottom: 10px; z-index: 10"
         >
           <div style="text-align: center; width: 100%">
             <h1 class="white--text">ຮ້ານຄຳ ຫວຽດສະຫວັນ</h1>
@@ -15,8 +15,8 @@
         <v-app-bar
           v-else
           color="goldColor"
-          height="100"
-          style="margin-bottom: 20px"
+          height="70"
+          style="margin-bottom: 10px; z-index: 10"
         >
           <div
             style="
