@@ -39,9 +39,9 @@
                 color="primary"
                 :content="listItems.length"
               >
-                <v-icon color="goldColor">mdi-cart</v-icon>
+                <v-icon color="goldColor" size="35">mdi-cart</v-icon>
               </v-badge>
-              <v-icon v-else color="goldColor">mdi-cart</v-icon>
+              <v-icon v-else color="goldColor" size="35">mdi-cart</v-icon>
             </v-col>
             <v-col cols="6" sm="3" xs="6">
               <v-autocomplete
@@ -245,9 +245,9 @@
                 color="primary"
                 :content="listItems.length"
               >
-                <v-icon color="goldColor">mdi-cart</v-icon>
+                <v-icon color="goldColor" size="35">mdi-cart</v-icon>
               </v-badge>
-              <v-icon v-else color="goldColor">mdi-cart</v-icon>
+              <v-icon v-else color="goldColor" size="35">mdi-cart</v-icon>
             </v-col>
             <v-col cols="12" sm="12">
               <v-list>
@@ -443,8 +443,8 @@
                     </v-btn></v-col
                   >
                   <v-col cols="12" sm="12">
-                    <v-card style="height: 520px">
-                      <v-card-title style="height: 10%">
+                    <v-card style="height: auto">
+                      <v-card-title>
                         <h6>
                           <span style="color: brown">{{ "#" }}</span>
                           &nbsp;ລາຍການຂາຍຄຳ
@@ -452,7 +452,7 @@
                       </v-card-title>
                       <v-card-text
                         class="px-4 py-0"
-                        style="overflow-y: auto; height: 70%"
+                        style="overflow-y: auto; height: 80%"
                       >
                         <div>
                           <br />
@@ -569,13 +569,19 @@
                           </v-row>
                         </div>
                       </v-card-text>
-
-                      <v-row style="display: flex; margin-top: -10px" class="mx-2">
-                        <v-col cols="6" sm="3"><h3>ລາຄາລວມທັງໝົດ :</h3></v-col>
-                        <v-col cols="6" sm="9">
-                          <h3>{{ $formatnumber(priceAll) }} ກີບ</h3></v-col
+                      <v-card-text>
+                        <v-row
+                          style="display: flex;height: 100px; "
+                          class="mx-2"
                         >
-                      </v-row>
+                          <v-col cols="6" sm="3"
+                            ><h3>ລາຄາລວມທັງໝົດ :</h3></v-col
+                          >
+                          <v-col cols="6" sm="9">
+                            <h3>{{ $formatnumber(priceAll) }} ກີບ</h3></v-col
+                          >
+                        </v-row>
+                      </v-card-text>
                       <v-card-actions>
                         <div
                           style="
@@ -592,6 +598,7 @@
                             class="rounded-lg btn-pdf"
                             style="
                               width: 25%;
+                              height: 50px;
                               color: white;
                               background: #e20303 !important;
                             "
@@ -608,7 +615,7 @@
                             :loading="loadingPrint"
                             outlined
                             class="rounded-lg"
-                            style="width: 25%"
+                            style="width: 25%; height: 50px"
                             @click="print()"
                           >
                             <v-icon>mdi-printer</v-icon> ພິມ
@@ -617,7 +624,12 @@
                             :disabled="
                               listItems?.length == 0 || !selectedCustomer
                             "
-                            style="width: 45%; color: #fff; border-radius: 5px"
+                            style="
+                              width: 45%;
+                              height: 50px;
+                              color: #fff;
+                              border-radius: 5px;
+                            "
                             color="success"
                             @click="comfirm"
                           >
