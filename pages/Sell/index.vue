@@ -186,6 +186,7 @@
                   <v-spacer></v-spacer>
                   <v-btn
                     rounded
+                    block
                     color="goldColor"
                     style="color: white"
                     class="py-3 px-1"
@@ -571,7 +572,7 @@
                       </v-card-text>
                       <v-card-text>
                         <v-row
-                          style="display: flex;height: 100px; "
+                          style="display: flex; height: 100px"
                           class="mx-2"
                         >
                           <v-col cols="6" sm="3"
