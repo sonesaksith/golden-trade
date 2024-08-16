@@ -956,7 +956,6 @@ export default {
     ...mapGetters("sellStore", ["listItems", "priceAll"]),
     ...mapState("sellStore", ["selectedCustomer", "myCustomer"]),
     ...mapState("gold", ["listGold"]),
-
     filterTable() {
       if (
         this.modelGold ||

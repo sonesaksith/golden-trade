@@ -2,7 +2,7 @@
   <div>
     <v-row style="height: 100vh" class="pa-2">
       <v-col cols="12" sm="12" md="5" lg="5">
-        <v-card style="height: 800px" class="rounded-lg" elevation="4">
+        <v-card style="height: 100%" class="rounded-lg" elevation="4">
           <v-card-title>
             <h4>
               <span style="color: brown">{{ "#" }}</span>
@@ -181,7 +181,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" sm="12" md="7" lg="7">
-        <v-card style="height: 230px" class="rounded-lg mb-2" elevation="4">
+        <v-card style="height: 30%" class="rounded-lg mb-2" elevation="4">
           <v-card-text>
             <v-row>
               <v-col cols="8" v-if="!selectedCustomer" class="pb-0">
@@ -289,7 +289,7 @@
             <v-btn color="info" @click="removeMyCustomer()"> ປ່ຽນລູກຄ້າ </v-btn>
           </v-card-actions>
         </v-card>
-        <v-card style="height: 565px" class="rounded-lg" elevation="4">
+        <v-card style="height: 70%" class="rounded-lg" elevation="4">
           <v-card-title>
             <h4>
               <span style="color: brown">{{ "#" }}</span>
