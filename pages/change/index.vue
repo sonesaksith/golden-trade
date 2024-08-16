@@ -73,6 +73,7 @@ export default {
   mounted() {
     this.setHeader("ເທີນຄຳ");
     this.$store.commit("customer/SET_GOING_TO_BILL", "turn");
+    this.$store.commit("main/SET_HEADER_TITLE", "ປ່ຽນ");
   },
   methods: {
     ...mapActions("main", ["setHeader"]),

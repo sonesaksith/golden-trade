@@ -244,6 +244,7 @@ export default {
   },
   mounted() {
     // this.handelClickSearch();
+    this.$store.commit("main/SET_HEADER_TITLE", "ທອງ");
   },
   computed: {
     ...mapState("gold", ["listGold"]),

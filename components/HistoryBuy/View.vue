@@ -142,7 +142,7 @@ export default {
         { text: 'ຈໍາ​ນວນ', align: 'center', value: 'amount', width: '80px', class: ' darken-2 text-subtitle-2 font-weight-black', },
       ],
     };
-  },
+  }, 
   mounted() {},
   computed: {},
   methods: {

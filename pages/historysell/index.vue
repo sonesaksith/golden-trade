@@ -7,7 +7,9 @@ export default {
   data() {
     return {};
   },
-  mounted() {},
+  mounted() {
+    this.$store.commit("main/SET_HEADER_TITLE", "ປະຫວັດການຂາຍ");
+  },
   computed: {},
   methods: {},
 };
