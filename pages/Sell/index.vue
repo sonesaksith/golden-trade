@@ -452,7 +452,7 @@
                       </v-card-title>
                       <v-card-text
                         class="px-4 py-0"
-                        style="overflow-y: auto; height: 80%"
+                        style="overflow-y: auto; height: 55vh"
                       >
                         <div>
                           <br />
