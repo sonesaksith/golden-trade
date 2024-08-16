@@ -122,7 +122,7 @@ export default {
           //     showConfirmButton: false,
           //     position: "top-end",
           //   });
-          this.$router.replace("/Sell");
+          this.$router.replace("/");
           // } else {
           //   this.$swal({
           //     toast: true,

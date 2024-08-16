@@ -570,7 +570,10 @@
                         </div>
                       </v-card-text>
 
-                      <v-row style="display: flex; margin-top: -10px" class="mx-2">
+                      <v-row
+                        style="display: flex; margin-top: -10px"
+                        class="mx-2"
+                      >
                         <v-col cols="6" sm="3"><h3>ລາຄາລວມທັງໝົດ :</h3></v-col>
                         <v-col cols="6" sm="9">
                           <h3>{{ $formatnumber(priceAll) }} ກີບ</h3></v-col
@@ -985,6 +988,7 @@ export default {
     this.filterTable.forEach((element) => {
       this.amountGard.push(1);
     });
+    this.$store.commit("main/SET_HEADER_TITLE", "ຂາຍ");
   },
 
   watch: {
