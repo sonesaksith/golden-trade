@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row style="height: 100vh" class="pa-2">
+    <v-row style="height: 93vh" class="pa-2">
       <v-col cols="12" sm="12" md="5" lg="5">
         <v-card style="height: 100%" class="rounded-lg" elevation="4">
           <v-card-title>
@@ -222,11 +222,19 @@
                   no-data-text="ບໍ່ມີຂໍ້ມູນ"
                   :search="search"
                 >
-                  <template v-slot:header="{ props }" style="background-color: white">
+                  <template
+                    v-slot:header="{ props }"
+                    style="background-color: white"
+                  >
                     <th
                       v-for="head in props.headers"
                       class="pa-1 rounded-t-lg"
-                      style="position: sticky; top: 0; background-color: white; z-index: 1"
+                      style="
+                        position: sticky;
+                        top: 0;
+                        background-color: white;
+                        z-index: 1;
+                      "
                     >
                       {{ head.text.toUpperCase() }}
                     </th>
@@ -256,7 +264,14 @@
               <v-col cols="12" v-else>
                 <v-row style="height: auto">
                   <v-col cols="12">
-                    <p style="font-size: 18px; font-weight: 600; color: #000;text-align: center;">
+                    <p
+                      style="
+                        font-size: 18px;
+                        font-weight: 600;
+                        color: #000;
+                        text-align: center;
+                      "
+                    >
                       ຂໍ້ມູນລູກຄ້າ
                     </p>
                     <p style="font-size: 16px; font-weight: 600; color: #000">
