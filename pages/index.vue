@@ -10,9 +10,9 @@
             @click="myRouting(item.path)"
             color="goldColor"
             style="
-              width: 100%;
-              max-height: 190px;
-              height: 100%;
+              width: 250px;
+              height: 250px;
+
               display: flex;
               align-items: center;
               justify-content: center;
@@ -40,20 +40,20 @@ export default {
     return {
       menus: [
         {
-          title: "ຂາຍ",
-          path: "/sell",
+          title: "ຊື້ - ຂາຍ",
+          path: "/newsell",
           icon: "mdi-cart-outline",
         },
-        {
-          title: "ຊື້",
-          path: "/buy",
-          icon: "mdi-cash-multiple",
-        },
-        {
-          title: "ປ່ຽນ",
-          path: "/change",
-          icon: "mdi-swap-horizontal-bold",
-        },
+        // {
+        //   title: "ຊື້",
+        //   path: "/buy",
+        //   icon: "mdi-cash-multiple",
+        // },
+        // {
+        //   title: "ປ່ຽນ",
+        //   path: "/change",
+        //   icon: "mdi-swap-horizontal-bold",
+        // },
         {
           title: "ປະຫວັດຂາຍ",
           path: "/historysell",
@@ -64,11 +64,11 @@ export default {
           path: "/historybuy",
           icon: "mdi-clipboard-text-clock-outline",
         },
-        {
-          title: "ປະຫວັດປ່ຽນ",
-          path: "/change",
-          icon: "mdi-clipboard-text-clock-outline",
-        },
+        // {
+        //   title: "ປະຫວັດປ່ຽນ",
+        //   path: "/change",
+        //   icon: "mdi-clipboard-text-clock-outline",
+        // },
         {
           title: "ທອງ",
           path: "gold",

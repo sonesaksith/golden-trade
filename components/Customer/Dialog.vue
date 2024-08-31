@@ -1,0 +1,94 @@
+<template>
+  <div>
+    <CustomerAdd ref="addCusRef" />
+    <v-dialog v-model="dialog" persistent>
+      <v-card style="min-height: 650px">
+        <v-container>
+          <v-row>
+            <v-col cols="6">
+              <v-text-field
+                v-model="search"
+                dense
+                hide-details="auto"
+                outlined
+                label="ຄົ້ນຫາ"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="2">
+              <v-btn color="goldColor" dark>ຄົ້ນຫາ</v-btn>
+            </v-col>
+            <v-col cols="1"> </v-col>
+            <v-col cols="3">
+              <v-btn block color="primary" @click="onAddCus()"
+                >ເພີ່ມລູກຄ້າ</v-btn
+              >
+            </v-col>
+            <v-col cols="12" style="max-height: 600px; overflow-y: auto">
+              <div v-for="(item, index) in filteredData" class="py-2">
+                <div class="d-flex align-center">
+                  <div
+                    class="d-flex align-center justify-center"
+                    style="width: 8%"
+                  >
+                    {{ index + 1 }}
+                  </div>
+                  <div style="width: 80%">
+                    <div>{{ item.name }} {{ item.surname }}</div>
+                    <div>{{ item.tel }}</div>
+                  </div>
+                  <div
+                    class="d-flex align-center justify-center"
+                    style="width: 15%"
+                  >
+                    <v-icon color="success" @click="onSelectCus(item)"
+                      >mdi-check-bold</v-icon
+                    >
+                  </div>
+                </div>
+                <v-divider class="mt-2"></v-divider>
+              </div>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
+    </v-dialog>
+  </div>
+</template>
+<script>
+import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
+
+export default {
+  data() {
+    return {
+      dialog: false,
+      search: "",
+    };
+  },
+  computed: {
+    ...mapState("customer", ["listCustomer", "selectingCus"]),
+    filteredData() {
+      const search = String(this.search || "")
+        .trim()
+        .toLowerCase();
+      return this.listCustomer.filter((item) => {
+        const matchesSearch =
+          item.name.toLowerCase().includes(search) ||
+          item.surname.toLowerCase().includes(search) ||
+          item.tel.toLowerCase().includes(search);
+
+        return matchesSearch;
+      });
+    },
+  },
+  methods: {
+    onSelectCus(item) {
+      this.$store.commit("customer/SET_SELECTING_CUSTOMER", item);
+      this.dialog = false;
+    },
+    onAddCus() {
+      this.dialog = false;
+      this.$refs.addCusRef.dialog = true;
+    },
+  },
+};
+</script>
