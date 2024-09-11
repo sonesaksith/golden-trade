@@ -1,10 +1,10 @@
 <template>
   <v-app dark>
     <div>
-      <main>
+      <main style="background-color: #f2f5f9; min-height: 100vh">
         <v-app-bar
           v-if="isMenuPage"
-          color="goldColor"
+          color="primary"
           height="70"
           style="margin-bottom: 10px; z-index: 10"
         >
@@ -14,7 +14,7 @@
         </v-app-bar>
         <v-app-bar
           v-else
-          color="goldColor"
+          color="primary"
           height="70"
           style="margin-bottom: 10px; z-index: 10"
         >
@@ -26,10 +26,11 @@
               width: 100%;
             "
           >
-            <v-icon color="white" size="70" @click="goBack()"
+            <v-icon color="white" size="40" @click="goBack()"
               >mdi-chevron-left</v-icon
             >
-            <h1 class="white--text">{{ title }}</h1>
+            &nbsp; &nbsp;
+            <h2 class="white--text">{{ title }}</h2>
           </div>
         </v-app-bar>
         <Nuxt />

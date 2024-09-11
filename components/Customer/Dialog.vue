@@ -1,11 +1,11 @@
 <template>
   <div>
     <CustomerAdd ref="addCusRef" />
-    <v-dialog v-model="dialog" persistent>
+    <v-dialog v-model="dialog">
       <v-card style="min-height: 650px">
         <v-container>
           <v-row>
-            <v-col cols="6">
+            <v-col cols="9" sm="7" class="pr-0">
               <v-text-field
                 v-model="search"
                 dense
@@ -14,14 +14,12 @@
                 label="ຄົ້ນຫາ"
               ></v-text-field>
             </v-col>
-            <v-col cols="2">
+            <v-col cols="3" sm="2" class="pl-1">
               <v-btn color="goldColor" dark>ຄົ້ນຫາ</v-btn>
             </v-col>
-            <v-col cols="1"> </v-col>
-            <v-col cols="3">
-              <v-btn block color="primary" @click="onAddCus()"
-                >ເພີ່ມລູກຄ້າ</v-btn
-              >
+
+            <v-col cols="12" sm="3" align="right">
+              <v-btn color="primary" @click="onAddCus()">ເພີ່ມລູກຄ້າ</v-btn>
             </v-col>
             <v-col cols="12" style="max-height: 600px; overflow-y: auto">
               <div v-for="(item, index) in filteredData" class="py-2">

@@ -8,7 +8,7 @@
         <v-col v-for="(item, index) in menus" :key="index" cols="6" sm="4">
           <v-card
             @click="myRouting(item.path)"
-            color="goldColor"
+            color="#FFFFFF"
             style="
               width: 250px;
               height: 250px;
@@ -20,9 +20,9 @@
             rounded="xl"
           >
             <div style="text-align: center; padding: 8px">
-              <v-icon v-text="item.icon" color="white" size="80"></v-icon>
+              <v-icon v-text="item.icon" color="#354154" size="80"></v-icon>
 
-              <h1 class="white--text">{{ item.title }}</h1>
+              <h1 class="#354154--text">{{ item.title }}</h1>
             </div>
           </v-card>
         </v-col>

@@ -72,9 +72,9 @@
           md="3"
           xl="2"
         >
-          <v-card min-height="300" @click="addSellItem(item)">
+          <v-card min-height="270" @click="addSellItem(item)" elevation="1">
             <v-img
-              height="180"
+              height="150"
               :src="
                 imgFilter(
                   item.typGold === 'ທອງຄຳແທ່ງ' ? item.typGold : item.optionGole
@@ -96,7 +96,7 @@
               <div class="d-flex justify-space-between align-center">
                 <div
                   style="
-                    font-size: 18px;
+                    font-size: 15px;
                     font-weight: bold;
                     margin: 4px 0;
                     color: black;
@@ -142,7 +142,7 @@
                         <div style="width: 20%">
                           <v-img
                             style="width: 100%"
-                            height="100"
+                            height="80"
                             :src="
                               imgFilter(
                                 item.typGold === 'ທອງຄຳແທ່ງ'
@@ -230,7 +230,7 @@
                         <div style="width: 20%">
                           <v-img
                             style="width: 100%"
-                            height="100"
+                            height="80"
                             :src="
                               imgFilter(
                                 item.typGold === 'ທອງຄຳແທ່ງ'
@@ -461,7 +461,7 @@ export default {
       search: "",
       types: "",
       page: 1,
-      limit: 6,
+      limit: 12,
       loading: false,
       askPrintBillDialog: false,
     };
