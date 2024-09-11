@@ -8,11 +8,11 @@
         <v-col v-for="(item, index) in menus" :key="index" cols="6" sm="4">
           <v-card
             @click="myRouting(item.path)"
-            color="goldColor"
+            color="#FFFFFF"
             style="
-              width: 100%;
-              max-height: 190px;
-              height: 100%;
+              width: 250px;
+              height: 250px;
+
               display: flex;
               align-items: center;
               justify-content: center;
@@ -20,9 +20,9 @@
             rounded="xl"
           >
             <div style="text-align: center; padding: 8px">
-              <v-icon v-text="item.icon" color="white" size="80"></v-icon>
+              <v-icon v-text="item.icon" color="#354154" size="80"></v-icon>
 
-              <h1 class="white--text">{{ item.title }}</h1>
+              <h1 class="#354154--text">{{ item.title }}</h1>
             </div>
           </v-card>
         </v-col>
@@ -40,20 +40,20 @@ export default {
     return {
       menus: [
         {
-          title: "ຂາຍ",
-          path: "/sell",
+          title: "ຊື້ - ຂາຍ",
+          path: "/newsell",
           icon: "mdi-cart-outline",
         },
-        {
-          title: "ຊື້",
-          path: "/buy",
-          icon: "mdi-cash-multiple",
-        },
-        {
-          title: "ປ່ຽນ",
-          path: "/change",
-          icon: "mdi-swap-horizontal-bold",
-        },
+        // {
+        //   title: "ຊື້",
+        //   path: "/buy",
+        //   icon: "mdi-cash-multiple",
+        // },
+        // {
+        //   title: "ປ່ຽນ",
+        //   path: "/change",
+        //   icon: "mdi-swap-horizontal-bold",
+        // },
         {
           title: "ປະຫວັດຂາຍ",
           path: "/historysell",
@@ -64,11 +64,11 @@ export default {
           path: "/historybuy",
           icon: "mdi-clipboard-text-clock-outline",
         },
-        {
-          title: "ປະຫວັດປ່ຽນ",
-          path: "/change",
-          icon: "mdi-clipboard-text-clock-outline",
-        },
+        // {
+        //   title: "ປະຫວັດປ່ຽນ",
+        //   path: "/change",
+        //   icon: "mdi-clipboard-text-clock-outline",
+        // },
         {
           title: "ທອງ",
           path: "gold",

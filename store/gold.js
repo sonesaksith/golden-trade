@@ -13,7 +13,7 @@ export default {
       {
         id: "pk2",
         typGold: "ທອງຮູບປະພັນ",
-        optionGole: "ແຫວນ",
+        optionGole: "ສາຍແຂນ",
         typeLine: "ລາຍງູ",
         wight: 3,
         typwight: "ຫູນ",
@@ -31,7 +31,7 @@ export default {
       {
         id: "pk4",
         typGold: "ທອງຮູບປະພັນ",
-        optionGole: "ແຫວນ",
+        optionGole: "ສາຍແຂນ",
         typeLine: "ລາຍງູ",
         wight: 3,
         typwight: "ຫູນ",
@@ -49,7 +49,7 @@ export default {
       {
         id: "pk6",
         typGold: "ທອງຮູບປະພັນ",
-        optionGole: "ແຫວນ",
+        optionGole: "ສາຍແຂນ",
         typeLine: "ລາຍງູ",
         wight: 3,
         typwight: "ຫູນ",
@@ -67,7 +67,7 @@ export default {
       {
         id: "pk8",
         typGold: "ທອງຮູບປະພັນ",
-        optionGole: "ແຫວນ",
+        optionGole: "ສາຍແຂນ",
         typeLine: "ລາຍງູ",
         wight: 3,
         typwight: "ຫູນ",
@@ -85,7 +85,7 @@ export default {
       {
         id: "pk10",
         typGold: "ທອງຮູບປະພັນ",
-        optionGole: "ແຫວນ",
+        optionGole: "ສາຍແຂນ",
         typeLine: "ລາຍງູ",
         wight: 3,
         typwight: "ຫູນ",
@@ -103,7 +103,7 @@ export default {
       {
         id: "pk12",
         typGold: "ທອງຮູບປະພັນ",
-        optionGole: "ແຫວນ",
+        optionGole: "ສາຍແຂນ",
         typeLine: "ລາຍງູ",
         wight: 3,
         typwight: "ຫູນ",
@@ -121,7 +121,7 @@ export default {
       {
         id: "pk14",
         typGold: "ທອງຮູບປະພັນ",
-        optionGole: "ແຫວນ",
+        optionGole: "ສາຍແຂນ",
         typeLine: "ລາຍງູ",
         wight: 3,
         typwight: "ຫູນ",
@@ -139,7 +139,7 @@ export default {
       {
         id: "pk16",
         typGold: "ທອງຮູບປະພັນ",
-        optionGole: "ແຫວນ",
+        optionGole: "ສາຍແຂນ",
         typeLine: "ລາຍງູ",
         wight: 3,
         typwight: "ຫູນ",
@@ -157,7 +157,7 @@ export default {
       {
         id: "pk18",
         typGold: "ທອງຮູບປະພັນ",
-        optionGole: "ແຫວນ",
+        optionGole: "ສາຍແຊນ",
         typeLine: "ລາຍງູ",
         wight: 3,
         typwight: "ຫູນ",

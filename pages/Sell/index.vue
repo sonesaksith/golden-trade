@@ -216,9 +216,9 @@
               </template>
             </v-data-table>
           </v-card> -->
-            </v-col></v-row
-          ></v-col
-        >
+            </v-col>
+          </v-row>
+        </v-col>
       </v-col>
 
       <v-navigation-drawer
