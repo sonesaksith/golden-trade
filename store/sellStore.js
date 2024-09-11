@@ -83,6 +83,9 @@ export default {
     SET_HISTORY_ITEMS(state, value) {
       state.historyItems.push(value);
     },
+    SET_HISTORY_ITEMS(state, value) {
+      state.historyItems.push(value);
+    },
   },
   actions: {
     ClearAllData({ commit }) {
