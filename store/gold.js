@@ -204,6 +204,21 @@ export default {
       state.listGold = state.listGold.filter((x, i) => i != index);
     },
   },
-  actions: {},
+  actions: {
+    async GetGolds({ state, commit }, body) {
+      try {
+        const resp = await this.$axios({
+          method: "get",
+          url: "/api/product/view",
+          data: body,
+        });
+        console.log(resp?.data);
+        return resp;
+      } catch (error) {
+        console.log(error.response);
+        throw error.response;
+      }
+    },
+  },
   getters: {},
 };

@@ -152,7 +152,7 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   data() {
@@ -244,6 +244,7 @@ export default {
   },
   mounted() {
     // this.handelClickSearch();
+    this.getGolds();
     this.$store.commit("main/SET_HEADER_TITLE", "ທອງ");
   },
   computed: {
@@ -253,6 +254,14 @@ export default {
     },
   },
   methods: {
+    ...mapActions("gold", ["GetGolds"]),
+    async getGolds() {
+      try {
+        await this.GetGolds();
+      } catch (error) {
+        console.log(error);
+      }
+    },
     // async handelClickSearch() {
     //   this.loading = true;
     //   let res;
