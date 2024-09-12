@@ -64,6 +64,7 @@
   </div>
 </template>
 <script>
+import SellPrintSell from "../../components/Sell/PrintSell.vue";
 import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
 export default {
   data() {
@@ -138,7 +139,8 @@ export default {
       ],
     };
   },
-  mounted() {
+  async mounted() {
+    await this.GetHisBuy();
   },
   watch: {},
 
@@ -146,34 +148,36 @@ export default {
     ...mapGetters("buy", ["historyItems"]),
   },
   methods: {
-    ...mapMutations("buy", ["SET_NEW_ITEMS"]),
-    viewDetail(item) {
-      try {
-        this.SET_NEW_ITEMS(item?.listItems);
-        let totalPrice = 0;
-        let totalLost = 0;
-        let totalPayment = 0;
-        item?.listItems?.forEach((item) => {
-          totalPrice += parseInt(
-            Number(item.price) * Number(item.amount),
-            10
-          );
-          totalLost += parseInt(Number(item.lost));
-        });
-        totalPayment = totalPrice - totalLost;
-        this.$refs["myCompHisView"].dialog = true;
-        this.$refs["myCompHisView"].items = item;
-        this.$refs["myCompHisView"].myCus = item?.cus;
-        this.$refs["myCompHisView"].billNo = item?.billNo;
-        this.$refs["myCompHisView"].currentDateTime = item?.date;
-        this.$refs["myCompHisView"].currentDate = item?.date?.substring(0, 10);
-        this.$refs["myCompHisView"].totalPrice = totalPrice;
-        this.$refs["myCompHisView"].totalLost = totalLost;
-        this.$refs["myCompHisView"].totalPayment = totalPayment;
-      } catch (error) {
-        console.log(error);
-      }
-    },
+    // ...mapMutations("historyItems", ["SET_NEW_ITEMS"]),
+    ...mapActions("historyStore", ["GetHisBuy"]),
+
+    // viewDetail(item) {
+    //   try {
+    //     this.SET_NEW_ITEMS(item?.listItems);
+    //     let totalPrice = 0;
+    //     let totalLost = 0;
+    //     let totalPayment = 0;
+    //     item?.listItems?.forEach((item) => {
+    //       totalPrice += parseInt(
+    //         Number(item.price) * Number(item.amount),
+    //         10
+    //       );
+    //       totalLost += parseInt(Number(item.lost));
+    //     });
+    //     totalPayment = totalPrice - totalLost;
+    //     this.$refs["myCompHisView"].dialog = true;
+    //     this.$refs["myCompHisView"].items = item;
+    //     this.$refs["myCompHisView"].myCus = item?.cus;
+    //     this.$refs["myCompHisView"].billNo = item?.billNo;
+    //     this.$refs["myCompHisView"].currentDateTime = item?.date;
+    //     this.$refs["myCompHisView"].currentDate = item?.date?.substring(0, 10);
+    //     this.$refs["myCompHisView"].totalPrice = totalPrice;
+    //     this.$refs["myCompHisView"].totalLost = totalLost;
+    //     this.$refs["myCompHisView"].totalPayment = totalPayment;
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
   },
 };
 </script>
