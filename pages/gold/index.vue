@@ -349,9 +349,6 @@ export default {
   },
   async mounted() {
     // this.handelClickSearch();
-    // secureStorage.removeItem("token")
-    // const a = secureStorage.getItem("token") || null
-    // console.log(a);
     this.getGolds();
     this.GetDropDown();
     this.$store.commit("main/SET_HEADER_TITLE", "ທອງ");

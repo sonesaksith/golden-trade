@@ -114,7 +114,8 @@ export default {
           const resp = await this.Login(body);
           if (resp?.data?.resultData?.accessToken && resp.data.status == 200) {
             console.log(resp.data.resultData?.accessToken);
-            secureStorage.setItem("token", resp?.data?.resultData?.access_token);
+            secureStorage.setItem("token", JSON.stringify(resp?.data?.resultData?.access_token));
+            secureStorage.setItem("userinfo", JSON.stringify(resp?.data?.resultData));
             this.$swal({
               toast: true,
               text: "ເຂົ້າສູ່ລະບົບສຳເລັດ!",
