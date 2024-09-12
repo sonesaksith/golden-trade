@@ -26,9 +26,8 @@
     <template>
       <v-data-table
         :headers="headers"
-        :items="historyItems"
+        :items="buyList"
         :search="search"
-        :items-per-page="historyItems?.length"
         class="elevation-1"
         fixed-header
         hide-default-footer
@@ -40,20 +39,20 @@
         <template #[`item.no`]="{ index }">
           <span>{{ index + 1 }} </span>
         </template>
-        <template #[`item.billNo`]="{ item }">
+        <!-- <template #[`item.billNo`]="{ item }">
           <span>
             {{ item.billNo }}
           </span>
         </template>
         <template #[`item.name`]="{ item }">
           <span> {{ item.cus.name }} {{ item.cus.surname }} </span>
-        </template>
+        </template> -->
         <template #[`item.view`]="{ item }">
           <div
             style="display: flex; align-items: center; justify-content: center"
           >
             <div>
-              <v-icon @click="viewDetail(item)">mdi-eye</v-icon>
+              <v-icon @click="OpenInfos(item)">mdi-eye</v-icon>
             </div>
             <div></div>
           </div>
@@ -61,6 +60,7 @@
       </v-data-table>
     </template>
     <HistoryBuyView :key="1" ref="myCompHisView" />
+    <HistoryBuyInfo :key="1" ref="myCompInfo" />
   </div>
 </template>
 <script>
@@ -82,38 +82,52 @@ export default {
         {
           text: "ເລກບີນ",
           align: "center",
-          value: "billNo",
+          value: "bill_number",
           width: "120px",
           class: " darken-2 text-subtitle-2 font-weight-black",
         },
         {
-          text: "ຊື່ ແລະ ນາມສະກຸນ",
+          text: "ນ້ຳໜັກ",
           align: "center",
-          value: "name",
-          width: "180px",
-          class: " darken-2 text-subtitle-2 font-weight-black",
-        },
-        {
-          text: "ເບີໂທລະສັບ",
-          align: "center",
-          value: "cus.tel",
-          width: "100px",
-          class: " darken-2 text-subtitle-2 font-weight-black",
-        },
-        {
-          text: "ທີ່ຢູ່",
-          align: "center",
-          value: "cus.address",
-          width: "180px",
-          class: " darken-2 text-subtitle-2 font-weight-black",
-        },
-        {
-          text: "ວັນທີ",
-          align: "center",
-          value: "date",
+          value: "real_total_weight",
           width: "120px",
           class: " darken-2 text-subtitle-2 font-weight-black",
         },
+        {
+          text: "ລາຄາ",
+          align: "center",
+          value: "bill_number",
+          width: "120px",
+          class: " darken-2 text-subtitle-2 font-weight-black",
+        },
+        // {
+        //   text: "ຊື່ ແລະ ນາມສະກຸນ",
+        //   align: "center",
+        //   value: "name",
+        //   width: "180px",
+        //   class: " darken-2 text-subtitle-2 font-weight-black",
+        // },
+        // {
+        //   text: "ເບີໂທລະສັບ",
+        //   align: "center",
+        //   value: "cus.tel",
+        //   width: "100px",
+        //   class: " darken-2 text-subtitle-2 font-weight-black",
+        // },
+        // {
+        //   text: "ທີ່ຢູ່",
+        //   align: "center",
+        //   value: "cus.address",
+        //   width: "180px",
+        //   class: " darken-2 text-subtitle-2 font-weight-black",
+        // },
+        // {
+        //   text: "ວັນທີ",
+        //   align: "center",
+        //   value: "date",
+        //   width: "120px",
+        //   class: " darken-2 text-subtitle-2 font-weight-black",
+        // },
         {
           text: "ລາຍລະອຽດ",
           align: "center",
@@ -145,12 +159,16 @@ export default {
   watch: {},
 
   computed: {
-    ...mapGetters("buy", ["historyItems"]),
+    ...mapState("historyStore", ["buyList"]),
   },
   methods: {
-    // ...mapMutations("historyItems", ["SET_NEW_ITEMS"]),
+    ...mapMutations("historyItems", ["SET_INFO_BUY"]),
     ...mapActions("historyStore", ["GetHisBuy"]),
-
+    OpenInfos(item) {
+      console.log('perview der', item)
+      this.SET_INFO_BUY(item)
+      this.$refs['myCompInfo'].dialog = true
+    },
     // viewDetail(item) {
     //   try {
     //     this.SET_NEW_ITEMS(item?.listItems);
