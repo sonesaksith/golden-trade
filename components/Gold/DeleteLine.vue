@@ -3,7 +3,7 @@
     <v-card>
       <v-container>
         <v-card-title> ຢືນຢັນການລົບ </v-card-title>
-        <v-card-subtitle> ທ່ານຕ້ອງການລົບສິນຄ້ານີ້ ແທ້ຫຼືບໍ່? </v-card-subtitle>
+        <v-card-subtitle> ທ່ານຕ້ອງການລົບລາຍນີ້ ແທ້ຫຼືບໍ່? </v-card-subtitle>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -33,13 +33,13 @@ export default {
     };
   },
   methods: {
-    ...mapActions("gold", ["DeleteGolds"]),
+    ...mapActions("gold", ["DeleteLine"]),
     async onDelete() {
       try {
-        const res = await this.DeleteGolds(this.id);
+        const res = await this.DeleteLine(this.id);
         if (res?.data?.status == 200) {
           this.dialog = false;
-          this.$emit("getGolds");
+          this.$emit("getLines");
           this.$swal({
             toast: true,
             text: "ລົບສຳເລັດ",
