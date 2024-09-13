@@ -42,7 +42,7 @@ export default {
   },
   proxy: {
     "/api/": {
-      target: process.env.BASE_URL,
+      target: process.env.BASE_URL_GOLD,
       pathRewrite: { "^/api/": "/" },
     },
   },

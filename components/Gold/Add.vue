@@ -2,12 +2,12 @@
   <v-dialog v-model="dialog" width="600">
     <v-form ref="form" v-model="valid">
       <v-card>
-        <!-- <v-card-title> ແກ້ໄຂຂໍ້ມູນ </v-card-title> -->
+        <!-- <v-card-title> ເພີ່ມທອງ </v-card-title> -->
         <v-card-title style="background-color: #e7e6e6">
           <div style="display: flex; width: 100%; align-items: center; justify-content: center;">
             <div style="display: flex; align-items: center">
-              <v-icon large color="grey">mdi-square-edit-outline</v-icon>
-              <h4 class="mx-2">ແກ້ໄຂຂໍ້ມູນ</h4>
+              <v-icon large color="grey">mdi-storefront-plus-outline</v-icon>
+              <h4 class="mx-2">ເພີ່ມທອງ</h4>
             </div>
             <v-spacer></v-spacer>
             <div style="border-radius: 100%; width: 40px; height: 40px; background-color: white; display: flex; align-items: center; justify-content: center">
@@ -21,8 +21,8 @@
               <v-text-field
                 v-model="name"
                 dense
-                label="ຊື່​ສິນ​ຄ້າ​"
                 hide-details="auto"
+                label="ຊື່​ສິນ​ຄ້າ​"
                 outlined
               ></v-text-field>
             </v-col>
@@ -69,11 +69,11 @@
               ></v-autocomplete>
             </v-col>
             <v-col cols="6">
+              <!-- :rules="[(v) => !!v || 'ກະລຸນາປ້ອນລາຄາລາຍ']" -->
               <v-text-field
                 v-model="priceLai"
-                label="ຄ່າລາຍ"
                 @keyup="fotmatPriceLai()"
-                :rules="[(v) => !!v || 'ກະລຸນາປ້ອນລາຄາລາຍ']"
+                label="ຄ່າລາຍ"
                 outlined
                 dense
                 hide-details="auto"
@@ -83,15 +83,15 @@
             <v-col cols="12" sm="6">
               <v-text-field
                 v-model="wieght"
+                @keyup="fotmatWieght()"
                 dense
                 hide-details="auto"
                 label="ນ້ຳໜັກ"
-                @keyup="fotmatWieght()"
                 outlined
               ></v-text-field>
             </v-col>
 
-            <v-col cols="12" sm="6">
+            <v-col cols="12" sm="6" >
               <v-autocomplete
                 label="ປະເພດນ້ຳໜັກ"
                 v-model="unitId"
@@ -105,8 +105,10 @@
               ></v-autocomplete>
             </v-col>
             <v-col cols="6">
+              <!-- :rules="[(v) => !!v || 'ກະລຸນາປ້ອນນ້ຳໜັກແທ້']" -->
               <v-text-field
                 v-model="realWeight"
+                @keyup="fotmatRealWieght()"
                 label="ນ້ຳໜັກຈິງ"
                 append-icon="mdi-weight-gram"
                 outlined
@@ -116,6 +118,7 @@
               ></v-text-field>
             </v-col>
             <v-col cols="6">
+              <!-- :rules="[(v) => !!v || 'ກະລຸນາປ້ອນຄວາມບໍລິສຸດທອງ']" -->
               <v-text-field
                 v-model="pure"
                 label="ຄວາມບໍລິສຸດທອງ"
@@ -127,6 +130,7 @@
               ></v-text-field>
             </v-col>
             <v-col cols="6">
+              <!-- :rules="[(v) => !!v || 'ກະລຸນາປ້ອນຄ່າທຳນຽມ']" -->
               <v-text-field
                 v-model="fee"
                 label="ຄ່າທຳນຽມ"
@@ -137,6 +141,7 @@
               ></v-text-field>
             </v-col>
             <v-col cols="6">
+              <!-- :rules="[(v) => !!v || 'ກະລຸນາປ້ອນຈຳນວນ']" -->
               <v-text-field
                 v-model="qty"
                 label="ຈຳນວນ"
@@ -150,7 +155,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn @click="onEdit()" color="primary" text>ແກ້ໄຂ</v-btn>
+          <v-btn @click="onAdd()" color="primary" text>ເພີ່ມ</v-btn>
           <v-btn @click="onClose()" color="error" text>ຍົກເລີກ</v-btn>
         </v-card-actions>
       </v-card>
@@ -164,18 +169,27 @@ export default {
   data() {
     return {
       dialog: false,
-      id: "",
       name: "",
       productTypeId: "",
       cateId: "",
       laiId: "",
       unitId: "",
       wieght: "",
-      pure: "",
-      fee: "",
+      pure: 99,
+      fee: 0,
       priceLai: "",
       realWeight: "",
       qty: "",
+
+      id: "",
+      typGold: "ທອງຮູບປະພັນ",
+      optionGole: "",
+      typeLine: "",
+      wight: 0,
+      typwight: "ບາດ",
+      purity: 99,
+      fee: 0,
+      sellGold: 0,
       valid: false,
     };
   },
@@ -183,20 +197,19 @@ export default {
     ...mapGetters("dropdown", ["dropDown"]),
   },
   methods: {
-    ...mapActions("gold", ["UpdateGolds"]),
+    ...mapActions("gold", ["CreateGolds"]),
     onClose() {
       this.dialog = false;
       this.$refs.form.reset();
     },
-    async onEdit() {
+    async onAdd() {
       try {
-        const item = {
-          id: this.id,
+        let item = {
           name: this.name,
-          productTypeId: this.productTypeId ? this.productTypeId : "",
-          cateId: this.cateId ? this.cateId : "",
-          laiId: this.laiId ? this.laiId : "",
-          unitId: this.unitId ? this.unitId : "",
+          productTypeId: this.productTypeId,
+          cateId: this.cateId,
+          laiId: this.laiId,
+          unitId: this.unitId,
           wieght: this.wieght.split(",").join(""),
           pure: this.pure,
           fee: this.fee,
@@ -204,11 +217,12 @@ export default {
           realWeight: this.realWeight,
           qty: this.qty,
         };
-        const res = await this.UpdateGolds(item);
-        if (res?.data?.status == 200 || res?.data?.msg == "success") {
+        const res = await this.CreateGolds(item);
+        // this.$store.commit("gold/ADD_GOLD", data);
+        if (res?.data?.status == 201 || res?.data?.msg == "success") {
           this.$swal({
             toast: true,
-            text: "ແກ້ໄຂສຳເລັດ",
+            text: "ເພີ່ມສຳເລັດ",
             type: "success",
             timer: 1500,
             timerProgressBar: true,
@@ -219,12 +233,8 @@ export default {
           this.$refs.form.reset();
           this.$emit("getGolds");
         }
-        // this.$store.commit("gold/UPDATE_GOLD_BY_INDEX", data);
-
-        this.dialog = false;
-        this.$refs.form.reset();
       } catch (error) {
-        console.log(error);
+        console.log(error.response);
         if (error?.response?.data?.status == 301) {
           this.$swal({
             toast: true,
@@ -246,7 +256,6 @@ export default {
             position: "top-end",
           });
         }
-        this.dialog = false;
       }
     },
     fotmatPriceLai() {
@@ -274,6 +283,19 @@ export default {
         val = valArr.join(".");
       }
       this.wieght = val;
+    },
+    fotmatRealWieght() {
+      // this.realWeight = this.realWeight.split(",").join("");
+      // let val;
+      // let valArr = [];
+      // val = this.realWeight;
+      // val = val.replace(/[^0-9\.]/g, "");
+      // if (val != "") {
+      //   valArr = val.split(".");
+      //   valArr[0] = parseInt(valArr[0], 10).toLocaleString();
+      //   val = valArr.join(".");
+      // }
+      // this.realWeight = val;
     },
   },
 };

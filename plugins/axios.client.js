@@ -28,4 +28,8 @@ export default function ({ $axios, store, redirect }) {
       redirect("/");
     }
   });
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> b435274879d193f53139cba2038abf6f32093655
