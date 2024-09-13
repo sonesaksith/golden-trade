@@ -111,7 +111,7 @@
         </template>
         <template #[`item.view`]="{ item }">
           <div
-            style="
+            style=" 
               display: flex;
               align-items: center;
               justify-content: center;
@@ -250,7 +250,7 @@ export default {
               await this.GetData();
               this.$swal({
                 toast: true,
-                text: "ລົບສຳເລັດ",
+                text: "ຍົກເລີກສຳເລັດ",
                 type: "success",
                 timer: 1500,
                 timerProgressBar: true,

@@ -41,7 +41,7 @@ export default {
       }
     },
     SET_SELL(state, data) {
-      // console.log("dd", data);
+      console.log("dd", data);
 
       if (data) {
         state.sellList = data.resultData;
@@ -131,7 +131,7 @@ export default {
         commit("LOAD_SELL", false);
       }
     },
-    async GetHisSell({ commit }, item) {
+    async GetHisTrun({ commit }, item) {
       commit("LOAD_TRUN", true);
       try {
         let res = await this.$axios({

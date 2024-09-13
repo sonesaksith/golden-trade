@@ -194,9 +194,19 @@
                       class="ma-0"
                     >
                       <div class="text-left py-0">
-                        <span style="font-size: 16px" class="ma-0"
+                        <span
+                          style="font-size: 16px"
+                          class="ma-0"
+                          v-if="statusTran === 'ປະຫວັດຊື້'"
                           >{{ index + 1 }}. | {{ n.purity }} |
-                          {{ n?.real_weight }} g | ຈໍາ​ນວນ: {{ n.unit_id }}
+                          {{ n?.real_weight }} g
+                        </span>
+                        <span
+                          style="font-size: 16px"
+                          class="ma-0"
+                          v-if="statusTran === 'ປະຫວັດຂາຍ'"
+                          >{{ index + 1 }}. | {{ n.lai_name }} |
+                          {{ n?.real_weight }} g
                         </span>
                       </div>
                       <div class="text-right py-0">
@@ -204,7 +214,12 @@
                           style="font-size: 16px; font-weight: 400"
                           class="ma-0"
                         >
-                          {{ $formatnumber(n.price * n.unit_id) }}
+                          <div v-if="statusTran === 'ປະຫວັດຊື້'">
+                            {{ $formatnumber(n.price) }}
+                          </div>
+                          <div v-if="statusTran === 'ປະຫວັດຂາຍ'">
+                            {{ $formatnumber(n.price_lai) }}
+                          </div>
                         </span>
                       </div>
                     </div>
@@ -230,7 +245,12 @@
                         style="font-size: 16px; font-weight: 600"
                         class="ma-0"
                       >
-                        {{ $formatnumber(buyInfoList?.total_price) }} LAK
+                        <div v-if="statusTran === 'ປະຫວັດຊື້'">
+                          {{ $formatnumber(buyInfoList?.total_price) }} LAK
+                        </div>
+                        <div v-if="statusTran === 'ປະຫວັດຂາຍ'">
+                          {{ $formatnumber(buyInfoList?.final_price) }} LAK
+                        </div>
                       </span>
                     </div>
                   </div>
@@ -290,18 +310,6 @@
               <v-icon>mdi-printer</v-icon> &nbsp; ພິມ
             </v-btn>
           </div>
-          <!-- <v-btn
-            style="
-              color: #fff;
-              border-radius: 10px;
-              background-color: #e53935;
-              width: 100%;
-            "
-            text
-            @click="dialog = false"
-          >
-            ອອກ
-          </v-btn> -->
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -329,6 +337,12 @@ export default {
         (this.boxStatus = "ຊື້"),
         (this.listName = "ລາຍການຊື້ເຂົ້າ"),
         (this.textName = "[ຊື້ເຂົ້າ]");
+    }
+    if (this.statusTran === "ປະຫວັດຂາຍ") {
+      (this.Title = "ລາຍລະອຽດຂາຍ"),
+        (this.boxStatus = "ຂາຍ"),
+        (this.listName = "ລາຍການຂາຍ"),
+        (this.textName = "[ຂາຍ]");
     }
   },
   computed: {
