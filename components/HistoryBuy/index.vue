@@ -42,6 +42,7 @@
         loading-text="Loading..."
         height="68vh"
         width="400"
+        :loading="loadBuy"
       >
         <template v-slot:header="props" v-if="tableNull">
           <tr style="background-color: rgba(0, 0, 0, 0.09)">
@@ -104,12 +105,33 @@
         <template #[`item.total_price`]="{ item }">
           <span> {{ $formatnumber(item.total_price) }} </span>
         </template>
+        <template #[`item.stt`]="{ item }">
+          <span v-if="item.stt == 1" style="color: green">ສຳເລັດ </span>
+          <span v-else style="color: red">ຍົກເລີກ </span>
+        </template>
         <template #[`item.view`]="{ item }">
           <div
-            style="display: flex; align-items: center; justify-content: center"
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              justify-content: space-evenly;
+            "
           >
+            <div
+              :style="{
+                textAlign: item.stt != 1 ? 'left' : 'left',
+              }"
+            >
+              <v-icon @click="OpenInfos(item)" color="blue">mdi-eye</v-icon>
+            </div>
             <div>
-              <v-icon @click="OpenInfos(item)">mdi-eye</v-icon>
+              <v-icon
+                @click="OnDelete(item.transaction_id)"
+                color="red"
+                v-if="item.stt == 1"
+                >mdi-delete-empty-outline</v-icon
+              >
             </div>
             <div></div>
           </div>
@@ -167,6 +189,13 @@ export default {
           class: " darken-2 text-subtitle-2 font-weight-black",
         },
         {
+          text: "ສະຖານະ",
+          align: "center",
+          value: "stt",
+          width: "120px",
+          class: " darken-2 text-subtitle-2 font-weight-black",
+        },
+        {
           text: "ລາຍລະອຽດ",
           align: "center",
           value: "view",
@@ -187,12 +216,63 @@ export default {
       "countPage",
       "tableNull",
       "totalList",
+      "loadBuy",
     ]),
   },
   methods: {
     ...mapMutations("historyStore", ["SET_INFO_BUY"]),
-    ...mapActions("historyStore", ["GetHisBuy"]),
-
+    ...mapActions("historyStore", ["GetHisBuy", "Delete"]),
+    async OnDelete(item) {
+      this.$swal({
+        text: "ເຈົ້າຕ້ອງການຍົກເລີກແທ້ບໍ?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "ຍົກເລີກ",
+        confirmButtonText: "ຕົກລົງ",
+        allowOutsideClick: false,
+      }).then(async (result) => {
+        if (result.value) {
+          let res;
+          try {
+            res = await this.Delete(item);
+          } catch (error) {
+            if (error?.response?.data) {
+              res = error?.response?.data;
+            } else {
+              res = error;
+            }
+          } finally {
+            if (res.data.msg == "success") {
+              this.search = "";
+              this.page = 1;
+              await this.GetData();
+              this.$swal({
+                toast: true,
+                text: "ລົບສຳເລັດ",
+                type: "success",
+                timer: 1500,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                position: "top-end",
+              });
+            } else {
+              this.$swal({
+                text: res?.message
+                  ? res?.message
+                  : res?.data?.message
+                  ? res?.data?.message
+                  : JSON.stringify(res),
+                type: "error",
+                timerProgressBar: true,
+                showConfirmButton: true,
+              });
+            }
+          }
+        }
+      });
+    },
     async GetData() {
       try {
         await this.GetHisBuy({

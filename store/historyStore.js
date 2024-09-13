@@ -90,6 +90,28 @@ export default {
         commit("LOAD_BUY", false);
       }
     },
+    async Delete({ commit }, item) {
+      commit("LOAD_BUY", true);
+      let res;
+      try {
+        res = await this.$axios({
+          method: "put",
+          url: `/gold/transaction/cancelbill/${item}
+`,
+        });
+        if (res.data.msg === "success") {
+          commit("SET_BUY", res.data);
+          commit("SET_TABLE_NULL", true);
+        } else {
+          commit("SET_BUY", "");
+          commit("SET_TABLE_NULL", false);
+        }
+        return res;
+      } catch (error) {
+      } finally {
+        commit("LOAD_BUY", false);
+      }
+    },
     async GetHisSell({ commit }, item) {
       commit("LOAD_SELL", true);
       try {
