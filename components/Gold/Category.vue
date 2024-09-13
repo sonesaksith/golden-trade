@@ -51,7 +51,7 @@
                       align="left"
                     >
                       <h3 style="font-size: 18px; color: gray">
-                        ສິນຄ້າທັງໝົດ:
+                        ປະເພດຮູບປະພັນທັງໝົດ:
                         <b style="font-size: 18px; color: #c62828">
                           {{ category.length || 0 }}
                         </b>

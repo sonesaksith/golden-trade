@@ -71,7 +71,7 @@
                       align="left"
                     >
                       <h3 style="font-size: 18px; color: gray">
-                        ສິນຄ້າທັງໝົດ:
+                        ລາຍທັງໝົດ:
                         <b style="font-size: 18px; color: #c62828">
                           {{ lines.length || 0 }}
                         </b>
