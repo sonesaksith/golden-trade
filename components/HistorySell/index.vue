@@ -109,8 +109,14 @@
           <span v-if="item.stt == 1" style="color: green">ສຳເລັດ </span>
           <span v-else style="color: red">ຍົກເລີກ </span>
         </template>
-        <template #[`item.name`]="{ item }">
-          <span> {{ item.cus.name }} {{ item.cus.surname }} </span>
+        <template #[`item.customer`]="{ item }">
+          <span> {{ item.customer_info.customer_name }} {{ item.customer_info.customer_address }} </span>
+        </template>
+        <template #[`item.tel`]="{ item }">
+          <span> {{ item.customer_info.customer_tel }} </span>
+        </template>
+        <template #[`item.seller`]="{ item }">
+          <span> {{ item.seller_info.user_name }} {{ item.seller_info.user_surname }} </span>
         </template>
         <template #[`item.view`]="{ item }">
           <div
@@ -186,6 +192,27 @@ export default {
           text: "ລາຄາ",
           align: "center",
           value: "final_price",
+          width: "120px",
+          class: " darken-2 text-subtitle-2 font-weight-black",
+        },
+        {
+          text: "ເບີໂທລູກຄ້າ",
+          align: "center",
+          value: "tel",
+          width: "120px",
+          class: " darken-2 text-subtitle-2 font-weight-black",
+        },
+        {
+          text: "ລູກຄ້າ",
+          align: "center",
+          value: "customer",
+          width: "120px",
+          class: " darken-2 text-subtitle-2 font-weight-black",
+        },
+        {
+          text: "ພະນັກງານ",
+          align: "center",
+          value: "seller",
           width: "120px",
           class: " darken-2 text-subtitle-2 font-weight-black",
         },
