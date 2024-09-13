@@ -13,9 +13,16 @@
           hide-details="auto"
           class="rounded-lg"
           label="ຄົ້ນຫາ"
+          @keydown.enter.prevent="GetData()"
         >
           <template #append>
-            <v-btn small icon class="goldColor" color="white">
+            <v-btn
+              small
+              icon
+              class="goldColor"
+              color="white"
+              @click="GetData()"
+            >
               <v-icon small>mdi-magnify</v-icon>
             </v-btn>
           </template>
@@ -27,26 +34,76 @@
       <v-data-table
         :headers="headers"
         :items="buyList"
-        :search="search"
         class="elevation-1"
         fixed-header
         hide-default-footer
         disable-sort
         no-data-text="ບໍ່ມີຂໍ້ມູນ"
         loading-text="Loading..."
+        height="68vh"
         width="400"
       >
+        <template v-slot:header="props" v-if="tableNull">
+          <tr style="background-color: rgba(0, 0, 0, 0.09)">
+            <td
+              colspan="9"
+              style="padding: 10px; padding-left: 20px"
+              align="left"
+            >
+              <h3 style="font-size: 18px; color: gray">
+                ຈຳນວນທັງໝົດ:
+                <b style="font-size: 18px; color: #c62828">
+                  {{ $formatnumber(totalList) }} ລາຍການ
+                </b>
+              </h3>
+            </td>
+          </tr>
+        </template>
+        <template #footer>
+          <div
+            style="
+              border-top: thin solid rgba(0, 0, 0, 0.12);
+              display: flex;
+              align-items: center;
+              justify-content: flex-end;
+            "
+          >
+            <div class="mx-2">
+              <span>ຈຳນວນແຖວຕໍ່ໜ້າ</span>
+            </div>
+            <div class="mx-2">
+              <v-select
+                v-model="limit"
+                style="width: 60px"
+                :items="listLimit"
+                :item-text="(item) => item.id"
+                :item-value="(item) => item.value"
+                @change="(page = 1), GetData()"
+              ></v-select>
+            </div>
+            <div class="mx-2">
+              <span v-if="countPage != 0">{{ page }}-{{ countPage }}</span>
+              <span v-else>-/- </span>
+            </div>
+            <div class="mx-2">
+              <v-icon @click="page > 1 ? (page -= 1) : void 0, GetData()"
+                >mdi-chevron-left</v-icon
+              >
+            </div>
+            <div class="mx-2">
+              <v-icon
+                @click="page < countPage ? (page += 1) : void 0, GetData()"
+                >mdi-chevron-right</v-icon
+              >
+            </div>
+          </div>
+        </template>
         <template #[`item.no`]="{ index }">
-          <span>{{ index + 1 }} </span>
+          <span>{{ (page - 1) * limit + index + 1 }} </span>
         </template>
-        <!-- <template #[`item.billNo`]="{ item }">
-          <span>
-            {{ item.billNo }}
-          </span>
+        <template #[`item.total_price`]="{ item }">
+          <span> {{ $formatnumber(item.total_price) }} </span>
         </template>
-        <template #[`item.name`]="{ item }">
-          <span> {{ item.cus.name }} {{ item.cus.surname }} </span>
-        </template> -->
         <template #[`item.view`]="{ item }">
           <div
             style="display: flex; align-items: center; justify-content: center"
@@ -60,15 +117,24 @@
       </v-data-table>
     </template>
     <HistoryBuyView :key="1" ref="myCompHisView" />
-    <HistoryBuyInfo :key="1" ref="myCompInfo" />
+    <!-- <HistoryBuyInfo :key="2" ref="myCompInfo" :statusTran="status" /> -->
+    <Bill :key="2" ref="myCompInfo" :statusTran="status" />
   </div>
 </template>
 <script>
-import SellPrintSell from "../../components/Sell/PrintSell.vue";
+import Bill from "../../components/Bill/Index.vue";
 import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
+      page: 1,
+      limit: 15,
+      listLimit: [
+        { id: 10, value: 10 },
+        { id: 15, value: 15 },
+        { id: "All", value: "" },
+      ],
+      status: "ປະຫວັດຊື້",
       search: "",
       headers: [
         {
@@ -96,38 +162,10 @@ export default {
         {
           text: "ລາຄາ",
           align: "center",
-          value: "bill_number",
+          value: "total_price",
           width: "120px",
           class: " darken-2 text-subtitle-2 font-weight-black",
         },
-        // {
-        //   text: "ຊື່ ແລະ ນາມສະກຸນ",
-        //   align: "center",
-        //   value: "name",
-        //   width: "180px",
-        //   class: " darken-2 text-subtitle-2 font-weight-black",
-        // },
-        // {
-        //   text: "ເບີໂທລະສັບ",
-        //   align: "center",
-        //   value: "cus.tel",
-        //   width: "100px",
-        //   class: " darken-2 text-subtitle-2 font-weight-black",
-        // },
-        // {
-        //   text: "ທີ່ຢູ່",
-        //   align: "center",
-        //   value: "cus.address",
-        //   width: "180px",
-        //   class: " darken-2 text-subtitle-2 font-weight-black",
-        // },
-        // {
-        //   text: "ວັນທີ",
-        //   align: "center",
-        //   value: "date",
-        //   width: "120px",
-        //   class: " darken-2 text-subtitle-2 font-weight-black",
-        // },
         {
           text: "ລາຍລະອຽດ",
           align: "center",
@@ -135,39 +173,60 @@ export default {
           width: "120px",
           class: " darken-2 text-subtitle-2 font-weight-black",
         },
-        // {
-        //   text: 'ປະເພດທອງຄຳ',
-        //   align: 'center',
-        //   value: 'name',
-        //   width: '120px',
-        //   class: ' darken-2 text-subtitle-2 font-weight-black',
-        // },
-        // { text: 'ຮູບປະພັນ', align: 'center', value: 'shape', width: '100px', class: ' darken-2 text-subtitle-2 font-weight-black', },
-        // { text: 'ລາຍຮູບປະພັນ', align: 'center', value: 'shapeLine', width: '120px', class: ' darken-2 text-subtitle-2 font-weight-black', },
-        // { text: 'ຄວາມບໍລິສຸດທອງ', align: 'center', value: 'purity', width: '150px', class: ' darken-2 text-subtitle-2 font-weight-black', },
-        // { text: 'ຫັກຄ່າຫຼູ້ຍຫ້ຽນ', align: 'center', value: 'lost', width: '120px', class: ' darken-2 text-subtitle-2 font-weight-black', },
-        // { text: 'ນ້ຳໜັກທອງຄຳ', align: 'center', value: 'weight', width: '120px', class: ' darken-2 text-subtitle-2 font-weight-black', },
-        // { text: 'ປະເພດນ້ຳໜັກ', align: 'center', value: 'weightType', width: '120px', class: ' darken-2 text-subtitle-2 font-weight-black', },
-        // { text: 'ລາຄາ', align: 'center', value: 'price', width: '120px', class: ' darken-2 text-subtitle-2 font-weight-black', },
-        // { text: 'ຈໍາ​ນວນ', align: 'center', value: 'amount', width: '80px', class: ' darken-2 text-subtitle-2 font-weight-black', },
       ],
     };
   },
   async mounted() {
-    await this.GetHisBuy();
+    this.GetData();
   },
   watch: {},
 
   computed: {
-    ...mapState("historyStore", ["buyList"]),
+    ...mapState("historyStore", [
+      "buyList",
+      "countPage",
+      "tableNull",
+      "totalList",
+    ]),
   },
   methods: {
-    ...mapMutations("historyItems", ["SET_INFO_BUY"]),
+    ...mapMutations("historyStore", ["SET_INFO_BUY"]),
     ...mapActions("historyStore", ["GetHisBuy"]),
+
+    async GetData() {
+      try {
+        await this.GetHisBuy({
+          page: this.page,
+          limit: this.limit,
+          search: String(this.search),
+        });
+      } catch (error) {}
+    },
+    updateDateTime() {
+      try {
+        const now = new Date();
+        const day = String(now.getDate()).padStart(2, "0");
+        const month = String(now.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+        const year = now.getFullYear();
+        const hours = String(now.getHours()).padStart(2, "0");
+        const minutes = String(now.getMinutes()).padStart(2, "0");
+        const seconds = String(now.getSeconds()).padStart(2, "0");
+        this.currentDateTime = `${day}/${month}/${year},${hours}:${minutes}:${seconds}`;
+        this.currentDate = `${day}/${month}/${year}`;
+        let date = {
+          currentDate: this.currentDate,
+          currentDateTime: this.currentDateTime,
+        };
+        return date;
+      } catch (error) {
+        console.log(error);
+      }
+    },
     OpenInfos(item) {
-      console.log('perview der', item)
-      this.SET_INFO_BUY(item)
-      this.$refs['myCompInfo'].dialog = true
+      // console.log("perview der", item);
+      this.SET_INFO_BUY(item);
+      this.$refs["myCompInfo"].dialog = true;
+      // this.$router.push("/bill");
     },
     // viewDetail(item) {
     //   try {

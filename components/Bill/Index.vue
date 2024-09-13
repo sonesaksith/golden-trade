@@ -61,7 +61,7 @@
                         No: {{ buyInfoList?.bill_number }}
                       </p>
                       <p style="font-size: 14px" class="ma-0">
-                        <!-- ວັນທີ: {{ currentDate }} -->
+                        ວັນທີ: {{ updateDateTime().currentDate }}
                       </p>
                       <p style="font-size: 14px" class="ma-0">
                         ພະນັກງານ: {{ buyInfoList?.seller_info?.user_name }}
@@ -297,72 +297,18 @@
                       </span>
                     </div>
                     <div class="text-right">
-                      <!-- <span style="font-size: 16px; font-weight: 600" class="ma-0">
-                {{ currentDateTime }}
-              </span> -->
+                      <span
+                        style="font-size: 16px; font-weight: 600"
+                        class="ma-0"
+                      >
+                        {{ updateDateTime().currentDateTime }}
+                      </span>
                     </div>
                   </div>
                 </v-card-title>
               </v-card>
             </div>
           </div>
-          <!-- <SellPrintSell
-            :key="1"
-            :myCus="myCustomer"
-            :billNo="myBillOn"
-            :currentDateTime="updateDateTime().currentDateTime"
-            :currentDate="updateDateTime().currentDate"
-            ref="myCompBill"
-          /> -->
-
-          <!-- <v-row>
-            <v-col cols="12" sm="4">
-              <div><b>ລາຍລະອຽດຄຳ</b></div>
-              <div
-                v-for="(detail, index) in buyInfoList?.list_detail"
-                :key="index"
-              >
-                <div>ລາຄາ : {{ $formatnumber(detail.price) }}</div>
-                <div>ບໍລິສຸດ : {{ detail.purity }}</div>
-                <div>
-                  ນ້ຳໜັກ : {{ $formatnumber(detail.purity) }}&nbsp;
-                  {{ detail.unit_name }}
-                </div>
-                <div>ນ້ຳໜັກຕົວຈິງ : {{ detail.real_weight }}</div>
-              </div>
-            </v-col>
-            <v-col cols="12" sm="4">
-              <div><b>ລາຍລະອຽດລູກຄ້າ</b></div>
-              <div>
-                <div>
-                  ເບີໂທ : {{ buyInfoList?.customer_info?.customer_tel }}
-                </div>
-                <div>
-                  ຊື່ ແລະ ນາມສະກຸນ :
-                  {{ buyInfoList?.customer_info?.customer_name }} &nbsp;
-                  {{ buyInfoList?.customer_info?.customer_surname }}
-                </div>
-                <div>
-                  ທີ່ຢູ່ : {{ buyInfoList?.customer_info?.customer_address }}
-                </div>
-              </div>
-            </v-col>
-            <v-col cols="12" sm="4">
-              <div><b>ລາຍລະອຽດຄົນຂາຍ</b></div>
-
-              <div>
-                <div>
-                  ສະຖານະ : {{ buyInfoList?.seller_info?.user_status_name }}
-                </div>
-                <div>ເບີໂທ : {{ buyInfoList?.seller_info?.user_tel }}</div>
-                <div>
-                  ຊື່ ແລະ ນາມສະກຸນ :
-                  {{ buyInfoList?.seller_info?.user_name }} &nbsp;
-                  {{ buyInfoList?.seller_info?.user_surname }}
-                </div>
-              </div>
-            </v-col>
-          </v-row> -->
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -387,8 +333,6 @@
 import { mapState } from "vuex";
 export default {
   props: {
-    // currentDateTime: { type: String, required: true },
-    // currentDate: { type: String, required: true },
     statusTran: { type: String, required: true },
   },
   data() {
@@ -400,6 +344,46 @@ export default {
     ...mapState("historyStore", ["buyInfoList"]),
   },
   methods: {
+    updateDateTime() {
+      try {
+        const now = new Date();
+        const day = String(now.getDate()).padStart(2, "0");
+        const month = String(now.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+        const year = now.getFullYear();
+        const hours = String(now.getHours()).padStart(2, "0");
+        const minutes = String(now.getMinutes()).padStart(2, "0");
+        const seconds = String(now.getSeconds()).padStart(2, "0");
+        this.currentDateTime = `${day}/${month}/${year},${hours}:${minutes}:${seconds}`;
+        this.currentDate = `${day}/${month}/${year}`;
+        let date = {
+          currentDate: this.currentDate,
+          currentDateTime: this.currentDateTime,
+        };
+        return date;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    updateDateTime() {
+      try {
+        const now = new Date();
+        const day = String(now.getDate()).padStart(2, "0");
+        const month = String(now.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+        const year = now.getFullYear();
+        const hours = String(now.getHours()).padStart(2, "0");
+        const minutes = String(now.getMinutes()).padStart(2, "0");
+        const seconds = String(now.getSeconds()).padStart(2, "0");
+        this.currentDateTime = `${day}/${month}/${year},${hours}:${minutes}:${seconds}`;
+        this.currentDate = `${day}/${month}/${year}`;
+        let date = {
+          currentDate: this.currentDate,
+          currentDateTime: this.currentDateTime,
+        };
+        return date;
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async OnPrintBill() {
       try {
         if (this.buyInfoList) {

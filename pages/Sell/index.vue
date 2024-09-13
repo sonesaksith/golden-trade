@@ -646,7 +646,7 @@
               </v-list>
             </v-col>
           </v-row>
-        </v-list>
+        </v-list> 
       </v-navigation-drawer>
     </v-row>
     <BuyAddCustomer

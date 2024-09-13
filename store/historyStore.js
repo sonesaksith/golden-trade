@@ -4,22 +4,50 @@ export default {
     status: null,
     error: null,
     buyList: [],
+    sellList: [],
     buyInfoList: [],
     countPage: "",
     totalList: "",
     tableNull: false,
+    loadBuy: false,
+    loadSell: false,
+    loadTrun: false,
   }),
   mutations: {
     InitState(state) {
       state.status = "loading";
     },
+    LOAD_BUY(state, data) {
+      state.loadBuy = data;
+    },
+    LOAD_SELL(state, data) {
+      state.loadSell = data;
+    },
+    LOAD_TRUN(state, data) {
+      state.loadTrun = data;
+    },
     SET_BUY(state, data) {
-      console.log("dd", data);
+      // console.log("dd", data);
 
       if (data) {
         state.buyList = data.resultData;
-        state.totalList = data.resultData.TotalUser;
-        state.countPage = data.resultData.TotalPage;
+        state.totalList = data.total;
+        state.countPage = data.count_page;
+        // console.log("state.countPage", state.countPage);
+      } else {
+        state.TotalPage = 0;
+        state.totalList = 0;
+        state.userList = [];
+      }
+    },
+    SET_SELL(state, data) {
+      // console.log("dd", data);
+
+      if (data) {
+        state.sellList = data.resultData;
+        state.totalList = data.total;
+        state.countPage = data.count_page;
+        // console.log("state.countPage", state.countPage);
       } else {
         state.TotalPage = 0;
         state.totalList = 0;
@@ -27,6 +55,8 @@ export default {
       }
     },
     SET_INFO_BUY(state, data) {
+      // console.log("hh", data);
+
       state.buyInfoList = data;
     },
     SET_UPDATE_USER(state) {
@@ -41,22 +71,62 @@ export default {
     },
   },
   actions: {
-    async GetHisBuy({ commit }, body) {
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJJbmZvIjp7InVzZXJfaWQiOjEsInVzZXJfbmFtZSI6InAiLCJ1c2VyX3N1cm5hbWUiOiJwIiwidXNlcl90ZWwiOiIyMDk3MTYwNDU0IiwidXNlcl9zdGF0dXNfaWQiOjEsImNyZWF0ZV9hdCI6IjIwMjQtMDktMDdUMTY6MDY6MTMuMDAwWiIsInVwZGF0ZV9hdCI6IjIwMjQtMDktMDdUMTY6NDM6MTMuMDAwWiIsInN0dCI6MSwidXNlcl9zdGF0dXNfbmFtZSI6IlN1cGVyIEFkbWluIn0sInBlcm1pc3Npb24iOnsicGVybWlzc2lvbl9pZCI6MSwidXNlcl9zdGF0dXNfaWQiOjEsInVzZXJfbWFuYWdlIjoxLCJidXlfc2VsbCI6MSwicHJvZHVjdCI6MSwiYnV5X2hpc3RvcnkiOjEsInNlbGxfaGlzdG9yeSI6MSwidHVybl9oaXN0b3J5IjoxLCJtYW5hZ2VfdW5pdCI6MSwibWFuYWdlX3Byb2R1Y3RfdHlwZSI6MSwibWFuYWdlX3JhdGUiOjEsIm1hbmFnZV9jYXRlZ29yeSI6MSwibWFuYWdlX2xhaSI6MSwiY3JlYXRlX2F0IjoiMjAyNC0wOS0wN1QxNTo0ODo1OS4wMDBaIiwidXBkYXRlX2F0IjpudWxsLCJzdHQiOjF9fSwiaWF0IjoxNzI2MTQxNzA5LCJleHAiOjE3MjYxODQ5MDl9.KV07H-j5yTUjK-t0wre8288iwy6aIhOda07pNO8izqg";
+    async GetHisBuy({ commit }, item) {
+      commit("LOAD_BUY", true);
       try {
         let res = await this.$axios({
           method: "get",
-          url: `/gold/transaction/buy/history`,
+          url: `/gold/transaction/buy/history?limit=${item.limit}&page=${item.page}&search=${item.search}`,
         });
         if (res.data.msg === "success") {
           commit("SET_BUY", res.data);
           commit("SET_TABLE_NULL", true);
         } else {
-          commit("SET_USER", "");
+          commit("SET_BUY", "");
           commit("SET_TABLE_NULL", false);
         }
-      } catch (error) {}
+      } catch (error) {
+      } finally {
+        commit("LOAD_BUY", false);
+      }
+    },
+    async GetHisSell({ commit }, item) {
+      commit("LOAD_SELL", true);
+      try {
+        let res = await this.$axios({
+          method: "get",
+          url: `/gold/transaction/sell/history?limit=${item.limit}&page=${item.page}&search=${item.search}`,
+        });
+        if (res.data.msg === "success") {
+          commit("SET_SELL", res.data);
+          commit("SET_TABLE_NULL", true);
+        } else {
+          commit("SET_SELL", "");
+          commit("SET_TABLE_NULL", false);
+        }
+      } catch (error) {
+      } finally {
+        commit("LOAD_SELL", false);
+      }
+    },
+    async GetHisSell({ commit }, item) {
+      commit("LOAD_TRUN", true);
+      try {
+        let res = await this.$axios({
+          method: "get",
+          url: `/gold/transaction/turn/history?limit=${item.limit}&page=${item.page}&search=${item.search}`,
+        });
+        if (res.data.msg === "success") {
+          commit("SET_SELL", res.data);
+          commit("SET_TABLE_NULL", true);
+        } else {
+          commit("SET_SELL", "");
+          commit("SET_TABLE_NULL", false);
+        }
+      } catch (error) {
+      } finally {
+        commit("LOAD_TRUN", false);
+      }
     },
   },
 
