@@ -8,7 +8,7 @@ export default {
     return {};
   },
   mounted() {
-    this.$store.commit("main/SET_HEADER_TITLE", "ປະຫວັດການຊື້");
+    this.$store.commit("main/SET_HEADER_TITLE", "ປະຫວັດການເທີນ");
   },
   computed: {},
   methods: {},
