@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" width="500">
     <v-form ref="form" v-model="valid">
       <v-card>
-        <v-card-title> ແກ້ໄຂຂໍ້ມູນລູກຄ້າ </v-card-title>
+        <v-card-title> ເພີ່ມລາຍຊື່ລູກຄ້າ </v-card-title>
         <v-container>
           <v-row>
             <v-col cols="12" sm="6">
@@ -11,6 +11,7 @@
                 dense
                 label="ຊື່"
                 outlined
+                :rules="[(v) => !!v || 'ກະລຸນາປ້ອນຊື່']"
               ></v-text-field>
             </v-col>
             <v-col cols="12" sm="6">
@@ -26,22 +27,36 @@
                 v-model="tel"
                 dense
                 label="ເບີໂທ"
+                :rules="[(v) => !!v || 'ກະລຸນາປ້ອນເບີໂທ']"
                 outlined
               ></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-textarea
-                v-model="address"
-                label="ທີ່ຢູ່"
+              <v-text-field
+                v-model="password"
+                label="ຕັ່ງລະຫັດຜ່ານ"
+                dense
                 outlined
-                rows="4"
-              ></v-textarea>
+              ></v-text-field>
             </v-col>
+            <v-col cols="12"
+              ><v-select
+                v-model="userStatus"
+                label="ສະຖານະຜູ້ໃຊ້"
+                dense
+                :items="role"
+                item-text="role"
+                item-value="value"
+                outlined
+              ></v-select
+            ></v-col>
           </v-row>
         </v-container>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn @click="onUpdate()" color="primary" text>ແກ້ໄຂ</v-btn>
+          <v-btn @click="onAdd()" color="primary" :disabled="!valid" text
+            >ເພີ່ມ</v-btn
+          >
           <v-btn @click="onClose()" color="error" text>ຍົກເລີກ</v-btn>
         </v-card-actions>
       </v-card>
@@ -58,36 +73,38 @@ export default {
       name: "",
       surname: "",
       tel: "",
-      address: "",
+      password: "",
       valid: false,
-      id: 0,
+      userStatus: 1,
+      role: [
+        { role: "admin", value: 1 },
+        { role: "ຜູ້ໃຊ້", value: 2 },
+      ],
     };
   },
-  computed: {
-    ...mapState("customer", ["listCustomer"]),
-  },
+  computed: {},
   methods: {
-    ...mapActions("customer", ["updateCustomer"]),
+    ...mapActions("user", ["createUser"]),
     onClose() {
       this.dialog = false;
       this.$refs.form.reset();
     },
-    async onUpdate() {
+    async onAdd() {
       if (this.$refs.form.validate()) {
         try {
           const data = {
-            id: this.id,
             name: this.name,
             surname: this.surname,
             tel: this.tel,
-            address: this.address,
+            pass: "U2FsdGVkX18Z3TEnTSt7MmFsyil3+GEF2taAd+Gl0jY=",
+            userStatusId: this.userStatus,
           };
-          const resp = await this.updateCustomer(data);
-          if (resp.status == 200 && resp.data.msg == "success") {
-            this.$emit("getCustomer");
+          const resp = await this.createUser(data);
+          if (resp.status == 201 && resp.data.msg == "success") {
+            this.$emit("getUser");
             this.$swal({
               toast: true,
-              text: "ແກ້ໄຂຂໍ້ມູນລຸກຄ້າສຳເລັດ!",
+              text: "ເພີ່ມຂໍ້ມູນຜູ້ໃຊ້ສຳເລັດ!",
               type: "success",
               timer: 1500,
               timerProgressBar: true,

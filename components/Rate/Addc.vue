@@ -2,46 +2,33 @@
   <v-dialog v-model="dialog" width="500">
     <v-form ref="form" v-model="valid">
       <v-card>
-        <v-card-title> ແກ້ໄຂຂໍ້ມູນລູກຄ້າ </v-card-title>
+        <v-card-title> ເພີ່ມ Rate </v-card-title>
         <v-container>
           <v-row>
-            <v-col cols="12" sm="6">
+            <v-col cols="12">
               <v-text-field
-                v-model="name"
+                v-model="buy"
                 dense
-                label="ຊື່"
+                label="ຊື້"
                 outlined
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="6">
-              <v-text-field
-                v-model="surname"
-                dense
-                label="ນາມສະກຸນ"
-                outlined
+                :rules="[(v) => !!v || 'ກະລຸນາປ້ອນຊື່']"
               ></v-text-field>
             </v-col>
             <v-col cols="12">
               <v-text-field
-                v-model="tel"
+                v-model="sell"
                 dense
-                label="ເບີໂທ"
+                label="ຂາຍ"
                 outlined
               ></v-text-field>
-            </v-col>
-            <v-col cols="12">
-              <v-textarea
-                v-model="address"
-                label="ທີ່ຢູ່"
-                outlined
-                rows="4"
-              ></v-textarea>
             </v-col>
           </v-row>
         </v-container>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn @click="onUpdate()" color="primary" text>ແກ້ໄຂ</v-btn>
+          <v-btn @click="onAdd()" color="primary" :disabled="!valid" text
+            >ເພີ່ມ</v-btn
+          >
           <v-btn @click="onClose()" color="error" text>ຍົກເລີກ</v-btn>
         </v-card-actions>
       </v-card>
@@ -54,40 +41,32 @@ import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
+      buy: 0,
+      sell: 0,
       dialog: false,
-      name: "",
-      surname: "",
-      tel: "",
-      address: "",
       valid: false,
-      id: 0,
     };
   },
-  computed: {
-    ...mapState("customer", ["listCustomer"]),
-  },
+  computed: {},
   methods: {
-    ...mapActions("customer", ["updateCustomer"]),
+    ...mapActions("rate", ["createRate"]),
     onClose() {
       this.dialog = false;
       this.$refs.form.reset();
     },
-    async onUpdate() {
+    async onAdd() {
       if (this.$refs.form.validate()) {
         try {
           const data = {
-            id: this.id,
-            name: this.name,
-            surname: this.surname,
-            tel: this.tel,
-            address: this.address,
+            rateBuy: this.buy,
+            rateSell: this.sell,
           };
-          const resp = await this.updateCustomer(data);
-          if (resp.status == 200 && resp.data.msg == "success") {
-            this.$emit("getCustomer");
+          const resp = await this.createRate(data);
+          if (resp.status == 201 && resp.data.msg == "success") {
+            this.$emit("getRate");
             this.$swal({
               toast: true,
-              text: "ແກ້ໄຂຂໍ້ມູນລຸກຄ້າສຳເລັດ!",
+              text: "ເພີ່ມຂໍ້ມູນສຳເລັດ!",
               type: "success",
               timer: 1500,
               timerProgressBar: true,

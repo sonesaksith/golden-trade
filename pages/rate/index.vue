@@ -1,13 +1,13 @@
 <template>
   <div>
-    <CustomerAddc ref="customerAddc" @getCustomer="handleGetCustomer" />
-    <CustomerUpdate ref="customerUpdate" />
-    <CustomerDelete ref="customerDelete" />
+    <RateAddc ref="RateAddc" @getRate="handleGetRate" />
+    <RateUpdate ref="RateUpdate" />
+    <RateDelete ref="RateDelete" />
 
     <v-container fluid>
       <v-row>
         <v-col cols="12" class="d-flex pt-0">
-          <h2>ຈັດການຂໍ້ມູນລູກຄ້າ</h2>
+          <h2>ຈັດການຂໍ້ມູນ Rate</h2>
         </v-col>
         <v-col cols="12">
           <v-row>
@@ -22,7 +22,7 @@
                 @keyup.enter="
                   () => {
                     page = 1;
-                    handleGetCustomer();
+                    handleGetRate();
                   }
                 "
               >
@@ -33,7 +33,7 @@
                     @click="
                       () => {
                         page = 1;
-                        handleGetCustomer();
+                        handleGetRate();
                       }
                     "
                     style="background-color: #1976d2"
@@ -45,14 +45,15 @@
               </v-text-field>
             </v-col>
             <v-col cols="12" sm="8" class="d-flex align-center justify-end">
-              <v-btn color="success" @click="onOpenCreate">ເພີ່ມລູກຄ້າ</v-btn>
+              <v-btn color="success" @click="onOpenCreate">ເພີ່ມ Rate</v-btn>
             </v-col>
           </v-row>
         </v-col>
+
         <v-col cols="12">
           <v-data-table
             :headers="headers"
-            :items="listCustomer || []"
+            :items="listRate || []"
             class="elevation-1 rounded-lg"
             :items-per-page="limit"
             fixed-header
@@ -70,7 +71,7 @@
                   align="left"
                 >
                   <h3 style="font-size: 18px; color: gray">
-                    ລູກຄ້າທັງໝົດ:
+                    ຜູ້ໃຊ້ທັງໝົດ:
                     <b style="font-size: 18px; color: #c62828">
                       {{ total || 0 }}
                     </b>
@@ -121,15 +122,13 @@
                 {{ ((page || 1) - 1) * limit + index + 1 }}
               </div>
             </template>
-            <template #item.name="{ index, item }">
-              <div>{{ item.customer_name }} {{ item.customer_surname }}</div>
+            <template #item.buy="{ index, item }">
+              <div>{{ item.rate_buy }}</div>
             </template>
-            <template #item.tel="{ index, item }">
-              <div>{{ item.customer_tel }}</div>
+            <template #item.sell="{ index, item }">
+              <div>{{ item.rate_sell }}</div>
             </template>
-            <template #item.address="{ index, item }">
-              <div>{{ item.customer_address }}</div>
-            </template>
+
             <template #item.actions="{ index, item }">
               <div class="d-flex justify-center align-center">
                 <v-tooltip bottom>
@@ -198,24 +197,16 @@ export default {
           sortable: false,
           align: "center",
         },
-
         {
-          text: "ຊື່ ແລະ ນາມສະກຸນ",
-          value: "name",
+          text: "ຊື້",
+          value: "buy",
           class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-5",
           align: "center",
           sortable: false,
         },
         {
-          text: "ເບີໂທ",
-          value: "tel",
-          class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-5",
-          align: "center",
-          sortable: false,
-        },
-        {
-          text: "ທີ່ຢູ່",
-          value: "address",
+          text: "ຂາຍ",
+          value: "sell",
           class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-5",
           align: "center",
           sortable: false,
@@ -231,28 +222,29 @@ export default {
     };
   },
   mounted() {
-    this.handleGetCustomer();
+    // this.handelClickSearch();
+    this.handleGetRate();
   },
   watch: {
     page: function (val) {
-      this.handleGetCustomer();
+      this.handleGetRate();
     },
     limit: function (val) {
-      this.handleGetCustomer();
+      this.handleGetRate();
     },
   },
 
   computed: {
-    ...mapState("customer", ["listCustomer", "countPage", "total"]),
+    ...mapState("rate", ["listRate", "countPage", "total"]),
     // countPage() {
-    //   return Math.ceil((this?.listCustomer?.length || 0) / this.limit);
+    //   return Math.ceil((this?.listUser?.length || 0) / this.limit);
     // },
   },
   methods: {
-    ...mapActions("customer", ["getCustomer"]),
-    async handleGetCustomer() {
+    ...mapActions("rate", ["getRate"]),
+    async handleGetRate() {
       this.loading = true;
-      await this.getCustomer({
+      await this.getRate({
         page: this.page,
         limit: this.limit,
         search: this.search,
@@ -283,21 +275,19 @@ export default {
     // },
     async onDelete(items) {
       const item = JSON.parse(JSON.stringify(items));
-      this.$refs.customerDelete.dialog = true;
-      this.$refs.customerDelete.id = item.customer_id;
+      this.$refs.RateDelete.dialog = true;
+      this.$refs.RateDelete.id = item.rate_id;
     },
     onOpenCreate() {
-      this.$refs.customerAddc.dialog = true;
+      this.$refs.RateAddc.dialog = true;
     },
 
     onOpenUpdate(items) {
       const item = JSON.parse(JSON.stringify(items));
-      this.$refs.customerUpdate.dialog = true;
-      this.$refs.customerUpdate.id = item.customer_id;
-      this.$refs.customerUpdate.name = item.customer_name;
-      this.$refs.customerUpdate.surname = item.customer_surname;
-      this.$refs.customerUpdate.tel = item.customer_tel;
-      this.$refs.customerUpdate.address = item.customer_address;
+      this.$refs.RateUpdate.dialog = true;
+      this.$refs.RateUpdate.id = item.rate_id;
+      this.$refs.RateUpdate.buy = item.rate_buy;
+      this.$refs.RateUpdate.sell = item.rate_sell;
     },
   },
 };

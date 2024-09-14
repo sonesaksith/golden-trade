@@ -1,13 +1,13 @@
 <template>
   <div>
-    <CustomerAddc ref="customerAddc" @getCustomer="handleGetCustomer" />
-    <CustomerUpdate ref="customerUpdate" />
-    <CustomerDelete ref="customerDelete" />
+    <UserAddc ref="UserAddc" @getUser="handleGetUser" />
+    <UserUpdate ref="UserUpdate" />
+    <UserDelete ref="UserDelete" />
 
     <v-container fluid>
       <v-row>
         <v-col cols="12" class="d-flex pt-0">
-          <h2>ຈັດການຂໍ້ມູນລູກຄ້າ</h2>
+          <h2>ຈັດການຂໍ້ມູນຜູ້ໃຊ້</h2>
         </v-col>
         <v-col cols="12">
           <v-row>
@@ -22,7 +22,7 @@
                 @keyup.enter="
                   () => {
                     page = 1;
-                    handleGetCustomer();
+                    handleGetUser();
                   }
                 "
               >
@@ -33,7 +33,7 @@
                     @click="
                       () => {
                         page = 1;
-                        handleGetCustomer();
+                        handleGetUser();
                       }
                     "
                     style="background-color: #1976d2"
@@ -45,14 +45,14 @@
               </v-text-field>
             </v-col>
             <v-col cols="12" sm="8" class="d-flex align-center justify-end">
-              <v-btn color="success" @click="onOpenCreate">ເພີ່ມລູກຄ້າ</v-btn>
+              <v-btn color="success" @click="onOpenCreate">ເພີມຜູ້ໃຊ້</v-btn>
             </v-col>
           </v-row>
         </v-col>
         <v-col cols="12">
           <v-data-table
             :headers="headers"
-            :items="listCustomer || []"
+            :items="listUser || []"
             class="elevation-1 rounded-lg"
             :items-per-page="limit"
             fixed-header
@@ -70,7 +70,7 @@
                   align="left"
                 >
                   <h3 style="font-size: 18px; color: gray">
-                    ລູກຄ້າທັງໝົດ:
+                    ຜູ້ໃຊ້ທັງໝົດ:
                     <b style="font-size: 18px; color: #c62828">
                       {{ total || 0 }}
                     </b>
@@ -122,13 +122,13 @@
               </div>
             </template>
             <template #item.name="{ index, item }">
-              <div>{{ item.customer_name }} {{ item.customer_surname }}</div>
+              <div>{{ item.user_name }} {{ item.user_surname }}</div>
             </template>
             <template #item.tel="{ index, item }">
-              <div>{{ item.customer_tel }}</div>
+              <div>{{ item.user_tel }}</div>
             </template>
-            <template #item.address="{ index, item }">
-              <div>{{ item.customer_address }}</div>
+            <template #item.status="{ index, item }">
+              <div>{{ item.user_status_id }}</div>
             </template>
             <template #item.actions="{ index, item }">
               <div class="d-flex justify-center align-center">
@@ -214,8 +214,8 @@ export default {
           sortable: false,
         },
         {
-          text: "ທີ່ຢູ່",
-          value: "address",
+          text: "ສະຖານະ",
+          value: "status",
           class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-5",
           align: "center",
           sortable: false,
@@ -231,28 +231,29 @@ export default {
     };
   },
   mounted() {
-    this.handleGetCustomer();
+    // this.handelClickSearch();
+    this.handleGetUser();
   },
   watch: {
     page: function (val) {
-      this.handleGetCustomer();
+      this.handleGetUser();
     },
     limit: function (val) {
-      this.handleGetCustomer();
+      this.handleGetUser();
     },
   },
 
   computed: {
-    ...mapState("customer", ["listCustomer", "countPage", "total"]),
+    ...mapState("user", ["listUser", "countPage", "total"]),
     // countPage() {
-    //   return Math.ceil((this?.listCustomer?.length || 0) / this.limit);
+    //   return Math.ceil((this?.listUser?.length || 0) / this.limit);
     // },
   },
   methods: {
-    ...mapActions("customer", ["getCustomer"]),
-    async handleGetCustomer() {
+    ...mapActions("user", ["getUser"]),
+    async handleGetUser() {
       this.loading = true;
-      await this.getCustomer({
+      await this.getUser({
         page: this.page,
         limit: this.limit,
         search: this.search,
@@ -283,21 +284,21 @@ export default {
     // },
     async onDelete(items) {
       const item = JSON.parse(JSON.stringify(items));
-      this.$refs.customerDelete.dialog = true;
-      this.$refs.customerDelete.id = item.customer_id;
+      this.$refs.UserDelete.dialog = true;
+      this.$refs.UserDelete.id = item.user_id;
     },
     onOpenCreate() {
-      this.$refs.customerAddc.dialog = true;
+      this.$refs.UserAddc.dialog = true;
     },
 
     onOpenUpdate(items) {
       const item = JSON.parse(JSON.stringify(items));
-      this.$refs.customerUpdate.dialog = true;
-      this.$refs.customerUpdate.id = item.customer_id;
-      this.$refs.customerUpdate.name = item.customer_name;
-      this.$refs.customerUpdate.surname = item.customer_surname;
-      this.$refs.customerUpdate.tel = item.customer_tel;
-      this.$refs.customerUpdate.address = item.customer_address;
+      this.$refs.UserUpdate.dialog = true;
+      this.$refs.UserUpdate.id = item.user_id;
+      this.$refs.UserUpdate.name = item.user_name;
+      this.$refs.UserUpdate.surname = item.user_surname;
+      this.$refs.UserUpdate.tel = item.user_tel;
+      this.$refs.UserUpdate.address = item.user_status_id;
     },
   },
 };
