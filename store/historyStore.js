@@ -5,6 +5,7 @@ export default {
     error: null,
     buyList: [],
     sellList: [],
+    trunList: [],
     buyInfoList: [],
     countPage: "",
     totalList: "",
@@ -41,8 +42,6 @@ export default {
       }
     },
     SET_SELL(state, data) {
-      console.log("dd", data);
-
       if (data) {
         state.sellList = data.resultData;
         state.totalList = data.total;
@@ -54,13 +53,20 @@ export default {
         state.userList = [];
       }
     },
-    SET_INFO_BUY(state, data) {
-      // console.log("hh", data);
-
-      state.buyInfoList = data;
+    SET_TRUN(state, data) {
+      if (data) {
+        state.trunList = data.resultData;
+        state.totalList = data.total;
+        state.countPage = data.count_page;
+        // console.log("state.countPage", state.countPage);
+      } else {
+        state.TotalPage = 0;
+        state.totalList = 0;
+        state.userList = [];
+      }
     },
-    SET_UPDATE_USER(state) {
-      state.status = "ok";
+    SET_INFO_BUY(state, data) {
+      state.buyInfoList = data;
     },
     SET_TABLE_NULL(state, value) {
       state.tableNull = value;
@@ -140,10 +146,10 @@ export default {
           url: `/gold/transaction/turn/history?limit=${item.limit}&page=${item.page}&search=${item.search}`,
         });
         if (res.data.msg === "success") {
-          commit("SET_SELL", res.data);
+          commit("SET_TRUN", res.data);
           commit("SET_TABLE_NULL", true);
         } else {
-          commit("SET_SELL", "");
+          commit("SET_TRUN", "");
           commit("SET_TABLE_NULL", false);
         }
       } catch (error) {
