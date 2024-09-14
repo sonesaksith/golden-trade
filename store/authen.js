@@ -9,9 +9,11 @@ export default {
     },
   },
   actions: {
-    async Login({ state, commit }, body) {
+    async Loginss({ state, commit }, body) {
+      console.log(body);
       try {
-        const resp = await this.$axios({
+        const axios = require("axios");
+        const resp = await axios({
           method: "post",
           url: "/api/auth/login",
           data: body,

@@ -184,6 +184,9 @@ export default {
     ],
   }),
   mutations: {
+    SET_LIST_GOLD(state, data) {
+      state.listGold = data;
+    },
     ADD_GOLD(state, data) {
       state.listGold.push(data);
     },
@@ -211,6 +214,7 @@ export default {
           method: "get",
           url: "/api/product/view",
         });
+        commit("SET_LIST_GOLD", resp?.data?.resultData || []);
         return resp;
       } catch (error) {
         throw error;

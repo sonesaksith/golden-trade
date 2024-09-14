@@ -18,6 +18,17 @@
             </v-col>
             <v-col cols="12" class="py-0" sm="6">
               <v-text-field
+                v-model="realWeight"
+                label="ນ້ຳໜັກໂຕຈິງ"
+                append-icon="g"
+                :rules="[(v) => !!v || 'ກະລຸນາປ້ອນຄວາມບໍລິສຸດທອງ']"
+                outlined
+                dense
+                class="rounded-md"
+              ></v-text-field>
+            </v-col>
+            <!-- <v-col cols="12" class="py-0" sm="6">
+              <v-text-field
                 v-model="modelLost"
                 @keyup="fotmatLost()"
                 label="ຫັກຄ່າຫຼູ້ຍຫ້ຽນ"
@@ -31,8 +42,8 @@
                   </div>
                 </template>
               </v-text-field>
-            </v-col>
-            <v-col cols="12" class="py-0">
+            </v-col> -->
+            <!-- <v-col cols="12" class="py-0">
               <v-select
                 v-model="modelGoldType"
                 :items="goldTypes"
@@ -58,9 +69,9 @@
                 class="rounded-md"
                 clearable
               ></v-select>
-              <!-- :rules="[(v) => !!v || 'ກະລຸນາເລືອກຮູບປະພັນ']" -->
-            </v-col>
-            <v-col cols="12" class="py-0" v-if="modelGoldType == 'ທອງຮູບປະພັນ'">
+
+            </v-col> -->
+            <!-- <v-col cols="12" class="py-0" v-if="modelGoldType == 'ທອງຮູບປະພັນ'">
               <v-select
                 v-model="modelGoldShapeLine"
                 :items="goldShapeLine"
@@ -72,7 +83,7 @@
                 class="rounded-md"
                 clearable
               ></v-select>
-            </v-col>
+            </v-col> -->
             <v-col cols="6" class="py-0">
               <v-text-field
                 v-model="modelWeightAmount"
@@ -139,8 +150,9 @@ export default {
       valid: true,
       dialog: false,
       modelGoldType: "ທອງຮູບປະພັນ",
-      modelPurity: 99,
+      modelPurity: 99.99,
       manualPrice: false,
+      realWeight: "",
       goldTypes: [
         {
           id: 1,
@@ -152,7 +164,6 @@ export default {
         },
       ],
       modelGoldShape: "",
-
       goldShape: [
         {
           id: 1,
@@ -172,34 +183,32 @@ export default {
         },
       ],
       modelWeightAmount: "",
-
-      modelWeightType: "gram",
+      modelWeightType: "ກຣາມ",
       weightType: [
         {
           id: 1,
-          weightName: "gram",
+          weightName: "ກຣາມ",
         },
         {
           id: 2,
-          weightName: "kg",
+          weightName: "ບາດ",
         },
         {
           id: 3,
-          weightName: "ຫູນ",
+          weightName: "ສະຫລຶງ",
         },
         {
           id: 4,
-          weightName: "ສະຫຼຶງ",
+          weightName: "ຫຸນ",
         },
         {
           id: 5,
-          weightName: "ບາດ",
+          weightName: "kg",
         },
       ],
       modelLost: 0,
       modelPrice: 0,
       modelGoldShapeLine: "",
-
       goldShapeLine: [
         {
           id: 1,
@@ -245,8 +254,7 @@ export default {
             this.$convertGoldToMoney(
               val?.split(",").join(""),
               this.modelWeightType,
-              this.modelPurity,
-              String(this.modelLost)?.split(",").join("")
+              this.modelPurity
             )
           );
           this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
@@ -257,19 +265,22 @@ export default {
     },
     modelWeightType: function (val) {
       if (this.manualPrice == false) {
-        if (val) {
-          this.modelPrice = Math.ceil(
-            this.$convertGoldToMoney(
-              this.modelWeightAmount?.split(",").join(""),
-              val,
-              this.modelPurity,
-              String(this.modelLost)?.split(",").join("")
-            )
-          );
-          this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
-        } else {
-          // this.modelWeightType = "gram";
-          this.modelPrice = 0;
+        try {
+          if (val) {
+            this.modelPrice = Math.ceil(
+              this.$convertGoldToMoney(
+                this.modelWeightAmount?.split(",").join(""),
+                val,
+                this.modelPurity
+              )
+            );
+            this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
+          } else {
+            // this.modelWeightType = "gram";
+            this.modelPrice = 0;
+          }
+        } catch (error) {
+          console.log(error);
         }
       }
     },
@@ -280,8 +291,7 @@ export default {
             this.$convertGoldToMoney(
               this.modelWeightAmount?.split(",").join(""),
               this.modelWeightType,
-              val,
-              String(this.modelLost)?.split(",").join("")
+              val
             )
           );
           this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
@@ -290,8 +300,7 @@ export default {
             this.$convertGoldToMoney(
               this.modelWeightAmount?.split(",").join(""),
               this.modelWeightType,
-              val,
-              String(this.modelLost)?.split(",").join("")
+              val
             )
           );
           this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
@@ -306,8 +315,7 @@ export default {
           this.$convertGoldToMoney(
             this.modelWeightAmount?.split(",").join(""),
             this.modelWeightType,
-            this.modelPurity,
-            String(this.modelLost)?.split(",").join("")
+            this.modelPurity
           )
         );
         this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
@@ -327,35 +335,47 @@ export default {
   },
   methods: {
     onAddListBuy() {
-      //   console.log(this.modelPurity);
-      //   console.log(this.modelLost);
-      //   console.log(this.modelGoldType);
-      //   console.log(this.modelGoldShape);
-      //   console.log(this.modelGoldShapeLine);
-      //   console.log(this.modelWeightAmount);
-      //   console.log(this.modelWeightType);
-      //   console.log(this.modelPrice);
-
-      const data = {
-        id: "pk" + Math.floor(Math.random() * 10000000),
-        typGold: this.modelGoldType,
-        optionGole: this.modelGoldShape,
-        typeLine: this.modelGoldShapeLine,
-        wight: this.modelWeightAmount,
-        typwight: this.modelWeightType,
-        sellGold: Number(this.modelPrice.replaceAll(",", "")),
-        countItem: 1,
-      };
-      this.$store.commit("newsell/ADD_LIST_CART_BUY", data);
-      this.dialog = false;
-      this.modelPurity = 99;
-      this.modelLost = 0;
-      this.modelGoldType = "ທອງຮູບປະພັນ";
-      this.modelGoldShape = "";
-      this.modelGoldShapeLine = "";
-      this.modelWeightAmount = "";
-      this.modelWeightType = "gram";
-      this.modelPrice = 0;
+      if (
+        this.modelWeightAmount &&
+        this.modelWeightType &&
+        this.modelWeightType &&
+        this.realWeight &&
+        this.modelPrice &&
+        this.modelPurity
+      ) {
+        const data = {
+          weight: this.modelWeightAmount,
+          unitId: this.weightType.filter(
+            (x) => x.weightName == this.modelWeightType
+          )[0]?.id,
+          unitName: this.modelWeightType,
+          realWeight: this.realWeight,
+          price: Number(this.modelPrice.replaceAll(",", "")),
+          purity: this.modelPurity,
+        };
+        console.log(data);
+        this.$store.commit("newsell/ADD_LIST_CART_BUY", data);
+        this.dialog = false;
+        this.modelPurity = 99.99;
+        this.modelLost = 0;
+        this.modelGoldType = "ທອງຮູບປະພັນ";
+        this.modelGoldShape = "";
+        this.modelGoldShapeLine = "";
+        this.modelWeightAmount = "";
+        this.modelWeightType = "ກຣາມ";
+        this.modelPrice = 0;
+        this.realWeight = "";
+      } else {
+        this.$swal({
+          toast: true,
+          text: "ກະລຸນາປ້ອນຂໍ້ມູນ!",
+          type: "warning",
+          timer: 1500,
+          timerProgressBar: true,
+          showConfirmButton: false,
+          position: "top-end",
+        });
+      }
     },
     fotmatPrice2(price) {
       let val;

@@ -114,6 +114,7 @@ export default {
     },
     async GetHisSell({ commit }, item) {
       commit("LOAD_SELL", true);
+      console.log(item);
       try {
         let res = await this.$axios({
           method: "get",

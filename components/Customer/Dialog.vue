@@ -31,8 +31,10 @@
                     {{ index + 1 }}
                   </div>
                   <div style="width: 80%">
-                    <div>{{ item.name }} {{ item.surname }}</div>
-                    <div>{{ item.tel }}</div>
+                    <div>
+                      {{ item.customer_name }} {{ item.customer_surname }}
+                    </div>
+                    <div>{{ item.customer_tel }}</div>
                   </div>
                   <div
                     class="d-flex align-center justify-center"
@@ -64,15 +66,16 @@ export default {
   },
   computed: {
     ...mapState("customer", ["listCustomer", "selectingCus"]),
+    ...mapState("newsell", ["cusData"]),
     filteredData() {
       const search = String(this.search || "")
         .trim()
         .toLowerCase();
-      return this.listCustomer.filter((item) => {
+      return this.cusData.filter((item) => {
         const matchesSearch =
-          item.name.toLowerCase().includes(search) ||
-          item.surname.toLowerCase().includes(search) ||
-          item.tel.toLowerCase().includes(search);
+          item.customer_name.toLowerCase().includes(search) ||
+          item.customer_surname.toLowerCase().includes(search) ||
+          item.customer_tel.toLowerCase().includes(search);
 
         return matchesSearch;
       });
