@@ -33,8 +33,7 @@ export default function ({ $axios, store, redirect }) {
       secureStorage.removeItem("token");
       secureStorage.removeItem("userinfo");
       $axios.setHeader("Authorization", null);
-      console.log("401");
-      redirect("/");
+      redirect("/authen/login");
     }
   });
 }

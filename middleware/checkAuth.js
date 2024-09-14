@@ -12,9 +12,8 @@ export default ({
 }) => {
   try {
     if (
-      !secureStorage.getItem("token") ||
-      secureStorage == null ||
-      secureStorage.getItem("token") === undefined
+      !JSON.parse(secureStorage.getItem("userinfo"))?.accessToken ||
+      JSON.parse(secureStorage.getItem("userinfo"))?.accessToken === undefined
     ) {
       return redirect("/authen/login");
     }
