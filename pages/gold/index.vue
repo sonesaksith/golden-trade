@@ -129,19 +129,19 @@
                 {{ item.product_name }}
               </div>
             </template>
-            <template #item.product_type_id="{ index, item }">
+            <template #item.product_type_name="{ index, item }">
               <div>
-                {{ format(item.product_type_id, "product_type") }}
+                {{ item.product_type_name }}
               </div>
             </template>
-            <template #item.category_id="{ index, item }">
+            <template #item.category_name="{ index, item }">
               <div>
-                {{ format(item.category_id, "category") }}
+                {{ item.category_name }}
               </div>
             </template>
-            <template #item.lai_id="{ index, item }">
+            <template #item.lai_name="{ index, item }">
               <div>
-                {{ format(item.lai_id, "lai") }}
+                {{ item.lai_name }}
               </div>
             </template>
             <template #item.weight="{ index, item }">
@@ -149,9 +149,9 @@
                 {{ $formatnumber(item.weight) }}
               </div>
             </template>
-            <template #item.unit_id="{ index, item }">
+            <template #item.unit_name="{ index, item }">
               <div>
-                {{ format(item.unit_id, "unit") }}
+                {{ item.unit_name }}
               </div>
             </template>
             <template #item.real_weight="{ index, item }">
@@ -257,7 +257,7 @@ export default {
         },
         {
           text: "ປະເພດຄຳ",
-          value: "product_type_id",
+          value: "product_type_name",
           class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-5",
           width: "100px",
           align: "center",
@@ -265,7 +265,7 @@ export default {
         },
         {
           text: "ປະເພດຮູບປະພັນ",
-          value: "category_id",
+          value: "category_name",
           class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-5",
           width: "150px",
           align: "center",
@@ -273,7 +273,7 @@ export default {
         },
         {
           text: "ລາຍ",
-          value: "lai_id",
+          value: "lai_name",
           class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-5",
           width: "150px",
           align: "center",
@@ -289,7 +289,7 @@ export default {
         },
         {
           text: "ປະເພດນ້ຳໜັກ",
-          value: "unit_id",
+          value: "unit_name",
           class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-5",
           width: "150px",
           align: "center",
@@ -441,34 +441,34 @@ export default {
       }
     },
 
-    format(id, key) {
-      try {
-        if (key == "category") {
-          const result = this.dropDown[key]?.find(
-            (item) => item.category_id === id
-          );
-          return result?.category_name;
-        } else if (key == "lai") {
-          const result = this.dropDown[key]?.find(
-            (item) => item.lai_id === id
-          );
-          return result?.lai_name;
-        } else if (key == "product_type") {
-          const result = this.dropDown[key]?.find(
-            (item) => item.product_type_id === id
-          );
-          return result?.product_type_name;
-        } else if (key == "unit") {
-          const result = this.dropDown[key]?.find(
-            (item) => item.unit_id === id
-          );
-          return result?.unit_name;
-        } else {
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
+    // format(id, key) {
+    //   try {
+    //     if (key == "category") {
+    //       const result = this.dropDown[key]?.find(
+    //         (item) => item.category_id === id
+    //       );
+    //       return result?.category_name;
+    //     } else if (key == "lai") {
+    //       const result = this.dropDown[key]?.find(
+    //         (item) => item.lai_id === id
+    //       );
+    //       return result?.lai_name;
+    //     } else if (key == "product_type") {
+    //       const result = this.dropDown[key]?.find(
+    //         (item) => item.product_type_id === id
+    //       );
+    //       return result?.product_type_name;
+    //     } else if (key == "unit") {
+    //       const result = this.dropDown[key]?.find(
+    //         (item) => item.unit_id === id
+    //       );
+    //       return result?.unit_name;
+    //     } else {
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
     fotmatNumber(price) {
       let p;
       p = price.split(",").join("");
