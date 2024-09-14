@@ -230,7 +230,6 @@ export default {
     },
     async DeleteGolds({ state, commit }, id) {
       try {
-        console.log(id);
         const resp = await this.$axios({
           method: "delete",
           url: `/api/product/delete/${id}`,

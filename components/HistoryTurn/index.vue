@@ -35,7 +35,6 @@
         loading-text="Loading..."
         height="68vh"
         width="400"
-        :loading="loadSell"
       >
         <template v-slot:header="props" v-if="tableNull">
           <tr style="background-color: rgba(0, 0, 0, 0.09)">
@@ -100,47 +99,15 @@
             {{ item.billNo }}
           </span>
         </template>
-        <template #[`item.final_price`]="{ item }">
-          <span>
-            {{ $formatnumber(item.final_price) }}
-          </span>
-        </template>
-        <template #[`item.stt`]="{ item }">
-          <span v-if="item.stt == 1" style="color: green">ສຳເລັດ </span>
-          <span v-else style="color: red">ຍົກເລີກ </span>
-        </template>
-        <template #[`item.customer`]="{ item }">
-          <span> {{ item.customer_info.customer_name }} {{ item.customer_info.customer_address }} </span>
-        </template>
-        <template #[`item.tel`]="{ item }">
-          <span> {{ item.customer_info.customer_tel }} </span>
-        </template>
-        <template #[`item.seller`]="{ item }">
-          <span> {{ item.seller_info.user_name }} {{ item.seller_info.user_surname }} </span>
+        <template #[`item.name`]="{ item }">
+          <span> {{ item.cus.name }} {{ item.cus.surname }} </span>
         </template>
         <template #[`item.view`]="{ item }">
           <div
-            style="
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              justify-content: space-evenly;
-            "
+            style="display: flex; align-items: center; justify-content: center"
           >
-            <div
-              :style="{
-                textAlign: item.stt != 1 ? 'left' : 'left',
-              }"
-            >
-              <v-icon @click="OpenInfos(item)" color="blue">mdi-eye</v-icon>
-            </div>
             <div>
-              <v-icon
-                @click="OnDelete(item.transaction_id)"
-                color="red"
-                v-if="item.stt == 1"
-                >mdi-delete-empty-outline</v-icon
-              >
+              <v-icon @click="OpenInfos(item)">mdi-eye</v-icon>
             </div>
             <div></div>
           </div>
@@ -191,35 +158,7 @@ export default {
         {
           text: "ລາຄາ",
           align: "center",
-          value: "final_price",
-          width: "120px",
-          class: " darken-2 text-subtitle-2 font-weight-black",
-        },
-        {
-          text: "ເບີໂທລູກຄ້າ",
-          align: "center",
-          value: "tel",
-          width: "120px",
-          class: " darken-2 text-subtitle-2 font-weight-black",
-        },
-        {
-          text: "ລູກຄ້າ",
-          align: "center",
-          value: "customer",
-          width: "120px",
-          class: " darken-2 text-subtitle-2 font-weight-black",
-        },
-        {
-          text: "ພະນັກງານ",
-          align: "center",
-          value: "seller",
-          width: "120px",
-          class: " darken-2 text-subtitle-2 font-weight-black",
-        },
-        {
-          text: "ສະຖານະ",
-          align: "center",
-          value: "stt",
+          value: "total_price",
           width: "120px",
           class: " darken-2 text-subtitle-2 font-weight-black",
         },
@@ -245,63 +184,11 @@ export default {
       "countPage",
       "tableNull",
       "totalList",
-      "loadSell",
     ]),
   },
   methods: {
     ...mapMutations("historyStore", ["SET_INFO_BUY"]),
-    ...mapActions("historyStore", ["GetHisSell", "Delete"]),
-    async OnDelete(item) {
-      this.$swal({
-        text: "ເຈົ້າຕ້ອງການຍົກເລີກແທ້ບໍ?",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        cancelButtonText: "ຍົກເລີກ",
-        confirmButtonText: "ຕົກລົງ",
-        allowOutsideClick: false,
-      }).then(async (result) => {
-        if (result.value) {
-          let res;
-          try {
-            res = await this.Delete(item);
-          } catch (error) {
-            if (error?.response?.data) {
-              res = error?.response?.data;
-            } else {
-              res = error;
-            }
-          } finally {
-            if (res.data.msg == "success") {
-              this.search = "";
-              this.page = 1;
-              await this.GetData();
-              this.$swal({
-                toast: true,
-                text: "ຍົກເລີກສຳເລັດ",
-                type: "success",
-                timer: 1500,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                position: "top-end",
-              });
-            } else {
-              this.$swal({
-                text: res?.message
-                  ? res?.message
-                  : res?.data?.message
-                  ? res?.data?.message
-                  : JSON.stringify(res),
-                type: "error",
-                timerProgressBar: true,
-                showConfirmButton: true,
-              });
-            }
-          }
-        }
-      });
-    },
+    ...mapActions("historyStore", ["GetHisSell"]),
     async GetData() {
       try {
         await this.GetHisSell({

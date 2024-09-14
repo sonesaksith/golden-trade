@@ -1,16 +1,28 @@
 <template>
-  <v-dialog v-model="dialog" width="500">
+  <v-dialog v-model="dialog" width="600">
     <v-form ref="form" v-model="valid">
       <v-card>
-        <v-card-title> ເພີ່ມທອງ </v-card-title>
-        <v-container>
-          <v-row>
+        <!-- <v-card-title> ເພີ່ມທອງ </v-card-title> -->
+        <v-card-title style="background-color: #e7e6e6">
+          <div style="display: flex; width: 100%; align-items: center; justify-content: center;">
+            <div style="display: flex; align-items: center">
+              <v-icon large color="grey">mdi-storefront-plus-outline</v-icon>
+              <h4 class="mx-2">ເພີ່ມທອງ</h4>
+            </div>
+            <v-spacer></v-spacer>
+            <div style="border-radius: 100%; width: 40px; height: 40px; background-color: white; display: flex; align-items: center; justify-content: center">
+              <v-icon @click="onClose()" large color="grey">mdi-close</v-icon>
+            </div>
+          </div>
+        </v-card-title>
+        <v-card-text>
+          <v-row class="mt-4">
             <v-col cols="12" sm="12">
               <v-text-field
                 v-model="name"
                 dense
                 hide-details="auto"
-                label="ລະຫັດສິນຄ້າ"
+                label="ຊື່​ສິນ​ຄ້າ​"
                 outlined
               ></v-text-field>
             </v-col>
@@ -30,7 +42,7 @@
             </v-col>
             <v-col cols="12" sm="6">
               <v-autocomplete
-                label="ປະເພດຮູບປະພັນ"
+                label="ປະເພດ"
                 v-model="cateId"
                 :items="dropDown.category"
                 :item-text="(item) => item.category_name"
@@ -60,7 +72,8 @@
               <!-- :rules="[(v) => !!v || 'ກະລຸນາປ້ອນລາຄາລາຍ']" -->
               <v-text-field
                 v-model="priceLai"
-                label="ລາຄາລາຍ"
+                @keyup="fotmatPriceLai()"
+                label="ຄ່າລາຍ"
                 outlined
                 dense
                 hide-details="auto"
@@ -70,6 +83,7 @@
             <v-col cols="12" sm="6">
               <v-text-field
                 v-model="wieght"
+                @keyup="fotmatWieght()"
                 dense
                 hide-details="auto"
                 label="ນ້ຳໜັກ"
@@ -94,7 +108,9 @@
               <!-- :rules="[(v) => !!v || 'ກະລຸນາປ້ອນນ້ຳໜັກແທ້']" -->
               <v-text-field
                 v-model="realWeight"
-                label="ນ້ຳໜັກ/ກຣາມ"
+                @keyup="fotmatRealWieght()"
+                label="ນ້ຳໜັກຈິງ"
+                append-icon="mdi-weight-gram"
                 outlined
                 hide-details="auto"
                 dense
@@ -136,7 +152,7 @@
               ></v-text-field>
             </v-col>
           </v-row>
-        </v-container>
+        </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn @click="onAdd()" color="primary" text>ເພີ່ມ</v-btn>
@@ -194,10 +210,10 @@ export default {
           cateId: this.cateId,
           laiId: this.laiId,
           unitId: this.unitId,
-          wieght: this.wieght,
+          wieght: this.wieght.split(",").join(""),
           pure: this.pure,
           fee: this.fee,
-          priceLai: this.priceLai,
+          priceLai: this.priceLai.split(",").join(""),
           realWeight: this.realWeight,
           qty: this.qty,
         };
@@ -241,6 +257,45 @@ export default {
           });
         }
       }
+    },
+    fotmatPriceLai() {
+      this.priceLai = this.priceLai.split(",").join("");
+      let val;
+      let valArr = [];
+      val = this.priceLai;
+      val = val.replace(/[^0-9\.]/g, "");
+      if (val != "") {
+        valArr = val.split(".");
+        valArr[0] = parseInt(valArr[0], 10).toLocaleString();
+        val = valArr.join(".");
+      }
+      this.priceLai = val;
+    },
+    fotmatWieght() {
+      this.wieght = this.wieght.split(",").join("");
+      let val;
+      let valArr = [];
+      val = this.wieght;
+      val = val.replace(/[^0-9\.]/g, "");
+      if (val != "") {
+        valArr = val.split(".");
+        valArr[0] = parseInt(valArr[0], 10).toLocaleString();
+        val = valArr.join(".");
+      }
+      this.wieght = val;
+    },
+    fotmatRealWieght() {
+      // this.realWeight = this.realWeight.split(",").join("");
+      // let val;
+      // let valArr = [];
+      // val = this.realWeight;
+      // val = val.replace(/[^0-9\.]/g, "");
+      // if (val != "") {
+      //   valArr = val.split(".");
+      //   valArr[0] = parseInt(valArr[0], 10).toLocaleString();
+      //   val = valArr.join(".");
+      // }
+      // this.realWeight = val;
     },
   },
 };

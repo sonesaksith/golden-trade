@@ -130,6 +130,10 @@
                 <v-card-title> {{ item.typGold }} </v-card-title>
                 <v-card-subtitle>
                   <div>
+                    <span>ລະຫັດ :</span>
+                    <span> {{ item.id || "--" }}</span>
+                  </div>
+                  <div>
                     <span>ປະເພດຄຳ :</span>
                     <span> {{ item.optionGole || "--" }}</span>
                   </div>
@@ -183,11 +187,11 @@
                   </div>
                 </v-card-subtitle>
                 <v-card-actions>
-                  <v-spacer></v-spacer>
                   <v-btn
                     rounded
+                    block
                     color="goldColor"
-                    style="color: white"
+                    style="color: white;text-align: left;"
                     class="py-3 px-1"
                     @click="onPlusData(item, index)"
                   >
@@ -196,7 +200,6 @@
                     </v-icon>
                     &nbsp; ເພີ່ມເຂົ້າກະຕ່າ
                   </v-btn>
-                  <v-spacer></v-spacer>
                 </v-card-actions>
               </v-card>
               <!-- <v-card class="elavation-1">
@@ -216,9 +219,9 @@
               </template>
             </v-data-table>
           </v-card> -->
-            </v-col>
-          </v-row>
-        </v-col>
+            </v-col></v-row
+          ></v-col
+        >
       </v-col>
 
       <v-navigation-drawer
@@ -231,106 +234,112 @@
         height="100vh"
         style="overflow: visible"
       >
-        <div>
-          <v-list>
-            <v-row class="px-2">
-              <v-col
-                cols="12"
-                class="d-flex justify-end pr-6 pt-5"
-                @click="toggleRightDrawer()"
+        <v-list>
+          <v-row class="px-2">
+            <v-col
+              cols="12"
+              class="d-flex justify-end pr-6 pt-5"
+              @click="toggleRightDrawer()"
+            >
+              <!-- v-if="numberCart > 0" -->
+              <v-badge
+                v-if="listItems.length > 0"
+                bordered
+                color="primary"
+                :content="listItems.length"
               >
-                <!-- v-if="numberCart > 0" -->
-                <v-badge
-                  v-if="listItems.length > 0"
-                  bordered
-                  color="primary"
-                  :content="listItems.length"
-                >
-                  <v-icon color="goldColor" size="35">mdi-cart</v-icon>
-                </v-badge>
-                <v-icon v-else color="goldColor" size="35">mdi-cart</v-icon>
-              </v-col>
-              <v-col cols="12" sm="12">
-                <v-list>
-                  <v-row class="px-2">
-                    <v-col cols="12" sm="6">
-                      <v-card
-                        style="height: 100%"
-                        class="rounded-lg mb-2"
-                        elevation="4"
-                      >
-                        <v-card-text>
-                          <v-row>
-                            <v-col
-                              cols="8"
-                              v-if="!selectedCustomer"
-                              class="pb-0"
+                <v-icon color="goldColor" size="35">mdi-cart</v-icon>
+              </v-badge>
+              <v-icon v-else color="goldColor" size="35">mdi-cart</v-icon>
+            </v-col>
+            <v-col cols="12" sm="12">
+              <v-list>
+                <v-row class="px-2">
+                  <v-col cols="12">
+                    <v-card
+                      style="height: 230px"
+                      class="rounded-lg mb-2"
+                      elevation="4"
+                    >
+                      <v-card-text>
+                        <v-row>
+                          <v-col cols="8" v-if="!selectedCustomer" class="pb-0">
+                            <v-text-field
+                              v-model="search"
+                              outlined
+                              dense
+                              hide-details="auto"
+                              label="ຄົ້ນຫາ"
                             >
-                              <v-text-field
-                                v-model="search"
-                                outlined
-                                dense
-                                hide-details="auto"
-                                label="ຄົ້ນຫາ"
-                              >
-                                <template #append>
-                                  <v-btn
-                                    small
-                                    icon
-                                    class="goldColor"
-                                    color="white"
-                                  >
-                                    <v-icon small>mdi-magnify</v-icon>
-                                  </v-btn>
-                                </template>
-                              </v-text-field>
-                            </v-col>
-                            <v-col
-                              cols="4"
-                              v-if="!selectedCustomer"
-                              class="pb-0"
+                              <template #append>
+                                <v-btn
+                                  small
+                                  icon
+                                  class="goldColor"
+                                  color="white"
+                                >
+                                  <v-icon small>mdi-magnify</v-icon>
+                                </v-btn>
+                              </template>
+                            </v-text-field>
+                          </v-col>
+                          <v-col cols="4" v-if="!selectedCustomer" class="pb-0">
+                            <v-btn
+                              style="
+                                width: 100%;
+                                color: #fff;
+                                border-radius: 5px;
+                              "
+                              color="success"
+                              @click="openAdd"
                             >
-                              <v-btn
-                                style="
-                                  width: 100%;
-                                  color: #fff;
-                                  border-radius: 5px;
-                                "
-                                color="success"
-                                @click="openAdd"
-                              >
-                                ເພີ່ມລູກຄ້າ
-                              </v-btn>
-                            </v-col>
-                            <v-col
-                              cols="12"
-                              v-if="!selectedCustomer"
-                              class="py-0"
+                              ເພີ່ມລູກຄ້າ
+                            </v-btn>
+                          </v-col>
+                          <v-col
+                            cols="12"
+                            v-if="!selectedCustomer"
+                            class="py-0"
+                          >
+                            <v-data-table
+                              :headers="headersCus"
+                              :items="listCustomer || []"
+                              class="elevation-1"
+                              :items-per-page="listCustomer.length"
+                              hide-default-footer
+                              fixed-header
+                              height="150px"
+                              loading-text="ກຳລັງໂຫລດຂໍ້ມູນ..."
+                              no-data-text="ບໍ່ມີຂໍ້ມູນ"
+                              :search="search"
                             >
-                              <v-data-table
-                                :headers="headersCus"
-                                :items="listCustomer || []"
-                                class="elevation-1"
-                                :items-per-page="listCustomer.length"
-                                hide-default-footer
-                                fixed-header
-                                height="100%"
-                                style="max-height: 600px; overflow-y: auto"
-                                loading-text="ກຳລັງໂຫລດຂໍ້ມູນ..."
-                                no-data-text="ບໍ່ມີຂໍ້ມູນ"
-                                :search="search"
-                              >
-                                <template #[`item.no`]="{ index }">
-                                  <span>{{ index + 1 }} </span>
-                                </template>
-                                <template #[`item.name`]="{ item }">
-                                  <div>
-                                    {{ item.name }} {{ item.surname }} <br />{{
-                                      item.tel
-                                    }}
-                                  </div>
-                                </template>
-                                <!-- <template #[`item.tel`]="{ item }">
+                              <template v-slot:header="{ props }">
+                                <th
+                                  v-for="head in props.headers"
+                                  class="pa-1 rounded-t-lg"
+                                  style="
+                                    position: sticky;
+                                    top: 0;
+                                    background-color: white;
+                                    z-index: 1;
+                                  "
+                                  :key="head"
+                                >
+                                  {{ head.text.toUpperCase() }}
+                                </th>
+                              </template>
+
+                              <template #[`item.no`]="{ index }">
+                                <span>{{ index + 1 }} </span>
+                              </template>
+                              <template #[`item.name`]="{ item }">
+                                <div>
+                                  {{ item.name }} {{ item.surname }} <br />{{
+                                    item.tel
+                                  }}
+                                </div>
+                              </template>
+                              <!-- <template #[`item.tel`]="{ item }">
                                 <div>{{ item.tel ? item.tel : "-" }}</div>
                               </template>
                               <template #[`item.address`]="{ item }">
@@ -338,61 +347,61 @@
                                   {{ item.address ? item.address : "-" }}
                                 </div>
                               </template> -->
-                                <template #[`item.action`]="{ item }">
-                                  <v-container align="center">
-                                    <v-icon
-                                      @click="selectMyCustomer(item)"
-                                      color="success"
-                                    >
-                                      mdi-check-bold
-                                    </v-icon>
-                                  </v-container>
-                                </template>
-                              </v-data-table>
-                            </v-col>
-                            <v-col cols="12" v-else>
-                              <v-row style="height: auto">
-                                <v-col cols="12">
-                                  <p
-                                    style="
-                                      font-size: 18px;
-                                      font-weight: 600;
-                                      color: #000;
-                                      text-align: center;
-                                    "
+                              <template #[`item.action`]="{ item }">
+                                <v-container align="center">
+                                  <v-icon
+                                    @click="selectMyCustomer(item)"
+                                    color="success"
                                   >
-                                    ຂໍ້ມູນລູກຄ້າ
-                                  </p>
-                                  <p
-                                    style="
-                                      font-size: 16px;
-                                      font-weight: 600;
-                                      color: #000;
-                                    "
-                                  >
-                                    ຊື່ ແລະ ນາມສະກຸນ: {{ myCustomer.name }}
-                                    {{ myCustomer.surname }}
-                                  </p>
-                                  <p
-                                    style="
-                                      font-size: 16px;
-                                      font-weight: 600;
-                                      color: #000;
-                                    "
-                                  >
-                                    ເບີໂທ: {{ myCustomer.tel }}
-                                  </p>
-                                  <p
-                                    style="
-                                      font-size: 16px;
-                                      font-weight: 600;
-                                      color: #000;
-                                    "
-                                  >
-                                    ທີ່ຢູ່: {{ myCustomer.address }}
-                                  </p>
-                                </v-col>
-                                <!-- <v-col
+                                    mdi-check-bold
+                                  </v-icon>
+                                </v-container>
+                              </template>
+                            </v-data-table>
+                          </v-col>
+                          <v-col cols="12" v-else>
+                            <v-row style="height: auto">
+                              <v-col cols="12">
+                                <p
+                                  style="
+                                    font-size: 18px;
+                                    font-weight: 600;
+                                    color: #000;
+                                    text-align: center;
+                                  "
+                                >
+                                  ຂໍ້ມູນລູກຄ້າ
+                                </p>
+                                <p
+                                  style="
+                                    font-size: 16px;
+                                    font-weight: 600;
+                                    color: #000;
+                                  "
+                                >
+                                  ຊື່ ແລະ ນາມສະກຸນ: {{ myCustomer.name }}
+                                  {{ myCustomer.surname }}
+                                </p>
+                                <p
+                                  style="
+                                    font-size: 16px;
+                                    font-weight: 600;
+                                    color: #000;
+                                  "
+                                >
+                                  ເບີໂທ: {{ myCustomer.tel }}
+                                </p>
+                                <p
+                                  style="
+                                    font-size: 16px;
+                                    font-weight: 600;
+                                    color: #000;
+                                  "
+                                >
+                                  ທີ່ຢູ່: {{ myCustomer.address }}
+                                </p>
+                              </v-col>
+                              <!-- <v-col
                     cols="12"
                     style="
                       display: flex;
@@ -404,240 +413,240 @@
                       ປ່ຽນລູກຄ້າ
                     </v-btn>
                   </v-col> -->
-                              </v-row>
+                            </v-row>
+                          </v-col>
+                        </v-row>
+                      </v-card-text>
+                      <v-card-actions
+                        cols="12"
+                        class="px-4"
+                        v-if="selectedCustomer"
+                        style="
+                          display: flex;
+                          justify-content: center;
+                          position: absolute;
+                          bottom: 10px;
+                          width: 100%;
+                        "
+                      >
+                        <v-btn color="info" @click="removeMyCustomer()">
+                          ປ່ຽນລູກຄ້າ
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-btn
+                      :disabled="listItems?.length == 0"
+                      style="width: 100%; color: #fff; border-radius: 5px"
+                      color="error"
+                      @click="ClearAllData"
+                    >
+                      ລົບທັງໝົດ
+                    </v-btn></v-col
+                  >
+                  <v-col cols="12" sm="12">
+                    <v-card style="height: auto">
+                      <v-card-title>
+                        <h6>
+                          <span style="color: brown">{{ "#" }}</span>
+                          &nbsp;ລາຍການຂາຍຄຳ
+                        </h6>
+                      </v-card-title>
+                      <v-card-text
+                        class="px-4 py-0"
+                        style="overflow-y: auto; height: 55vh"
+                      >
+                        <div>
+                          <br />
+                          <div v-if="listItems?.length == 0">
+                            <WidgetNoData
+                              message="ບໍ່​ມີ​ລາຍການຂາຍ"
+                              width="150"
+                              height="150"
+                            />
+                          </div>
+                          <v-row
+                            v-else
+                            class="px-4 py-1"
+                            v-for="(item, index) in listItems"
+                            :key="index"
+                          >
+                            <v-col
+                              class="elevation-1"
+                              cols="12"
+                              style="
+                                border-radius: 4px;
+                                height: 100px;
+                                position: relative;
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-between;
+                                padding: 0 5px;
+                              "
+                            >
+                              <div style="display: flex; align-items: center">
+                                <div style="margin-left: 10px">
+                                  <p
+                                    style="
+                                      font-size: 16px;
+                                      color: #000;
+                                      margin: 0;
+                                    "
+                                  >
+                                    {{ item.name }} ({{ item.shape
+                                    }}{{ item.shapeLine }})
+                                  </p>
+                                  <p
+                                    style="
+                                      font-size: 14px;
+                                      color: #000;
+                                      margin: 0;
+                                    "
+                                  >
+                                    ນ້ຳໜັກ: {{ $formatnumber(item.weight) }}
+                                    {{ item.weightType }}
+                                  </p>
+                                  <p
+                                    style="
+                                      font-size: 14px;
+                                      color: #000;
+                                      margin: 0;
+                                    "
+                                  >
+                                    ລາຄາ/ຈໍາ​ນວນ:
+                                    {{ $formatnumber(item.price) }}
+                                  </p>
+                                </div>
+                              </div>
+                              <div
+                                style="
+                                  display: flex;
+                                  align-items: center;
+                                  position: absolute;
+                                  bottom: 4px;
+                                  right: 4px;
+                                "
+                              >
+                                <v-icon
+                                  class="icon ma-0"
+                                  small
+                                  @click="
+                                    SET_DECREMENT({ index, item }),
+                                      SET_AMOUNT_ALL(item)
+                                  "
+                                  style="
+                                    color: #000;
+                                    cursor: pointer;
+                                    margin-right: 4px;
+                                  "
+                                >
+                                  mdi-minus
+                                </v-icon>
+                                <p
+                                  style="
+                                    font-size: 18px;
+                                    color: #000;
+                                    margin: 0 8px;
+                                  "
+                                >
+                                  <b>{{ item.amount }}</b>
+                                </p>
+                                <v-icon
+                                  class="icon ma-0"
+                                  small
+                                  @click="
+                                    SET_INCREMENT({ index, item }),
+                                      SET_AMOUNT_ALL(item)
+                                  "
+                                  style="
+                                    color: #000;
+                                    cursor: pointer;
+                                    margin-left: 4px;
+                                  "
+                                >
+                                  mdi-plus
+                                </v-icon>
+                              </div>
                             </v-col>
                           </v-row>
-                        </v-card-text>
-                        <v-card-actions
-                          cols="12"
-                          class="px-4"
-                          v-if="selectedCustomer"
+                        </div>
+                      </v-card-text>
+                      <v-card-text>
+                        <v-row
+                          style="display: flex; height: 100px"
+                          class="mx-2"
+                        >
+                          <v-col cols="6" sm="3"
+                            ><h3>ລາຄາລວມທັງໝົດ :</h3></v-col
+                          >
+                          <v-col cols="6" sm="9">
+                            <h3>{{ $formatnumber(priceAll) }} ກີບ</h3></v-col
+                          >
+                        </v-row>
+                      </v-card-text>
+                      <v-card-actions>
+                        <div
                           style="
-                            display: flex;
                             justify-content: center;
                             position: absolute;
                             bottom: 10px;
                             width: 100%;
                           "
                         >
-                          <v-btn color="info" @click="removeMyCustomer()">
-                            ປ່ຽນລູກຄ້າ
-                          </v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-col>
-
-                    <v-col cols="12" sm="6">
-                      <v-btn
-                        :disabled="listItems?.length == 0"
-                        style="width: 100%; color: #fff; border-radius: 5px"
-                        color="error"
-                        @click="ClearAllData"
-                      >
-                        ລົບທັງໝົດ
-                      </v-btn>
-                      <v-card style="height: auto">
-                        <v-card-title>
-                          <h6>
-                            <span style="color: brown">{{ "#" }}</span>
-                            &nbsp;ລາຍການຂາຍຄຳ
-                          </h6>
-                        </v-card-title>
-                        <v-card-text
-                          class="px-4 py-0"
-                          style="overflow-y: auto; height: 55vh"
-                        >
-                          <div>
-                            <br />
-                            <div v-if="listItems?.length == 0">
-                              <WidgetNoData
-                                message="ບໍ່​ມີ​ລາຍການຂາຍ"
-                                width="150"
-                                height="150"
-                              />
-                            </div>
-                            <v-row
-                              v-else
-                              class="px-4 py-1"
-                              v-for="(item, index) in listItems"
-                              :key="index"
-                            >
-                              <v-col
-                                class="elevation-1"
-                                cols="12"
-                                style="
-                                  border-radius: 4px;
-                                  height: 100px;
-                                  position: relative;
-                                  display: flex;
-                                  align-items: center;
-                                  justify-content: space-between;
-                                  padding: 0 5px;
-                                "
-                              >
-                                <div style="display: flex; align-items: center">
-                                  <div style="margin-left: 10px">
-                                    <p
-                                      style="
-                                        font-size: 16px;
-                                        color: #000;
-                                        margin: 0;
-                                      "
-                                    >
-                                      {{ item.name }} ({{ item.shape
-                                      }}{{ item.shapeLine }})
-                                    </p>
-                                    <p
-                                      style="
-                                        font-size: 14px;
-                                        color: #000;
-                                        margin: 0;
-                                      "
-                                    >
-                                      ນ້ຳໜັກ: {{ $formatnumber(item.weight) }}
-                                      {{ item.weightType }}
-                                    </p>
-                                    <p
-                                      style="
-                                        font-size: 14px;
-                                        color: #000;
-                                        margin: 0;
-                                      "
-                                    >
-                                      ລາຄາ/ຈໍາ​ນວນ:
-                                      {{ $formatnumber(item.price) }}
-                                    </p>
-                                  </div>
-                                </div>
-                                <div
-                                  style="
-                                    display: flex;
-                                    align-items: center;
-                                    position: absolute;
-                                    bottom: 4px;
-                                    right: 4px;
-                                  "
-                                >
-                                  <v-icon
-                                    class="icon ma-0"
-                                    small
-                                    @click="
-                                      SET_DECREMENT({ index, item }),
-                                        SET_AMOUNT_ALL(item)
-                                    "
-                                    style="
-                                      color: #000;
-                                      cursor: pointer;
-                                      margin-right: 4px;
-                                    "
-                                  >
-                                    mdi-minus
-                                  </v-icon>
-                                  <p
-                                    style="
-                                      font-size: 18px;
-                                      color: #000;
-                                      margin: 0 8px;
-                                    "
-                                  >
-                                    <b>{{ item.amount }}</b>
-                                  </p>
-                                  <v-icon
-                                    class="icon ma-0"
-                                    small
-                                    @click="
-                                      SET_INCREMENT({ index, item }),
-                                        SET_AMOUNT_ALL(item)
-                                    "
-                                    style="
-                                      color: #000;
-                                      cursor: pointer;
-                                      margin-left: 4px;
-                                    "
-                                  >
-                                    mdi-plus
-                                  </v-icon>
-                                </div>
-                              </v-col>
-                            </v-row>
-                          </div>
-                        </v-card-text>
-                        <v-card-text>
-                          <v-row
-                            style="display: flex; height: 100px"
-                            class="mx-2"
-                          >
-                            <v-col cols="6" sm="3"
-                              ><h3>ລາຄາລວມທັງໝົດ :</h3></v-col
-                            >
-                            <v-col cols="6" sm="9">
-                              <h3>{{ $formatnumber(priceAll) }} ກີບ</h3></v-col
-                            >
-                          </v-row>
-                        </v-card-text>
-                        <v-card-actions>
-                          <div
-                            style="
-                              justify-content: center;
-                              position: absolute;
-                              bottom: 10px;
-                              width: 100%;
+                          <v-btn
+                            :disabled="
+                              listItems?.length == 0 || !selectedCustomer
                             "
+                            class="rounded-lg btn-pdf"
+                            style="
+                              width: 25%;
+                              height: 50px;
+                              color: white;
+                              background: #e20303 !important;
+                            "
+                            @click="pdf()"
                           >
-                            <v-btn
-                              :disabled="
-                                listItems?.length == 0 || !selectedCustomer
-                              "
-                              class="rounded-lg btn-pdf"
-                              style="
-                                width: 25%;
-                                height: 50px;
-                                color: white;
-                                background: #e20303 !important;
-                              "
-                              @click="pdf()"
-                            >
-                              <!-- :loading="loadingPdf" -->
+                            <!-- :loading="loadingPdf" -->
 
-                              <v-icon>mdi-file-pdf-box</v-icon> PDF
-                            </v-btn>
-                            <v-btn
-                              :disabled="
-                                listItems?.length == 0 || !selectedCustomer
-                              "
-                              :loading="loadingPrint"
-                              outlined
-                              class="rounded-lg"
-                              style="width: 25%; height: 50px"
-                              @click="print()"
-                            >
-                              <v-icon>mdi-printer</v-icon> ພິມ
-                            </v-btn>
-                            <v-btn
-                              :disabled="
-                                listItems?.length == 0 || !selectedCustomer
-                              "
-                              style="
-                                width: 45%;
-                                height: 50px;
-                                color: #fff;
-                                border-radius: 5px;
-                              "
-                              color="success"
-                              @click="comfirm"
-                            >
-                              ຢືນຢັນ
-                            </v-btn>
-                          </div>
-                        </v-card-actions>
-                      </v-card>
-                    </v-col></v-row
-                  >
-                </v-list>
-              </v-col>
-            </v-row>
-          </v-list>
-        </div>
+                            <v-icon>mdi-file-pdf-box</v-icon> PDF
+                          </v-btn>
+                          <v-btn
+                            :disabled="
+                              listItems?.length == 0 || !selectedCustomer
+                            "
+                            :loading="loadingPrint"
+                            outlined
+                            class="rounded-lg"
+                            style="width: 25%; height: 50px"
+                            @click="print()"
+                          >
+                            <v-icon>mdi-printer</v-icon> ພິມ
+                          </v-btn>
+                          <v-btn
+                            :disabled="
+                              listItems?.length == 0 || !selectedCustomer
+                            "
+                            style="
+                              width: 45%;
+                              height: 50px;
+                              color: #fff;
+                              border-radius: 5px;
+                            "
+                            color="success"
+                            @click="comfirm"
+                          >
+                            ຢືນຢັນ
+                          </v-btn>
+                        </div>
+                      </v-card-actions>
+                    </v-card>
+                  </v-col></v-row
+                >
+              </v-list>
+            </v-col>
+          </v-row>
+        </v-list> 
       </v-navigation-drawer>
     </v-row>
     <BuyAddCustomer
@@ -950,6 +959,7 @@ export default {
     ...mapGetters("sellStore", ["listItems", "priceAll"]),
     ...mapState("sellStore", ["selectedCustomer", "myCustomer"]),
     ...mapState("gold", ["listGold"]),
+
     filterTable() {
       if (
         this.modelGold ||
@@ -990,7 +1000,6 @@ export default {
     this.filterTable.forEach((element) => {
       this.amountGard.push(1);
     });
-    this.$store.commit("main/SET_HEADER_TITLE", "ຂາຍ");
   },
 
   watch: {

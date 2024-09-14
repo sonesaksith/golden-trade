@@ -156,7 +156,7 @@
             </template>
             <template #item.real_weight="{ index, item }">
               <div>
-                {{ $formatnumber(item.real_weight) }}
+                {{ (item.real_weight) }}
               </div>
             </template>
             <template #item.purity="{ index, item }">
@@ -248,10 +248,10 @@ export default {
           align: "center",
         },
         {
-          text: "ລະຫັດ",
+          text: "ຊື່​ສິນ​ຄ້າ​",
           value: "product_name",
           class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-5",
-          width: "50px",
+          width: "80px",
           align: "center",
           sortable: false,
         },
@@ -296,7 +296,7 @@ export default {
           sortable: false,
         },
         {
-          text: "ນ້ຳໜັກ/ກຣາມ",
+          text: "ນ້ຳໜັກຈິງ",
           value: "real_weight",
           class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-5",
           width: "150px",
@@ -312,7 +312,7 @@ export default {
           sortable: false,
         },
         {
-          text: "ລາຄາລາຍ",
+          text: "ຄ່າລາຍ",
           value: "price_lai",
           class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-5",
           width: "150px",
@@ -366,7 +366,6 @@ export default {
       try {
         const res = await this.GetGolds();
         if (res.data.status == 200) {
-          // console.log(res?.data?.resultData);
           this.products = res?.data?.resultData;
           this.loading = false;
         }
@@ -387,7 +386,6 @@ export default {
         this.$refs.GoldCategory.category = [];
         const res = await this.GetCategory();
         if (res?.data?.status == 200) {
-          console.log('calling===>', res?.data?.resultData);
           this.$refs.GoldCategory.category = res?.data?.resultData;
           this.$refs.GoldCategory.loading = false;
         } else {
@@ -406,7 +404,6 @@ export default {
         this.$refs.GoldLine.lines = [];
         const res = await this.GetLines();
         if (res?.data?.status == 200) {
-          console.log('calling===>');
           this.$refs.GoldLine.lines = res?.data?.resultData;
           this.$refs.GoldLine.loading = false;
         } else {
@@ -431,11 +428,13 @@ export default {
         this.$refs.GoldUpdate.cateId = item.category_id;
         this.$refs.GoldUpdate.laiId = item.lai_id;
         this.$refs.GoldUpdate.unitId = item.unit_id;
-        this.$refs.GoldUpdate.wieght = item.weight;
+        // this.$refs.GoldUpdate.wieght = item.weight;
+        this.$refs.GoldUpdate.wieght = this.fotmatNumber(String(item.weight));
         this.$refs.GoldUpdate.pure = item.purity;
         this.$refs.GoldUpdate.fee = item.fee;
-        this.$refs.GoldUpdate.priceLai = item.price_lai;
-        this.$refs.GoldUpdate.realWeight = item.weight;
+        // this.$refs.GoldUpdate.priceLai = item.price_lai;
+        this.$refs.GoldUpdate.priceLai = this.fotmatNumber(String(item.price_lai));
+        this.$refs.GoldUpdate.realWeight = item.real_weight;
         this.$refs.GoldUpdate.qty = item.quantity;
       } catch (error) {
         console.log(error);
@@ -469,6 +468,21 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    fotmatNumber(price) {
+      let p;
+      p = price.split(",").join("");
+      let val;
+      let valArr = [];
+      val = p;
+      val = val.replace(/[^0-9\.]/g, "");
+      if (val != "") {
+        valArr = val.split(".");
+        valArr[0] = parseInt(valArr[0], 10).toLocaleString();
+        val = valArr.join(".");
+      }
+      return val;
+      // return p;
     },
   },
 };

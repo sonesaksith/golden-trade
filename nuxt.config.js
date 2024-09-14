@@ -46,6 +46,12 @@ export default {
       pathRewrite: { "^/api/": "/" },
     },
   },
+  proxy: {
+    "/gold/": {
+      target: process.env.BASE_URL_GOLD,
+      pathRewrite: { "^/gold/": "/" },
+    },
+  },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   vuetify: {
     theme: {

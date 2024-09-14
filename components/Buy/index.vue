@@ -481,6 +481,7 @@
 <script>
 import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
 import secureStorage from "~/plugins/secure-storage";
+import html2pdf from "html2pdf.js";
 export default {
   data() {
     return {
