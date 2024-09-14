@@ -13,9 +13,16 @@
           hide-details="auto"
           class="rounded-lg"
           label="ຄົ້ນຫາ"
+          @keydown.enter.prevent="GetData()"
         >
           <template #append>
-            <v-btn small icon class="goldColor" color="white">
+            <v-btn
+              small
+              icon
+              class="goldColor"
+              color="white"
+              @click="GetData()"
+            >
               <v-icon small>mdi-magnify</v-icon>
             </v-btn>
           </template>
@@ -110,13 +117,18 @@
           <span v-else style="color: red">ຍົກເລີກ </span>
         </template>
         <template #[`item.customer`]="{ item }">
-          <span> {{ item.customer_info.customer_name }} {{ item.customer_info.customer_address }} </span>
+          <span>
+            {{ item.customer_info.customer_name }}
+            {{ item.customer_info.customer_address }}
+          </span>
         </template>
         <template #[`item.tel`]="{ item }">
           <span> {{ item.customer_info.customer_tel }} </span>
         </template>
         <template #[`item.seller`]="{ item }">
-          <span> {{ item.seller_info.user_name }} {{ item.seller_info.user_surname }} </span>
+          <span>
+            {{ item.seller_info.user_name }} {{ item.seller_info.user_surname }}
+          </span>
         </template>
         <template #[`item.view`]="{ item }">
           <div
