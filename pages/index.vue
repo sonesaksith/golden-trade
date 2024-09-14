@@ -64,6 +64,11 @@ export default {
           path: "/historybuy",
           icon: "mdi-clipboard-text-clock-outline",
         },
+        {
+          title: "ປະຫວັດເທີນ",
+          path: "/historytrun",
+          icon: "mdi-clipboard-text-clock-outline",
+        },
         // {
         //   title: "ປະຫວັດປ່ຽນ",
         //   path: "/change",

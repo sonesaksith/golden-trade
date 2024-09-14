@@ -164,27 +164,7 @@
                       </p>
                     </div>
                   </div>
-                  <div
-                    style="
-                      display: flex;
-                      justify-content: space-between;
-                      width: 100%;
-                    "
-                    class="ma-0"
-                  >
-                    <div class="py-0">
-                      <p style="font-size: 15px; font-weight: 600" class="ma-0">
-                        {{ textName }}
-                      </p>
-                    </div>
-                    <div class="dot-divider"></div>
-                  </div>
-                  <!-- detail buy -->
-                  <div
-                    v-for="(n, index) in buyInfoList?.list_detail"
-                    :key="index"
-                    style="display: flex; flex-direction: column; width: 100%"
-                  >
+                  <div v-if="statusTran === 'ປະຫວັດເທີນ'" style="width: 100%">
                     <div
                       style="
                         display: flex;
@@ -193,38 +173,199 @@
                       "
                       class="ma-0"
                     >
-                      <div class="text-left py-0">
-                        <span
-                          style="font-size: 16px"
-                          class="ma-0"
-                          v-if="statusTran === 'ປະຫວັດຊື້'"
-                          >{{ index + 1 }}. | {{ n.purity }} |
-                          {{ n?.real_weight }} g
-                        </span>
-                        <span
-                          style="font-size: 16px"
-                          class="ma-0"
-                          v-if="statusTran === 'ປະຫວັດຂາຍ'"
-                          >{{ index + 1 }}. | {{ n.lai_name }} |
-                          {{ n?.real_weight }} g
-                        </span>
-                      </div>
-                      <div class="text-right py-0">
-                        <span
-                          style="font-size: 16px; font-weight: 400"
+                      <div class="py-0">
+                        <p
+                          style="font-size: 15px; font-weight: 600"
                           class="ma-0"
                         >
-                          <div v-if="statusTran === 'ປະຫວັດຊື້'">
-                            {{ $formatnumber(n.price) }}
-                          </div>
-                          <div v-if="statusTran === 'ປະຫວັດຂາຍ'">
-                            {{ $formatnumber(n.price_lai) }}
-                          </div>
+                          [ຂາຍ]
+                        </p>
+                      </div>
+                      <div class="dot-divider"></div>
+                    </div>
+                    <!-- detail buy -->
+                    <div
+                      v-for="(n, index) in buyInfoList?.list_sell"
+                      :key="index"
+                      style="display: flex; flex-direction: column; width: 100%"
+                    >
+                      <div
+                        style="
+                          display: flex;
+                          justify-content: space-between;
+                          width: 100%;
+                        "
+                        class="ma-0"
+                      >
+                        <div class="text-left py-0">
+                          <span style="font-size: 16px" class="ma-0"
+                            >{{ index + 1 }}. | {{ n.lai_name }} |
+                            {{ n?.real_weight }} g
+                          </span>
+                        </div>
+
+                        <div class="text-right py-0">
+                          <span
+                            style="font-size: 16px; font-weight: 400"
+                            class="ma-0"
+                          >
+                            <div>
+                              {{ $formatnumber(n.price_lai) }}
+                            </div>
+                          </span>
+                        </div>
+                      </div>
+                      <v-divider></v-divider>
+                    </div>
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        width: 100%;
+                      "
+                      class="ma-0"
+                    >
+                      <div class="py-0">
+                        <p
+                          style="font-size: 15px; font-weight: 600"
+                          class="ma-0"
+                        >
+                          [ຊື້]
+                        </p>
+                      </div>
+                      <div class="dot-divider"></div>
+                    </div>
+                    <!-- detail buy -->
+                    <div
+                      v-for="(n, index) in buyInfoList?.list_buy"
+                      :key="index"
+                      style="display: flex; flex-direction: column; width: 100%"
+                    >
+                      <div
+                        style="
+                          display: flex;
+                          justify-content: space-between;
+                          width: 100%;
+                        "
+                        class="ma-0"
+                      >
+                        <div class="text-left py-0">
+                          <span style="font-size: 16px" class="ma-0"
+                            >{{ index + 1 }}. | {{ n.purity }} |
+                            {{ n?.real_weight }} g
+                          </span>
+                        </div>
+
+                        <div class="text-right py-0">
+                          <span
+                            style="font-size: 16px; font-weight: 400"
+                            class="ma-0"
+                          >
+                            <div>
+                              {{ $formatnumber(n.price) }}
+                            </div>
+                          </span>
+                        </div>
+                      </div>
+                      <v-divider></v-divider>
+                    </div>
+                    <!-- tueam -->
+                    <div class="d-flex pa-2" style="justify-content: flex-end">
+                      <div>
+                        <span v-if="buyInfoList?.diff > 0">( ຕື່ມ ) </span>
+                        <span v-else>( ທອນ ) </span>
+                      </div>
+                      &nbsp;
+                      <div>
+                        <span style="border: solid 1px black; padding: 2px"
+                          >{{ $formatnumber(buyInfoList?.diff) }}
                         </span>
                       </div>
+             
                     </div>
                     <v-divider></v-divider>
                   </div>
+                  <div v-if="statusTran !== 'ປະຫວັດເທີນ'" style="width: 100%">
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        width: 100%;
+                      "
+                      class="ma-0"
+                    >
+                      <div class="py-0">
+                        <p
+                          style="font-size: 15px; font-weight: 600"
+                          class="ma-0"
+                        >
+                          {{ textName }}
+                        </p>
+                      </div>
+                      <div class="dot-divider"></div>
+                    </div>
+                    <!-- detail buy -->
+                    <div
+                      v-for="(n, index) in buyInfoList?.list_detail"
+                      :key="index"
+                      style="display: flex; flex-direction: column; width: 100%"
+                    >
+                      <div
+                        style="
+                          display: flex;
+                          justify-content: space-between;
+                          width: 100%;
+                        "
+                        class="ma-0"
+                      >
+                        <div class="text-left py-0">
+                          <span
+                            style="font-size: 16px"
+                            class="ma-0"
+                            v-if="statusTran === 'ປະຫວັດຊື້'"
+                            >{{ index + 1 }}. | {{ n.purity }} |
+                            {{ n?.real_weight }} g
+                          </span>
+                          <span
+                            style="font-size: 16px"
+                            class="ma-0"
+                            v-if="statusTran === 'ປະຫວັດຂາຍ'"
+                            >{{ index + 1 }}. | {{ n.lai_name }} |
+                            {{ n?.real_weight }} g
+                          </span>
+                        </div>
+
+                        <div class="text-right py-0">
+                          <span
+                            style="font-size: 16px; font-weight: 400"
+                            class="ma-0"
+                          >
+                            <div v-if="statusTran === 'ປະຫວັດຊື້'">
+                              {{ $formatnumber(n.price) }}
+                            </div>
+                            <div v-if="statusTran === 'ປະຫວັດຂາຍ'">
+                              {{ $formatnumber(n.price_lai) }}
+                            </div>
+                          </span>
+                        </div>
+                        <div class="text-right py-0">
+                          <span
+                            style="font-size: 16px; font-weight: 400"
+                            class="ma-0"
+                          >
+                            <div v-if="statusTran === 'ປະຫວັດຊື້'">
+                              {{ $formatnumber(n.price) }}
+                            </div>
+                            <div v-if="statusTran === 'ປະຫວັດຂາຍ'">
+                              {{ $formatnumber(n.price_lai) }}
+                            </div>
+                          </span>
+                        </div>
+                      </div>
+                      <v-divider></v-divider>
+                    </div>
+                  </div>
+
                   <div
                     style="
                       display: flex;
@@ -250,6 +391,9 @@
                         </div>
                         <div v-if="statusTran === 'ປະຫວັດຂາຍ'">
                           {{ $formatnumber(buyInfoList?.final_price) }} LAK
+                        </div>
+                        <div v-if="statusTran === 'ປະຫວັດເທີນ'">
+                          {{ $formatnumber(buyInfoList?.sell_final_price) }} LAK
                         </div>
                       </span>
                     </div>
@@ -332,6 +476,7 @@ export default {
   },
   mounted() {
     // v-if="statusTran === 'ປະຫວັດຊື້'"
+    // ປະຫວັດເທີນ'
     if (this.statusTran === "ປະຫວັດຊື້") {
       (this.Title = "ລາຍລະອຽດຊື້ເຂົ້າ"),
         (this.boxStatus = "ຊື້"),
@@ -343,6 +488,12 @@ export default {
         (this.boxStatus = "ຂາຍ"),
         (this.listName = "ລາຍການຂາຍ"),
         (this.textName = "[ຂາຍ]");
+    }
+    if (this.statusTran === "ປະຫວັດເທີນ") {
+      (this.Title = "ລາຍລະອຽດເທີນ"),
+        (this.boxStatus = "ເທີນ"),
+        (this.listName = "ລາຍການເທີນ"),
+        (this.textName = "[ເທີນ]");
     }
   },
   computed: {
