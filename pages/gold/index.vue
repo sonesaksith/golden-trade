@@ -367,7 +367,6 @@ export default {
         const res = await this.GetGolds();
         if (res.data.status == 200) {
           this.products = res?.data?.resultData;
-          console.log(this.products);
           this.loading = false;
         }
       } catch (error) {
@@ -422,9 +421,6 @@ export default {
     onOpenUpdate(items) {
       try {
         const item = JSON.parse(JSON.stringify(items));
-        console.log('====================================');
-        console.log(item);
-        console.log('====================================');
         this.$refs.GoldUpdate.dialog = true;
         this.$refs.GoldUpdate.id = item.product_id;
         this.$refs.GoldUpdate.name = item.product_name;
