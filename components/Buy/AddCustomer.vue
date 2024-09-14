@@ -79,10 +79,9 @@ export default {
         address: this.address,
       };
       this.$store.commit("customer/ADD_CUSTOMER", data);
-
+      this.$emit("selectMyCustomer", data);
       this.dialog = false;
       this.$refs.form.reset();
-      this.$store.commit("customer/SET_SELECTING_CUSTOMER", data);
     },
   },
 };

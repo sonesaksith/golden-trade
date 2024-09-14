@@ -1,0 +1,172 @@
+<template>
+  <div>
+    <v-form ref="form" lazy-validation>
+      <v-row justify="center">
+        <v-dialog v-model="dialog" persistent max-width="800px">
+          <v-card style="border-radius: 10px">
+            <v-card-title style="justify-content: center; align-items: center">
+              <span>ລາຍລະອຽດ</span>
+            </v-card-title>
+            <v-card-text>
+              <v-data-table
+                :headers="headers"
+                :items="items?.listItems"
+                :items-per-page="items?.listItems?.length"
+                class="elevation-1"
+                disable-sort
+                fixed-header
+                hide-default-footer
+                no-data-text="ບໍ່ມີຂໍ້ມູນ"
+                loading-text="Loading..."
+                width="400"
+              >
+                <template v-slot:header>
+                  <tr style="background-color: rgba(0, 0, 0, 0.09)">
+                    <td colspan="12">
+                      <h3 style="font-size: 16px; color: gray; padding-left: 15px">
+                        ຍອດລວມທັງໝົດ:
+                        <b
+                          style="color: #c62828; font-size: 16px"
+                        >
+                          {{ $formatnumber(totalPayment) }}
+                        </b>
+                      </h3>
+                    </td>
+                  </tr>
+                </template>
+                <template #[`item.no`]="{ index }">
+                  <span>{{ index + 1 }} </span>
+                </template>
+                <template #item.name="{ index, item }">
+                  <div>{{ item.name ? item.name : "-" }}</div>
+                </template>
+                <template #item.shape="{ index, item }">
+                  <div>{{ item.shape ? item.shape : "-" }}</div>
+                </template>
+                <template #item.shapeLine="{ index, item }">
+                  <div>{{ item.shapeLine ? item.shapeLine : "-" }}</div>
+                </template>
+                <template #item.lost="{ index, item }">
+                  <div>{{ item.lost ? $formatnumber(item.lost) : "-" }}</div>
+                </template>
+                <template #item.weight="{ index, item }">
+                  <div>{{ item.weight ? $formatnumber(item.weight) : "-" }}</div>
+                </template>
+                <template #item.price="{ index, item }">
+                  <div>{{ item.price ? $formatnumber(item.price) : "-" }}</div>
+                </template>
+                <template #item.amount="{ index, item }">
+                  <div>{{ item.amount ? $formatnumber(item.amount) : "-" }}</div>
+                </template>
+              </v-data-table>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn
+                outlined
+                class="rounded-lg"
+                style="width: 50%"
+                @click="print()"
+              >
+                <v-icon>mdi-printer</v-icon> ພິມໃບບິນໃໝ່
+              </v-btn>
+              <v-btn
+                style="
+                  color: #fff;
+                  border-radius: 10px;
+                  background-color: #e53935;
+                  width: 50%;
+                "
+                text
+                @click="close"
+              >
+                ອອກ
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+    </v-form>
+    <div v-if="items" style="display: none">
+      <BuyBill
+        :key="1"
+        :myCus="myCus"
+        :billNo="billNo"
+        :currentDateTime="currentDateTime"
+        :currentDate="currentDate"
+        :totalPrice="totalPrice"
+        :totalLost="totalLost"
+        :totalPayment="totalPayment"
+        ref="myCompBill"
+        />
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapGetters, mapActions, mapState, mapMutations } from "vuex";
+export default {
+  data() {
+    return {
+      dialog: false,
+      items: [],
+      myCus: {},
+      billNo: "",
+      currentDateTime: "",
+      currentDate: "",
+      totalPrice: 0,
+      totalLost: 0,
+      totalPayment: 0,
+      headers: [
+        {
+          text: "ລຳດັບ",
+          align: "center",
+          sortable: false,
+          value: "no",
+          width: "50px",
+          class: " darken-2 text-subtitle-2 font-weight-black",
+        },
+        {
+          text: 'ປະເພດທອງຄຳ',
+          align: 'center',
+          value: 'name',
+          width: '120px',
+          class: ' darken-2 text-subtitle-2 font-weight-black',
+        },
+        { text: 'ຮູບປະພັນ', align: 'center', value: 'shape', width: '100px', class: ' darken-2 text-subtitle-2 font-weight-black', },
+        { text: 'ລາຍຮູບປະພັນ', align: 'center', value: 'shapeLine', width: '120px', class: ' darken-2 text-subtitle-2 font-weight-black', },
+        { text: 'ຄວາມບໍລິສຸດທອງ', align: 'center', value: 'purity', width: '150px', class: ' darken-2 text-subtitle-2 font-weight-black', },
+        { text: 'ຫັກຄ່າຫຼູ້ຍຫ້ຽນ', align: 'center', value: 'lost', width: '120px', class: ' darken-2 text-subtitle-2 font-weight-black', },
+        { text: 'ນ້ຳໜັກທອງຄຳ', align: 'center', value: 'weight', width: '120px', class: ' darken-2 text-subtitle-2 font-weight-black', },
+        { text: 'ປະເພດນ້ຳໜັກ', align: 'center', value: 'weightType', width: '120px', class: ' darken-2 text-subtitle-2 font-weight-black', },
+        { text: 'ລາຄາ', align: 'center', value: 'price', width: '120px', class: ' darken-2 text-subtitle-2 font-weight-black', },
+        { text: 'ຈໍາ​ນວນ', align: 'center', value: 'amount', width: '80px', class: ' darken-2 text-subtitle-2 font-weight-black', },
+      ],
+    };
+  }, 
+  mounted() {},
+  computed: {},
+  methods: {
+    ...mapMutations("buy", ["SET_NEW_ITEMS"]),
+    async print() {
+      try {
+        this.$refs.myCompBill.OnPrintBill();
+      } catch (error) {
+        console.log(error);
+        this.$swal({
+          text: "ບໍ່ມີຂໍ້ມູນ",
+          type: "info",
+          timer: 5000,
+          timerProgressBar: true,
+          showConfirmButton: true,
+        });
+      } 
+    },
+    close() {
+      this.dialog = false;
+      this.SET_NEW_ITEMS([]);
+    },
+  },
+};
+</script>
+
+<style></style>

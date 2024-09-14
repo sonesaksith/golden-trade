@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" width="500">
     <v-form ref="form" v-model="valid">
       <v-card>
-        <v-card-title> ເພີ່ມລາຍຊື່ລູກຄ້າ </v-card-title>
+        <v-card-title> ແກ້ໄຂຂໍ້ມູນລູກຄ້າ </v-card-title>
         <v-container>
           <v-row>
             <v-col cols="12" sm="6">
@@ -41,7 +41,7 @@
         </v-container>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn @click="onAdd()" color="primary" text>ເພີ່ມ</v-btn>
+          <v-btn @click="onUpdate()" color="primary" text>ແກ້ໄຂ</v-btn>
           <v-btn @click="onClose()" color="error" text>ຍົກເລີກ</v-btn>
         </v-card-actions>
       </v-card>
@@ -60,6 +60,7 @@ export default {
       tel: "",
       address: "",
       valid: false,
+      no: 0,
     };
   },
   computed: {
@@ -70,19 +71,18 @@ export default {
       this.dialog = false;
       this.$refs.form.reset();
     },
-    onAdd() {
+    onUpdate() {
       const data = {
-        no: this.listCustomer.length + 1,
+        no: this.no,
         name: this.name,
         surname: this.surname,
         tel: this.tel,
         address: this.address,
       };
-      this.$store.commit("customer/ADD_CUSTOMER", data);
+      this.$store.commit("customer/UPDATE_CUSTOMER_BY_NO", data);
 
       this.dialog = false;
       this.$refs.form.reset();
-      this.$store.commit("customer/SET_SELECTING_CUSTOMER", data);
     },
   },
 };

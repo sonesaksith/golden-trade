@@ -82,7 +82,6 @@ export default {
 
       this.dialog = false;
       this.$refs.form.reset();
-      this.$store.commit("customer/SET_SELECTING_CUSTOMER", data);
     },
   },
 };

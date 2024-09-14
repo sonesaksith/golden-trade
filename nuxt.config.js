@@ -25,7 +25,7 @@ export default {
     "~/plugins/secure-storage",
     "~/plugins/axios.client.js",
     "~/plugins/global.js",
-    { src: '~/plugins/printd.js', ssr: false }
+    { src: "~/plugins/printd.js", ssr: false },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -36,27 +36,25 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: ["@nuxtjs/axios", "@nuxtjs/dotenv", "nuxt-sweetalert2"],
-
-  // axios: {
-  //   retry: { retries: 3 },
-  //   proxy: true,
-  // },
-  // proxy: {
-  //   '/api/': {
-  //     target: process.env.BASE_URL,
-  //     pathRewrite: { '^/api/': '/' },
-  //   },
-  // },
-
+  axios: {
+    retry: { retries: 3 },
+    proxy: true,
+  },
+  proxy: {
+    "/api/": {
+      target: process.env.BASE_URL_GOLD,
+      pathRewrite: { "^/api/": "/" },
+    },
+  },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   vuetify: {
     theme: {
       dark: false,
       themes: {
         dark: {
-          primary: colors.blue.darken2,
+          primary: "#4055B1",
           accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
+          secondary: "#9CA8BB",
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
@@ -64,9 +62,9 @@ export default {
           goldColor: "#DAA520",
         },
         light: {
-          primary: colors.blue.darken2,
+          primary: "#4055B1",
           accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
+          secondary: "#9CA8BB",
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,

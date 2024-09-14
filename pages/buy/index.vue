@@ -11,6 +11,7 @@ export default {
   mounted() {
     this.setHeader("ຊື້ເຂົ້າ");
     this.$store.commit("customer/SET_GOING_TO_BILL", "buy");
+    this.$store.commit("main/SET_HEADER_TITLE", "ຊື້");
   },
   computed: {},
   methods: {

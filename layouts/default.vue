@@ -1,123 +1,80 @@
 <template>
-  <v-app>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant.sync="mini"
-      permanent
-      fixed
-      app
-      width="180"
-    >
-      <v-list-item class="px-2">
-        <v-list-item-avatar>
-          <img
-            style="width: 50px; height: 50px"
-            src="../assets/images/kimbup.jpeg"
-          />
-        </v-list-item-avatar>
-
-        <v-list-item-title style="display: flex"
-          ><h2 style="color: #3498db">P</h2>
-          <h2 style="color: #f7bf11">O</h2>
-          <h2 style="color: #17a589">S</h2></v-list-item-title
+  <v-app dark>
+    <div>
+      <main style="background-color: #f2f5f9; min-height: 100vh">
+        <v-app-bar
+          v-if="isMenuPage"
+          color="primary"
+          height="70"
+          style="margin-bottom: 10px; z-index: 10"
         >
-
-        <v-btn icon @click.stop="mini = !mini">
-          <v-icon>mdi-chevron-left</v-icon>
-        </v-btn>
-      </v-list-item>
-
-      <v-divider></v-divider>
-
-      <v-list nav dense>
-        <v-list-item-group>
-          <v-list-item
-            v-for="(item, index) in items"
-            :key="item.title"
-            link
-            @click="myRouting(item.path)"
+          <div style="text-align: center; width: 100%">
+            <h1 class="white--text">ຮ້ານຄຳ ຫວຽດສະຫວັນ</h1>
+          </div>
+        </v-app-bar>
+        <v-app-bar
+          v-else
+          color="primary"
+          height="70"
+          style="margin-bottom: 10px; z-index: 10"
+        >
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: start;
+              width: 100%;
+            "
           >
-            <v-list-item-icon>
-              <v-icon :color="item.color">{{ item.icon }}</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title
-                ><h4 class="my-1">{{ item.title }}</h4></v-list-item-title
-              >
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item link @click="logout">
-            <v-list-item-icon>
-              <v-icon color="error">mdi-login-variant</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title><h4>ອອກ​ຈາກ​ລະ​ບົບ</h4></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
-    </v-navigation-drawer>
-
-    <v-main>
-      <GlobalsHeader />
-      <v-container fluid class="pa-0" style="margin-top: 57px">
+            <v-icon color="white" size="40" @click="goBack()"
+              >mdi-chevron-left</v-icon
+            >
+            &nbsp; &nbsp;
+            <h2 class="white--text">{{ title }}</h2>
+          </div>
+        </v-app-bar>
         <Nuxt />
-      </v-container>
-    </v-main>
+      </main>
+    </div>
   </v-app>
 </template>
 
 <script>
-import secureStorage from "~/plugins/secure-storage";
-import { mapActions, mapState } from "vuex";
+import { mapState } from "vuex";
 export default {
-  name: "DefaultLayout",
+  name: "empty",
   data() {
     return {
-      drawer: true,
-      items: [
-        { title: "ຂາຍ", icon: "mdi-gold", path: "/sell", color: "goldColor" },
-        {
-          title: "ຊື້ເຂົ້າ",
-          icon: "mdi-cash-sync",
-          path: "/buy",
-          color: "success",
-        },
-        {
-          title: "ເທີນ",
-          icon: "mdi-swap-horizontal",
-          path: "/change",
-          color: "primary",
-        },
-      ],
-      mini: true,
+      isMenuPage: false,
     };
   },
-  computed: {},
-  created() {},
-  destroyed() {},
-  mounted() {},
-  methods: {
-    myRouting(path) {
-      this.$router.push(path);
+  watch: {
+    "$route.path"(newPath, oldPath) {
+      this.handlePathChange(newPath, oldPath);
     },
-    logout() {
-      secureStorage.removeItem("token");
-      secureStorage.removeItem("userinfo");
-      this.$axios.setHeader("Authorization", null);
-      this.$router.replace("/authen/login");
+  },
+  mounted() {
+    if (this.$route.path === "/") {
+      this.isMenuPage = true;
+    } else {
+      this.isMenuPage = false;
+    }
+  },
+  computed: {
+    ...mapState("main", ["title"]),
+  },
+  methods: {
+    goBack() {
+      this.$router.go(-1);
+    },
+    handlePathChange(newPath, oldPath) {
+      console.log("--->", newPath);
+      if (newPath === "/") {
+        this.isMenuPage = true;
+      } else {
+        this.isMenuPage = false;
+      }
     },
   },
 };
 </script>
-<style scoped>
-/* .v-list .v-list-item--active .v-icon {
-  color: #DAA520 !important;
-}
-.v-list .v-list-item--active {
-  color: #DAA520 !important;
-  font-weight: bold;
-} */
-</style>
