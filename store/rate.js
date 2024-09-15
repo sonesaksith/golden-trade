@@ -1,3 +1,4 @@
+import secureStorage from "~/plugins/secure-storage";
 export default {
   state: () => ({
     selectingCus: {},
@@ -43,6 +44,7 @@ export default {
           }&limit=${item?.limit}`,
         });
         if (resp.status == 200 && resp.data.msg == "success") {
+          secureStorage.setItem("rate", resp.data.resultData[0]);
           commit("SET_RATE", resp.data.resultData);
           commit("SET_RATE_COUNT", resp.data);
         }

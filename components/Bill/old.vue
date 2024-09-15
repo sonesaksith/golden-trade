@@ -3,8 +3,8 @@
     <v-dialog v-model="dialog" persistent width="600px">
       <v-card style="border-radius: 10px">
         <!-- <v-card-title style="justify-content: center; align-items: center">
-          <span>ລາຍລະອຽດການຂາຍ</span>
-        </v-card-title> -->
+            <span>ລາຍລະອຽດການຂາຍ</span>
+          </v-card-title> -->
         <v-card-title style="background-color: #e7e6e6">
           <div
             style="
@@ -81,7 +81,7 @@
                         No: {{ buyInfoList?.bill_number }}
                       </p>
                       <p style="font-size: 14px" class="ma-0">
-                        ວັນທີ: {{ $FormatDateTime(buyInfoList?.create_at) }}
+                        ວັນທີ: {{ updateDateTime().currentDate }}
                       </p>
                       <p style="font-size: 14px" class="ma-0">
                         ພະນັກງານ: {{ buyInfoList?.seller_info?.user_name }}
@@ -113,8 +113,8 @@
                       >
                         {{ boxStatus }}
                         <!-- <div v-if="statusTran === 'ປະຫວັດຊື້'">ຊື້</div>
-                        <div v-if="statusTran === 'ປະຫວັດຂາຍ'">ຂາຍ</div>
-                        <div v-if="statusTran === 'ປະຫວັດເທີນ'">ເທີນ</div> -->
+                          <div v-if="statusTran === 'ປະຫວັດຂາຍ'">ຂາຍ</div>
+                          <div v-if="statusTran === 'ປະຫວັດເທີນ'">ເທີນ</div> -->
                       </div>
                       <div
                         style="
@@ -153,20 +153,12 @@
                     "
                     class="ma-0"
                   >
-                    <div class="py-0" style="width: 45%">
+                    <div class="py-0">
                       <p style="font-size: 16px; font-weight: 600" class="ma-0">
                         {{ listName }}
                       </p>
                     </div>
-                    <div style="width: 10%; text-align: center">
-                      <p style="font-size: 16px; font-weight: 600" class="ma-0">
-                        ຈຳນວນ
-                      </p>
-                    </div>
-                    <div
-                      class="text-right py-0"
-                      style="width: 45%; text-align: end"
-                    >
+                    <div class="text-right py-0">
                       <p style="font-size: 16px; font-weight: 600" class="ma-0">
                         ເປັນເງິນ
                       </p>
@@ -194,7 +186,7 @@
                     <!-- detail buy -->
                     <div
                       v-for="(n, index) in buyInfoList?.list_sell"
-                      :key="index + 'ຂາຍ'"
+                      :key="index"
                       style="display: flex; flex-direction: column; width: 100%"
                     >
                       <div
@@ -205,26 +197,20 @@
                         "
                         class="ma-0"
                       >
-                        <div class="text-left py-0" style="width: 45%">
+                        <div class="text-left py-0">
                           <span style="font-size: 16px" class="ma-0"
                             >{{ index + 1 }}. | {{ n.lai_name }} |
                             {{ n?.real_weight }} g
                           </span>
                         </div>
-                        <div style="text-align: center; width: 10%">
-                          {{ n?.quantity }}
-                        </div>
 
-                        <div
-                          class="text-right py-0"
-                          style="width: 45%; text-align: end"
-                        >
+                        <div class="text-right py-0">
                           <span
                             style="font-size: 16px; font-weight: 400"
                             class="ma-0"
                           >
                             <div>
-                              {{ $formatnumber(n.price) }}
+                              {{ $formatnumber(n.price_lai) }}
                             </div>
                           </span>
                         </div>
@@ -252,7 +238,7 @@
                     <!-- detail buy -->
                     <div
                       v-for="(n, index) in buyInfoList?.list_buy"
-                      :key="index + 'ຊື້'"
+                      :key="index"
                       style="display: flex; flex-direction: column; width: 100%"
                     >
                       <div
@@ -263,17 +249,14 @@
                         "
                         class="ma-0"
                       >
-                        <div class="text-left py-0" style="width: 45%">
+                        <div class="text-left py-0">
                           <span style="font-size: 16px" class="ma-0"
                             >{{ index + 1 }}. | {{ n.purity }} |
                             {{ n?.real_weight }} g
                           </span>
                         </div>
-                        <div style="text-align: center; width: 10%">1</div>
-                        <div
-                          class="text-right py-0"
-                          style="width: 45%; text-align: end"
-                        >
+
+                        <div class="text-right py-0">
                           <span
                             style="font-size: 16px; font-weight: 400"
                             class="ma-0"
@@ -287,10 +270,7 @@
                       <v-divider></v-divider>
                     </div>
                     <!-- tueam -->
-                    <div
-                      class="d-flex pa-2"
-                      style="justify-content: flex-end; display: flex"
-                    >
+                    <div class="d-flex pa-2" style="justify-content: flex-end">
                       <div>
                         <span v-if="buyInfoList?.diff > 0">( ຕື່ມ ) </span>
                         <span v-else>( ທອນ ) </span>
@@ -298,13 +278,7 @@
                       &nbsp;
                       <div>
                         <span style="border: solid 1px black; padding: 2px"
-                          >{{
-                            $formatnumber(
-                              buyInfoList?.diff < 0
-                                ? buyInfoList?.diff * -1
-                                : buyInfoList?.diff
-                            )
-                          }}
+                          >{{ $formatnumber(buyInfoList?.diff) }}
                         </span>
                       </div>
                     </div>
@@ -332,7 +306,7 @@
                     <!-- detail buy -->
                     <div
                       v-for="(n, index) in buyInfoList?.list_detail"
-                      :key="index + 'ເທີນ'"
+                      :key="index"
                       style="display: flex; flex-direction: column; width: 100%"
                     >
                       <div
@@ -343,7 +317,7 @@
                         "
                         class="ma-0"
                       >
-                        <div class="text-left py-0" style="width: 45%">
+                        <div class="text-left py-0">
                           <span
                             style="font-size: 16px"
                             class="ma-0"
@@ -359,27 +333,8 @@
                             {{ n?.real_weight }} g
                           </span>
                         </div>
-                        <div style="text-align: center; width: 10%">
-                          <span
-                            style="font-size: 16px"
-                            class="ma-0"
-                            v-if="statusTran === 'ປະຫວັດຂາຍ'"
-                          >
-                            {{ n?.quantity }}
-                          </span>
-                          <span
-                            style="font-size: 16px"
-                            class="ma-0"
-                            v-if="statusTran === 'ປະຫວັດຊື້'"
-                          >
-                            1
-                          </span>
-                        </div>
 
-                        <div
-                          class="text-right py-0"
-                          style="width: 45%; text-align: end"
-                        >
+                        <div class="text-right py-0">
                           <span
                             style="font-size: 16px; font-weight: 400"
                             class="ma-0"
@@ -388,7 +343,20 @@
                               {{ $formatnumber(n.price) }}
                             </div>
                             <div v-if="statusTran === 'ປະຫວັດຂາຍ'">
+                              {{ $formatnumber(n.price_lai) }}
+                            </div>
+                          </span>
+                        </div>
+                        <div class="text-right py-0">
+                          <span
+                            style="font-size: 16px; font-weight: 400"
+                            class="ma-0"
+                          >
+                            <div v-if="statusTran === 'ປະຫວັດຊື້'">
                               {{ $formatnumber(n.price) }}
+                            </div>
+                            <div v-if="statusTran === 'ປະຫວັດຂາຍ'">
+                              {{ $formatnumber(n.price_lai) }}
                             </div>
                           </span>
                         </div>
@@ -396,7 +364,6 @@
                       <v-divider></v-divider>
                     </div>
                   </div>
-                  <v-divider></v-divider>
 
                   <div
                     style="
@@ -425,40 +392,32 @@
                           {{ $formatnumber(buyInfoList?.final_price) }} LAK
                         </div>
                         <div v-if="statusTran === 'ປະຫວັດເທີນ'">
-                          <div>
-                            ຂາຍ :
-                            {{ $formatnumber(buyInfoList?.sell_final_price) }}
-                            LAK
-                          </div>
-                          <div>
-                            ຊື້ :
-                            {{ $formatnumber(buyInfoList?.buy_total_price) }}
-                            LAK
-                          </div>
+                          {{ $formatnumber(buyInfoList?.sell_final_price) }} LAK
                         </div>
                       </span>
                     </div>
                   </div>
 
+                  <v-divider></v-divider>
                   <!-- <div class="text-left py-0">
-              <span style="font-size: 16px" class="ma-0"
-                >ລາຍ​ລະ​ອຽດ​ການ​ຊໍາ​ລະ​ເງິນ
-              </span>
-            </div>
-            <div
-              style="display: flex; justify-content: space-between; width: 100%"
-            >
-              <div class="text-left py-0">
-                <span style="font-size: 16px; font-weight: 600" class="ma-0">
-                  {{ $formatnumber(32100) }} x {{ $formatnumber2(750) }}
+                <span style="font-size: 16px" class="ma-0"
+                  >ລາຍ​ລະ​ອຽດ​ການ​ຊໍາ​ລະ​ເງິນ
                 </span>
               </div>
-              <div class="text-right py-0">
-                <span style="font-size: 16px; font-weight: 600" class="ma-0">
-                  {{ $formatnumber(totalPrice) }} LAK
-                </span>
-              </div>
-            </div> -->
+              <div
+                style="display: flex; justify-content: space-between; width: 100%"
+              >
+                <div class="text-left py-0">
+                  <span style="font-size: 16px; font-weight: 600" class="ma-0">
+                    {{ $formatnumber(32100) }} x {{ $formatnumber2(750) }}
+                  </span>
+                </div>
+                <div class="text-right py-0">
+                  <span style="font-size: 16px; font-weight: 600" class="ma-0">
+                    {{ $formatnumber(totalPrice) }} LAK
+                  </span>
+                </div>
+              </div> -->
                 </v-card-title>
               </v-card>
               <div
@@ -475,7 +434,7 @@
                 </div>
                 <div class="text-right">
                   <span style="font-size: 16px; font-weight: 600" class="ma-0">
-                    {{ $FormatDateTime(buyInfoList?.create_at) }}
+                    {{ updateDateTime().currentDateTime }}
                   </span>
                 </div>
               </div>
@@ -564,20 +523,20 @@ export default {
       try {
         if (this.buyInfoList) {
           const SetPage = `
-                @media print {
-                  @page {
-                    margin-top: 0.5cm;
-                    margin-bottom: 0.5cm;
-                    margin-left: 0.5cm;
-                    margin-right: 0.5cm;
-                    padding: 0;
-                    size: ${this.setSty};
+                  @media print {
+                    @page {
+                      margin-top: 0.5cm;
+                      margin-bottom: 0.5cm;
+                      margin-left: 0.5cm;
+                      margin-right: 0.5cm;
+                      padding: 0;
+                      size: ${this.setSty};
+                    }
                   }
-                }
-                body {
-                  font-family: 'Noto Sans Lao', 'Phetsarath OT','Saysettha OT','Saysettha Lao';
-                }
-              `;
+                  body {
+                    font-family: 'Noto Sans Lao', 'Phetsarath OT','Saysettha OT','Saysettha Lao';
+                  }
+                `;
           var divToPrint = this.$refs.cardbill;
           this.$Printd.print(divToPrint, [SetPage]);
         } else {

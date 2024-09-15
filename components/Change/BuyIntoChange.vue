@@ -376,7 +376,7 @@ export default {
       loadingPDF: false,
       loadingPrint: false,
       modelGoldType: "ທອງຮູບປະພັນ",
-      modelPurity: 99,
+      modelPurity: 99.99,
       manualPrice: false,
       goldTypes: [
         {
@@ -485,7 +485,7 @@ export default {
       ],
       items: [
         {
-          purity: 99,
+          purity: 99.99,
           name: "ທອງຮູບປະພັນ",
           shape: "ສາຍຄໍ",
           shapeLine: "ລາຍມັງກອນ",
@@ -706,7 +706,7 @@ export default {
           // this.$refs.form.reset();
           this.modelWeightType = "gram";
           this.modelGoldType = "ທອງຮູບປະພັນ";
-          this.modelPurity = 99;
+          this.modelPurity = 99.99;
           this.modelGoldShape = "";
           this.modelGoldShapeLine = "";
           this.modelWeightAmount = "";
@@ -726,7 +726,7 @@ export default {
         // this.$refs.form.reset();
         this.modelWeightType = "gram";
         this.modelGoldType = "ທອງຮູບປະພັນ";
-        this.modelPurity = 99;
+        this.modelPurity = 99.99;
         this.modelGoldShape = "";
         this.modelGoldShapeLine = "";
         this.modelWeightAmount = "";

@@ -84,8 +84,15 @@ export default {
             tel: this.tel,
             address: this.address,
           };
+
           const resp = await this.createCustomer(data);
           if (resp.status == 201 && resp.data.msg == "success") {
+            if ($nuxt.$route.path === "/newsell") {
+              this.$store.commit(
+                "customer/SET_SELECTING_CUSTOMER",
+                resp?.data?.resultData
+              );
+            }
             this.$emit("getCustomer");
             this.$swal({
               toast: true,

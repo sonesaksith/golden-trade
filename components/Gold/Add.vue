@@ -4,13 +4,30 @@
       <v-card>
         <!-- <v-card-title> ເພີ່ມທອງ </v-card-title> -->
         <v-card-title style="background-color: #e7e6e6">
-          <div style="display: flex; width: 100%; align-items: center; justify-content: center;">
+          <div
+            style="
+              display: flex;
+              width: 100%;
+              align-items: center;
+              justify-content: center;
+            "
+          >
             <div style="display: flex; align-items: center">
               <v-icon large color="grey">mdi-storefront-plus-outline</v-icon>
               <h4 class="mx-2">ເພີ່ມທອງ</h4>
             </div>
             <v-spacer></v-spacer>
-            <div style="border-radius: 100%; width: 40px; height: 40px; background-color: white; display: flex; align-items: center; justify-content: center">
+            <div
+              style="
+                border-radius: 100%;
+                width: 40px;
+                height: 40px;
+                background-color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
               <v-icon @click="onClose()" large color="grey">mdi-close</v-icon>
             </div>
           </div>
@@ -91,7 +108,7 @@
               ></v-text-field>
             </v-col>
 
-            <v-col cols="12" sm="6" >
+            <v-col cols="12" sm="6">
               <v-autocomplete
                 label="ປະເພດນ້ຳໜັກ"
                 v-model="unitId"
@@ -175,7 +192,7 @@ export default {
       laiId: "",
       unitId: "",
       wieght: "",
-      pure: 99,
+      pure: 99.99,
       fee: 0,
       priceLai: "",
       realWeight: "",
@@ -187,7 +204,7 @@ export default {
       typeLine: "",
       wight: 0,
       typwight: "ບາດ",
-      purity: 99,
+      purity: 99.99,
       fee: 0,
       sellGold: 0,
       valid: false,

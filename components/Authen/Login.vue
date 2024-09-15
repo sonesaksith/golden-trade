@@ -80,6 +80,7 @@
 <script>
 import secureStorage from "../../plugins/secure-storage.js";
 import { mapActions, mapGetters } from "vuex";
+import { genPassword } from "~/plugins/gencrypto";
 export default {
   data() {
     return {
@@ -109,18 +110,15 @@ export default {
         if (this.username || this.password) {
           const body = {
             username: this.username,
-            password: "U2FsdGVkX18Z3TEnTSt7MmFsyil3+GEF2taAd+Gl0jY=",
+            password: await genPassword(this.password),
           };
           const resp = await this.Loginss(body);
           if (resp?.data?.resultData?.accessToken && resp.data.status == 200) {
-            console.log(resp.data.resultData?.accessToken);
+            secureStorage.setItem("token", resp?.data?.resultData?.accessToken);
+            secureStorage.setItem("userinfo", resp?.data?.resultData?.userInfo);
             secureStorage.setItem(
-              "token",
-              JSON.stringify(resp?.data?.resultData?.access_token)
-            );
-            secureStorage.setItem(
-              "userinfo",
-              JSON.stringify(resp?.data?.resultData)
+              "permission",
+              resp?.data?.resultData?.permission
             );
             this.$swal({
               toast: true,
@@ -131,6 +129,7 @@ export default {
               showConfirmButton: false,
               position: "top-end",
             });
+
             this.$router.replace("/");
           } else {
             this.$swal({

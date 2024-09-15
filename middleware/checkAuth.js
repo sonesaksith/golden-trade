@@ -11,11 +11,12 @@ export default ({
   redirect,
 }) => {
   try {
-    if (
-      !JSON.parse(secureStorage.getItem("userinfo"))?.accessToken ||
-      JSON.parse(secureStorage.getItem("userinfo"))?.accessToken === undefined
-    ) {
-      return redirect("/authen/login");
+    let token = secureStorage.getItem("token");
+    if (!token) {
+      secureStorage.removeItem("token");
+      secureStorage.removeItem("userinfo");
+      $axios.setHeader("Authorization", null);
+      redirect("/authen/login");
     }
   } catch (ex) {
     console.log(ex);

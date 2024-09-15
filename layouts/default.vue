@@ -40,9 +40,11 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
+import secureStorage from "~/plugins/secure-storage";
 export default {
   name: "empty",
+  middleware: ["checkAuth"],
   data() {
     return {
       isMenuPage: false,
@@ -54,6 +56,7 @@ export default {
     },
   },
   mounted() {
+    this.handleGetRate();
     if (this.$route.path === "/") {
       this.isMenuPage = true;
     } else {
@@ -64,6 +67,20 @@ export default {
     ...mapState("main", ["title"]),
   },
   methods: {
+    ...mapActions("rate", ["getRate"]),
+    async handleGetRate() {
+      this.loading = true;
+      const res = await this.getRate({
+        page: 1,
+        limit: 1,
+        search: "",
+      });
+      if (res?.data?.msg === "success") {
+        secureStorage.setItem("rate", res.data.resultData[0]);
+      }
+
+      this.loading = false;
+    },
     goBack() {
       this.$router.go(-1);
     },

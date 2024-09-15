@@ -5,7 +5,7 @@
     <NewsellBill :key="2" ref="myBillSell" v-show="false" />
     <v-container>
       <v-row>
-        <v-col cols="12" sm="5" v-if="!loading">
+        <v-col cols="12" sm="5" v-if="!loading || listGold.length > 0">
           <v-text-field
             v-model="search"
             outlined
@@ -18,7 +18,7 @@
             @input="page = 1"
           ></v-text-field>
         </v-col>
-        <v-col cols="12" sm="2" v-if="!loading">
+        <v-col cols="12" sm="2" v-if="!loading || listGold.length > 0">
           <!-- <v-autocomplete
             v-model="types"
             outlined
@@ -29,12 +29,12 @@
             @change="page = 1"
           ></v-autocomplete> -->
         </v-col>
-        <v-col cols="6" sm="2" v-if="!loading">
+        <v-col cols="6" sm="2" v-if="!loading || listGold.length > 0">
           <v-btn color="goldColor" block dark @click="onOpenBuy()">
             <v-icon>mdi-gold</v-icon> ຊື້
           </v-btn>
         </v-col>
-        <v-col cols="6" sm="3" v-if="!loading">
+        <v-col cols="6" sm="3" v-if="!loading || listGold.length > 0">
           <div class="d-flex justify-end align-center" style="height: 100%">
             <div
               style="height: 100%; width: 35px"
@@ -103,7 +103,7 @@
               <div style="font-size: 14px; color: black">
                 ນ້ຳໜັກ : {{ item.weight }} {{ item.unit_name }}({{
                   item.real_weight
-                }}g)
+                }}g|{{ item.purity }}%)
               </div>
               <div style="font-size: 14px; color: black">
                 ຈຳນວນ : {{ item.quantity }}
@@ -120,7 +120,12 @@
                   ລາຄາ :
                   {{
                     $formatnumber(
-                      $convertGoldToMoney(item.weight, item.unit_name)
+                      $convertGoldToMoney(
+                        item.weight,
+                        item.unit_name,
+                        item.purity,
+                        dataRate?.rate_sell
+                      )
                     )
                   }}
                   ກີບ
@@ -468,6 +473,7 @@
 </template>
 <script>
 import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
+import secureStorage from "~/plugins/secure-storage";
 export default {
   data() {
     return {
@@ -479,9 +485,13 @@ export default {
       loading: false,
       askPrintBillDialog: false,
       isCreatingTransaction: false,
+      dataRate: {},
     };
   },
   mounted() {
+    this.dataRate = secureStorage.getItem("rate");
+
+    this.$store.commit("customer/SET_SELECTING_CUSTOMER", {});
     this.$refs.myBillSell.statusTran = "ປະຫວັດຂາຍ";
     this.$store.commit("main/SET_HEADER_TITLE", "ຊື້ - ຂາຍ");
     this.getGolds();
@@ -582,7 +592,13 @@ export default {
       this.$refs.cusDialog.dialog = true;
     },
     addSellItem(newItem) {
-      const price = this.$convertGoldToMoney(newItem.weight, newItem.unit_name);
+      const price = this.$convertGoldToMoney(
+        newItem.weight,
+        newItem.unit_name,
+        newItem.purity,
+        this.dataRate?.rate_sell
+      );
+
       this.$store.commit("newsell/ADD_LIST_CART_SELL", { newItem, price });
     },
     minusBuyItem(item) {
@@ -595,14 +611,26 @@ export default {
       this.$store.commit("newsell/DELETE_ITEM_CART_BUY", item.id);
     },
     minusSellItem(item) {
-      const price = this.$convertGoldToMoney(item.weight, item.unit_name);
+      const price = this.$convertGoldToMoney(
+        item.weight,
+        item.unit_name,
+        item.purity,
+        this.dataRate?.rate_sell
+      );
+
       this.$store.commit("newsell/MINUS_ITEMCOUNT_CART_SELL", {
         itemId: item.product_id,
         price,
       });
     },
     plusSellItem(item) {
-      const price = this.$convertGoldToMoney(item.weight, item.unit_name);
+      const price = this.$convertGoldToMoney(
+        item.weight,
+        item.unit_name,
+        item.purity,
+        this.dataRate?.rate_sell
+      );
+
       this.$store.commit("newsell/PLUS_ITEMCOUNT_CART_SELL", {
         itemId: item.product_id,
         price,
@@ -612,6 +640,7 @@ export default {
       this.$store.commit("newsell/DELETE_ITEM_CART_SELL", item.product_id);
     },
     onCloseConfirm() {
+      this.getGolds();
       this.$refs.myBillSell.OnPrintBill();
       this.$store.commit("customer/SET_SELECTING_CUSTOMER", {});
       this.$store.commit("newsell/CLEAR_LIST_CART_SELL");

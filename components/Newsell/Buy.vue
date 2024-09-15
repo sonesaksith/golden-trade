@@ -146,6 +146,7 @@
   </v-dialog>
 </template>
 <script>
+import secureStorage from "~/plugins/secure-storage";
 export default {
   data() {
     return {
@@ -184,6 +185,7 @@ export default {
           shapeName: "ກຳໄລ",
         },
       ],
+      dataRate: {},
       modelWeightAmount: "",
       modelWeightType: "ກຣາມ",
       weightType: [
@@ -256,7 +258,8 @@ export default {
             this.$convertGoldToMoney(
               val?.split(",").join(""),
               this.modelWeightType,
-              this.modelPurity
+              this.modelPurity,
+              this.dataRate?.rate_buy
             )
           );
           this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
@@ -273,7 +276,8 @@ export default {
               this.$convertGoldToMoney(
                 this.modelWeightAmount?.split(",").join(""),
                 val,
-                this.modelPurity
+                this.modelPurity,
+                this.dataRate?.rate_buy
               )
             );
             this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
@@ -293,7 +297,8 @@ export default {
             this.$convertGoldToMoney(
               this.modelWeightAmount?.split(",").join(""),
               this.modelWeightType,
-              val
+              val,
+              this.dataRate?.rate_buy
             )
           );
           this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
@@ -302,7 +307,8 @@ export default {
             this.$convertGoldToMoney(
               this.modelWeightAmount?.split(",").join(""),
               this.modelWeightType,
-              val
+              val,
+              this.dataRate?.rate_buy
             )
           );
           this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
@@ -317,7 +323,8 @@ export default {
           this.$convertGoldToMoney(
             this.modelWeightAmount?.split(",").join(""),
             this.modelWeightType,
-            this.modelPurity
+            this.modelPurity,
+            this.dataRate?.rate_buy
           )
         );
         this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
@@ -334,6 +341,9 @@ export default {
         this.myBillOn = this.generateRandomNumber(10);
       }
     },
+  },
+  mounted() {
+    this.dataRate = secureStorage.getItem("rate");
   },
   methods: {
     onAddListBuy() {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CustomerAdd ref="addCusRef" />
+    <CustomerAddc ref="addCusRef" />
     <v-dialog v-model="dialog">
       <v-card style="min-height: 650px">
         <v-container>

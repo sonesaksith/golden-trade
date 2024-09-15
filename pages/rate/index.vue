@@ -7,7 +7,7 @@
     <v-container fluid>
       <v-row>
         <v-col cols="12" class="d-flex pt-0">
-          <h2>ຈັດການຂໍ້ມູນ Rate</h2>
+          <h2>ຈັດການຂໍ້ມູນ ລາຄາຄຳ</h2>
         </v-col>
         <v-col cols="12">
           <v-row>
@@ -122,11 +122,17 @@
                 {{ ((page || 1) - 1) * limit + index + 1 }}
               </div>
             </template>
+            <template #item.create_at="{ index, item }">
+              <div>
+                {{ $FormatDateTime(item.create_at) }}
+              </div>
+            </template>
+
             <template #item.buy="{ index, item }">
-              <div>{{ item.rate_buy }}</div>
+              <div>{{ $formatnumber2(item.rate_buy) }}</div>
             </template>
             <template #item.sell="{ index, item }">
-              <div>{{ item.rate_sell }}</div>
+              <div>{{ $formatnumber2(item.rate_sell) }}</div>
             </template>
 
             <template #item.actions="{ index, item }">
@@ -212,6 +218,13 @@ export default {
           sortable: false,
         },
         {
+          text: "ວັນທີ",
+          value: "create_at",
+          class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-5",
+          align: "center",
+          sortable: false,
+        },
+        {
           text: "ຈັດການ",
           value: "actions",
           class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-5",
@@ -223,6 +236,7 @@ export default {
   },
   mounted() {
     // this.handelClickSearch();
+    this.$store.commit("main/SET_HEADER_TITLE", "ລາຄາຄຳ");
     this.handleGetRate();
   },
   watch: {

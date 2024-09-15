@@ -78,8 +78,8 @@ Vue.prototype.$convertGoldToMoney = (
   unit,
   purity = 99.99,
   pricePerBaht = 29000000,
-  gramPerBaht = 15,
-  deductBroken = 0
+  deductBroken = 0,
+  gramPerBaht = 15
 ) => {
   let weightInGrams;
 

@@ -10,7 +10,7 @@ export default {
   },
   actions: {
     async Loginss({ state, commit }, body) {
-      console.log(body);
+
       try {
         const axios = require("axios");
         const resp = await axios({

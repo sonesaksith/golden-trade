@@ -533,7 +533,7 @@ export default {
         },
       ],
       modelGoldType: "ທອງຮູບປະພັນ",
-      modelPurity: 99,
+      modelPurity: 99.99,
       manualPrice: false,
       goldTypes: [
         {
@@ -628,6 +628,7 @@ export default {
         },
       ],
       modelAmount: 1,
+      dataRate: {},
       amount: [
         { id: 1, amount: 1 },
         { id: 2, amount: 2 },
@@ -642,7 +643,7 @@ export default {
       ],
       items: [
         {
-          purity: 99,
+          purity: 99.99,
           name: "ທອງຮູບປະພັນ",
           shape: "ສາຍຄໍ",
           shapeLine: "ລາຍມັງກອນ",
@@ -703,6 +704,7 @@ export default {
     };
   },
   mounted() {
+    this.dataRate = secureStorage.getItem("rate");
     this.myBillOn = this.generateRandomNumber(10);
   },
   watch: {
@@ -714,6 +716,7 @@ export default {
               val?.split(",").join(""),
               this.modelWeightType,
               this.modelPurity,
+              this.dataRate?.rate_buy,
               String(this.modelLost)?.split(",").join("")
             )
           );
@@ -731,6 +734,7 @@ export default {
               this.modelWeightAmount?.split(",").join(""),
               val,
               this.modelPurity,
+              this.dataRate?.rate_buy,
               String(this.modelLost)?.split(",").join("")
             )
           );
@@ -749,6 +753,7 @@ export default {
               this.modelWeightAmount?.split(",").join(""),
               this.modelWeightType,
               val,
+              this.dataRate?.rate_buy,
               String(this.modelLost)?.split(",").join("")
             )
           );
@@ -759,6 +764,7 @@ export default {
               this.modelWeightAmount?.split(",").join(""),
               this.modelWeightType,
               val,
+              this.dataRate?.rate_buy,
               String(this.modelLost)?.split(",").join("")
             )
           );
@@ -775,6 +781,7 @@ export default {
             this.modelWeightAmount?.split(",").join(""),
             this.modelWeightType,
             this.modelPurity,
+            this.dataRate?.rate_buy,
             String(this.modelLost)?.split(",").join("")
           )
         );
@@ -825,7 +832,7 @@ export default {
           // this.$refs.form.reset();
           this.modelWeightType = "gram";
           this.modelGoldType = "ທອງຮູບປະພັນ";
-          this.modelPurity = 99;
+          this.modelPurity = 99.99;
           this.modelGoldShape = "";
           this.modelGoldShapeLine = "";
           this.modelWeightAmount = "";
@@ -853,7 +860,7 @@ export default {
         // this.$refs.form.reset();
         this.modelWeightType = "gram";
         this.modelGoldType = "ທອງຮູບປະພັນ";
-        this.modelPurity = 99;
+        this.modelPurity = 99.99;
         this.modelGoldShape = "";
         this.modelGoldShapeLine = "";
         this.modelWeightAmount = "";

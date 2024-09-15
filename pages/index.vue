@@ -85,9 +85,9 @@ export default {
           icon: "mdi-account-group-outline",
         },
         {
-          title: "ໂປຟາຍ",
-          path: "",
-          icon: "mdi-account-circle-outline",
+          title: "ລາຄາຄຳ",
+          path: "/rate",
+          icon: "mdi-chart-areaspline",
         },
       ],
     };
