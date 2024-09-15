@@ -3,6 +3,7 @@ export default {
     listCartBuy: [],
     listCartSell: [],
     cusData: [],
+    buyInfoList: {},
   }),
   mutations: {
     CLEAR_LIST_CART_BUY(state) {
@@ -10,6 +11,25 @@ export default {
     },
     SET_CUS(state, data) {
       state.cusData = data;
+    },
+    SET_BUYINFOSTT(state, data) {
+      if (data.list_sell) {
+        data.list_sell = JSON.parse(data.list_sell);
+      }
+      if (data.list_buy) {
+        data.list_buy = JSON.parse(data.list_buy);
+      }
+      if (data.seller_info) {
+        data.seller_info = JSON.parse(data.seller_info);
+      }
+      if (data.list_detail) {
+        data.list_detail = JSON.parse(data.list_detail);
+      }
+      if (data.customer_info) {
+        data.customer_info = JSON.parse(data.customer_info);
+      }
+
+      state.buyInfoList = data;
     },
     ADD_LIST_CART_BUY(state, newItem) {
       // const existingItemIndex = state.listCartBuy.findIndex(

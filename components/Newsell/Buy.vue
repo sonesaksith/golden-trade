@@ -14,6 +14,7 @@
                 outlined
                 dense
                 class="rounded-md"
+                type="tel"
               ></v-text-field>
             </v-col>
             <v-col cols="12" class="py-0" sm="6">
@@ -25,6 +26,7 @@
                 outlined
                 dense
                 class="rounded-md"
+                type="tel"
               ></v-text-field>
             </v-col>
             <!-- <v-col cols="12" class="py-0" sm="6">

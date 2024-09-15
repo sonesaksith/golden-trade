@@ -2,9 +2,10 @@
   <div>
     <CustomerDialog ref="cusDialog" />
     <NewsellBuy ref="buyDialog" />
+    <NewsellBill :key="2" ref="myBillSell" v-show="false" />
     <v-container>
       <v-row>
-        <v-col cols="12" sm="5">
+        <v-col cols="12" sm="5" v-if="!loading">
           <v-text-field
             v-model="search"
             outlined
@@ -17,7 +18,7 @@
             @input="page = 1"
           ></v-text-field>
         </v-col>
-        <v-col cols="12" sm="2">
+        <v-col cols="12" sm="2" v-if="!loading">
           <!-- <v-autocomplete
             v-model="types"
             outlined
@@ -28,12 +29,12 @@
             @change="page = 1"
           ></v-autocomplete> -->
         </v-col>
-        <v-col cols="6" sm="2">
+        <v-col cols="6" sm="2" v-if="!loading">
           <v-btn color="goldColor" block dark @click="onOpenBuy()">
             <v-icon>mdi-gold</v-icon> ຊື້
           </v-btn>
         </v-col>
-        <v-col cols="6" sm="3">
+        <v-col cols="6" sm="3" v-if="!loading">
           <div class="d-flex justify-end align-center" style="height: 100%">
             <div
               style="height: 100%; width: 35px"
@@ -57,7 +58,11 @@
             </div>
           </div>
         </v-col>
-        <v-col cols="12" v-if="loading" align="center">
+        <v-col
+          cols="12"
+          v-if="paginatedData.length == 0 && loading"
+          align="center"
+        >
           <v-img
             src="/loading.png"
             style="width: 300px; object-fit: cover"
@@ -130,7 +135,7 @@
             </v-card-text>
           </v-card>
         </v-col>
-        <v-col cols="12" v-if="!loading">
+        <v-col cols="12">
           <v-row>
             <v-col cols="12" sm="7">
               <v-card height="500" style="overflow-y: auto">
@@ -346,9 +351,15 @@
                             class="d-flex justify-start align-center"
                             @click="onOpenCusDialog()"
                           >
-                            <span style="font-size: 16pt" class="primary--text"
-                              >ເລືອກລູກຄ້າ</span
+                            <span
+                              style="font-size: 16pt; font-weight: bold"
+                              class="primary--text"
                             >
+                              ເລືອກລູກຄ້າ
+                              <v-icon color="error"
+                                >mdi-exclamation-thick</v-icon
+                              >
+                            </span>
                           </div>
                         </div>
                         <div
@@ -402,15 +413,13 @@
                     <v-col cols="12" class="pt-0">
                       <div class="d-flex justify-space-around mt-5">
                         <v-btn
-                          style="font-size: 14px"
-                          class="rounded-lg ml-1 mr-1 btn-pdf"
-                          color="primary"
+                          color="success"
+                          @click="onConfirm()"
+                          :loading="isCreatingTransaction"
+                          :disabled="isCreatingTransaction"
                         >
-                          <v-icon>mdi-printer</v-icon> &nbsp; ພິມບິນ
+                          ຢືນຢັນບິນ
                         </v-btn>
-                        <v-btn color="success" @click="onConfirm()"
-                          >ຢືນຢັນບິນ</v-btn
-                        >
                       </div>
                     </v-col>
                   </v-row>
@@ -449,7 +458,9 @@
           >
             <v-icon>mdi-printer</v-icon> &nbsp; ພິມບິນ
           </v-btn>
-          <v-btn outlined color="error" @click="onCloseConfirm()">ບໍ່ພິມ</v-btn>
+          <v-btn outlined color="error" @click="askPrintBillDialog = false"
+            >ບໍ່ພິມ</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -467,9 +478,11 @@ export default {
       limit: 12,
       loading: false,
       askPrintBillDialog: false,
+      isCreatingTransaction: false,
     };
   },
   mounted() {
+    this.$refs.myBillSell.statusTran = "ປະຫວັດຂາຍ";
     this.$store.commit("main/SET_HEADER_TITLE", "ຊື້ - ຂາຍ");
     this.getGolds();
     this.GetCus();
@@ -599,16 +612,23 @@ export default {
       this.$store.commit("newsell/DELETE_ITEM_CART_SELL", item.product_id);
     },
     onCloseConfirm() {
+      this.$refs.myBillSell.OnPrintBill();
       this.$store.commit("customer/SET_SELECTING_CUSTOMER", {});
       this.$store.commit("newsell/CLEAR_LIST_CART_SELL");
       this.$store.commit("newsell/CLEAR_LIST_CART_BUY");
       this.askPrintBillDialog = false;
     },
     async onConfirm() {
+      this.isCreatingTransaction = true;
       let res;
       try {
         if (this.selectingCus?.customer_id) {
           res = await this.callApi();
+          console.log(res);
+          if (res.data.msg === "success") {
+            this.askPrintBillDialog = true;
+            this.$store.commit("newsell/SET_BUYINFOSTT", res.data.resultData);
+          }
         } else {
           this.$swal({
             toast: true,
@@ -620,13 +640,27 @@ export default {
             position: "top-end",
           });
         }
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+        this.$swal({
+          toast: true,
+          text: error?.response?.data?.message || "ເກີດຂໍ້ຜິດພາດ!",
+          type: "error",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+          position: "top-end",
+        });
+      } finally {
+        this.isCreatingTransaction = false;
+      }
     },
     async callApi() {
       try {
         let res;
 
         if (this.listCartSell.length > 0 && this.listCartBuy.length == 0) {
+          this.$refs.myBillSell.statusTran = "ປະຫວັດຂາຍ";
           const body = {
             cusId: this.selectingCus.customer_id,
             realTotalWeight: this.sumSellRealWeight,
@@ -636,15 +670,17 @@ export default {
             listExportDetail: this.listCartSell.map((item) => ({
               productId: item.product_id,
               qty: item.countItem,
+              totalPrice: item.countItem * item.price,
             })),
           };
           res = await this.SellProduct(body);
-          console.log(res);
+
           return res;
         } else if (
           this.listCartSell.length == 0 &&
           this.listCartBuy.length > 0
         ) {
+          this.$refs.myBillSell.statusTran = "ປະຫວັດຊື້";
           const body = {
             cusId: this.selectingCus.customer_id,
             realTotalWeight: this.sumBuyRealWeight,
@@ -658,14 +694,15 @@ export default {
             })),
           };
           res = await this.BuyProduct(body);
-          console.log(res);
+
           return res;
         } else if (
           this.listCartSell.length > 0 &&
           this.listCartBuy.length > 0
         ) {
+          this.$refs.myBillSell.statusTran = "ປະຫວັດເທີນ";
           const body = {
-            cusId: 1,
+            cusId: this.selectingCus.customer_id,
             srealTotalWeight: this.sumSellRealWeight,
             stotalPrice: this.sumListCartSell,
             sdisc: 0,
@@ -673,6 +710,7 @@ export default {
             listExportDetail: this.listCartSell.map((item) => ({
               productId: item.product_id,
               qty: item.countItem,
+              totalPrice: item.countItem * item.price,
             })),
             brealTotalWeight: this.sumBuyRealWeight,
             btotalPrice: this.sumListCartBuy,
@@ -685,7 +723,7 @@ export default {
             })),
           };
           res = await this.TurnProduct(body);
-          console.log(res);
+
           return res;
         }
       } catch (error) {
