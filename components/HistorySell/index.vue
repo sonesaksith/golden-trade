@@ -47,7 +47,7 @@
         <template v-slot:header="props" v-if="tableNull">
           <tr style="background-color: rgba(0, 0, 0, 0.09)">
             <td
-              colspan="9"
+              colspan="10"
               style="padding: 10px; padding-left: 20px"
               align="left"
             >
@@ -157,6 +157,11 @@
             <div></div>
           </div>
         </template>
+        <template #item.create_at="{ index, item }">
+          <div>
+            {{ $FormatDateTime(item.create_at) }}
+          </div>
+        </template>
       </v-data-table>
     </template>
     <HistorySellView :key="1" ref="myCompHisView" />
@@ -232,6 +237,13 @@ export default {
           text: "ສະຖານະ",
           align: "center",
           value: "stt",
+          width: "120px",
+          class: " darken-2 text-subtitle-2 font-weight-black",
+        },
+        {
+          text: "ເວລາ",
+          align: "center",
+          value: "create_at",
           width: "120px",
           class: " darken-2 text-subtitle-2 font-weight-black",
         },

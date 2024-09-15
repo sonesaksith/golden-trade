@@ -129,7 +129,8 @@
         </template>
         <template #[`item.diff`]="{ item }">
           <span>
-            {{ $formatnumber(item.diff) }}
+            {{ item.diff < 0 ? "ທອນ" : "ຕື່ມ" }}
+            {{ $formatnumber(item.diff < 0 ? item.diff * -1 : item.diff) }}
           </span>
         </template>
         <template #[`item.sell_final_price`]="{ item }">
@@ -154,6 +155,11 @@
           <span>
             {{ item.seller_info.user_name }} {{ item.seller_info.user_surname }}
           </span>
+        </template>
+        <template #item.create_at="{ index, item }">
+          <div>
+            {{ $FormatDateTime(item.create_at) }}
+          </div>
         </template>
         <template #[`item.view`]="{ item }">
           <div
@@ -199,7 +205,7 @@ export default {
         { id: 15, value: 15 },
         { id: "All", value: "" },
       ],
-      status: "ປະຫວັດເທີນ", 
+      status: "ປະຫວັດເທີນ",
       search: "",
       headers: [
         {
@@ -284,6 +290,13 @@ export default {
           text: "ສະຖານະ",
           align: "center",
           value: "stt",
+          width: "120px",
+          class: " darken-2 text-subtitle-2 font-weight-black",
+        },
+        {
+          text: "ເວລາ",
+          align: "center",
+          value: "create_at",
           width: "120px",
           class: " darken-2 text-subtitle-2 font-weight-black",
         },
