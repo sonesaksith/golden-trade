@@ -3,7 +3,7 @@
     <v-card>
       <v-container>
         <v-card-title> ຢືນຢັນການລົບ </v-card-title>
-        <v-card-subtitle> ທ່ານຕ້ອງການລົບລູກຄ້ານີ້ ແທ້ຫຼືບໍ່? </v-card-subtitle>
+        <v-card-subtitle> ທ່ານຕ້ອງການລົບແທ້ຫຼືບໍ່? </v-card-subtitle>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -33,11 +33,11 @@ export default {
     };
   },
   methods: {
-    ...mapActions("customer", ["deleteCustomer"]),
+    ...mapActions("rate", ["deleteRate"]),
     async onDelete() {
       // this.$store.commit("customer/DELETE_CUSTOMER_BY_NO", this.id);
       try {
-        const resp = await this.deleteCustomer(this.id);
+        const resp = await this.deleteRate(this.id);
         if (resp.status == 200 && resp.data.msg == "success") {
           this.$emit("getCustomer");
           this.$swal({

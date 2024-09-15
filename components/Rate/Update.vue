@@ -2,40 +2,24 @@
   <v-dialog v-model="dialog" width="500">
     <v-form ref="form" v-model="valid">
       <v-card>
-        <v-card-title> ແກ້ໄຂຂໍ້ມູນລູກຄ້າ </v-card-title>
+        <v-card-title> ແກ້ໄຂ Rate</v-card-title>
         <v-container>
           <v-row>
             <v-col cols="12" sm="6">
               <v-text-field
-                v-model="name"
+                v-model="buy"
                 dense
-                label="ຊື່"
+                label="ຊື້"
                 outlined
               ></v-text-field>
             </v-col>
             <v-col cols="12" sm="6">
               <v-text-field
-                v-model="surname"
+                v-model="sell"
                 dense
-                label="ນາມສະກຸນ"
+                label="ຂາຍ"
                 outlined
               ></v-text-field>
-            </v-col>
-            <v-col cols="12">
-              <v-text-field
-                v-model="tel"
-                dense
-                label="ເບີໂທ"
-                outlined
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12">
-              <v-textarea
-                v-model="address"
-                label="ທີ່ຢູ່"
-                outlined
-                rows="4"
-              ></v-textarea>
             </v-col>
           </v-row>
         </v-container>
@@ -54,20 +38,16 @@ import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
+      id: null,
       dialog: false,
-      name: "",
-      surname: "",
-      tel: "",
-      address: "",
+      buy: 0,
+      sell: 0,
       valid: false,
-      id: 0,
     };
   },
-  computed: {
-    ...mapState("customer", ["listCustomer"]),
-  },
+  computed: {},
   methods: {
-    ...mapActions("customer", ["updateCustomer"]),
+    ...mapActions("rate", ["updateRate"]),
     onClose() {
       this.dialog = false;
       this.$refs.form.reset();
@@ -77,17 +57,15 @@ export default {
         try {
           const data = {
             id: this.id,
-            name: this.name,
-            surname: this.surname,
-            tel: this.tel,
-            address: this.address,
+            rateBuy: this.buy,
+            rateSell: this.sell,
           };
-          const resp = await this.updateCustomer(data);
+          const resp = await this.updateRate(data);
           if (resp.status == 200 && resp.data.msg == "success") {
             this.$emit("getCustomer");
             this.$swal({
               toast: true,
-              text: "ແກ້ໄຂຂໍ້ມູນລຸກຄ້າສຳເລັດ!",
+              text: "ແກ້ໄຂຂໍ້ມູນສຳເລັດ!",
               type: "success",
               timer: 1500,
               timerProgressBar: true,

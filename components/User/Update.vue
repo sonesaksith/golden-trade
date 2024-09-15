@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" width="500">
     <v-form ref="form" v-model="valid">
       <v-card>
-        <v-card-title> ແກ້ໄຂຂໍ້ມູນລູກຄ້າ </v-card-title>
+        <v-card-title> ແກ້ໄຂຂໍ້ມູນຜູ້ໃຊ້ </v-card-title>
         <v-container>
           <v-row>
             <v-col cols="12" sm="6">
@@ -30,13 +30,24 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-textarea
-                v-model="address"
-                label="ທີ່ຢູ່"
+              <v-text-field
+                v-model="password"
+                label="ຕັ່ງລະຫັດຜ່ານ"
+                dense
                 outlined
-                rows="4"
-              ></v-textarea>
+              ></v-text-field>
             </v-col>
+            <v-col cols="12"
+              ><v-select
+                v-model="userStatus"
+                label="ສະຖານະຜູ້ໃຊ້"
+                dense
+                :items="role"
+                item-text="role"
+                item-value="value"
+                outlined
+              ></v-select
+            ></v-col>
           </v-row>
         </v-container>
         <v-card-actions>
@@ -54,20 +65,23 @@ import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
+      id: null,
       dialog: false,
       name: "",
       surname: "",
       tel: "",
-      address: "",
+      password: "",
       valid: false,
-      id: 0,
+      userStatus: 1,
+      role: [
+        { role: "admin", value: 1 },
+        { role: "ຜູ້ໃຊ້", value: 2 },
+      ],
     };
   },
-  computed: {
-    ...mapState("customer", ["listCustomer"]),
-  },
+  computed: {},
   methods: {
-    ...mapActions("customer", ["updateCustomer"]),
+    ...mapActions("user", ["updateUser"]),
     onClose() {
       this.dialog = false;
       this.$refs.form.reset();
@@ -80,14 +94,15 @@ export default {
             name: this.name,
             surname: this.surname,
             tel: this.tel,
-            address: this.address,
+            pass: "U2FsdGVkX18Z3TEnTSt7MmFsyil3+GEF2taAd+Gl0jY=",
+            userStatusId: this.userStatus,
           };
-          const resp = await this.updateCustomer(data);
+          const resp = await this.updateUser(data);
           if (resp.status == 200 && resp.data.msg == "success") {
             this.$emit("getCustomer");
             this.$swal({
               toast: true,
-              text: "ແກ້ໄຂຂໍ້ມູນລຸກຄ້າສຳເລັດ!",
+              text: "ແກ້ໄຂຂໍ້ມູນຜູ້ໃຊ້ສຳເລັດ!",
               type: "success",
               timer: 1500,
               timerProgressBar: true,

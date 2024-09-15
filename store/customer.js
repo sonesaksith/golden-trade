@@ -2,138 +2,44 @@ export default {
   state: () => ({
     selectingCus: {},
     goingToBill: "buy",
-    listCustomer: [
-      {
-        no: 1,
-        name: "Jenis",
-        surname: "Alexa",
-        tel: "209998889",
-        address: "Dongpalan, Vientiane",
-      },
-      {
-        no: 2,
-        name: "Sila",
-        surname: "Phonexay",
-        tel: "209998777",
-        address: "Samsenthai, Vientiane",
-      },
-      {
-        no: 3,
-        name: "Kham",
-        surname: "Thonglith",
-        tel: "209998666",
-        address: "Phonsavan, Xieng Khouang",
-      },
-      {
-        no: 4,
-        name: "Vone",
-        surname: "Sisouphanh",
-        tel: "209998555",
-        address: "Luang Prabang, Luang Prabang",
-      },
-      {
-        no: 5,
-        name: "Keo",
-        surname: "Somvang",
-        tel: "209998444",
-        address: "Pakse, Champasak",
-      },
-      {
-        no: 6,
-        name: "Dao",
-        surname: "Chittavong",
-        tel: "209998333",
-        address: "Thakhek, Khammouane",
-      },
-      {
-        no: 7,
-        name: "Sith",
-        surname: "Vongsa",
-        tel: "209998222",
-        address: "Savannakhet, Savannakhet",
-      },
-      {
-        no: 8,
-        name: "Mai",
-        surname: "Inthavong",
-        tel: "209998111",
-        address: "Phonthong, Champasak",
-      },
-      {
-        no: 9,
-        name: "Pheng",
-        surname: "Xayyavong",
-        tel: "209998000",
-        address: "Xam Neua, Houaphanh",
-      },
-      {
-        no: 10,
-        name: "Sao",
-        surname: "Souksavanh",
-        tel: "209997999",
-        address: "Muang Xay, Oudomxay",
-      },
-      {
-        no: 11,
-        name: "Seng",
-        surname: "Nanthavong",
-        tel: "209997888",
-        address: "Paksan, Bolikhamxay",
-      },
-      {
-        no: 12,
-        name: "Chanh",
-        surname: "Khamchanh",
-        tel: "209997777",
-        address: "Vang Vieng, Vientiane Province",
-      },
-      {
-        no: 13,
-        name: "Khoun",
-        surname: "Phouthavong",
-        tel: "209997666",
-        address: "Saravane, Saravane",
-      },
-      {
-        no: 14,
-        name: "Dara",
-        surname: "Phonphet",
-        tel: "209997555",
-        address: "Attapeu, Attapeu",
-      },
-      {
-        no: 15,
-        name: "Thong",
-        surname: "Boupha",
-        tel: "209997444",
-        address: "Phongsaly, Phongsaly",
-      },
-      {
-        no: 16,
-        name: "Noy",
-        surname: "Vongphachanh",
-        tel: "209997333",
-        address: "Sepon, Savannakhet",
-      },
-    ],
+    listCustomer: [],
+    total: 0,
+    countPage: 0,
   }),
   mutations: {
+    SET_CUSTOMER(state, data) {
+      state.listCustomer = data;
+    },
+    SET_CUSTOMER_COUNT(state, data) {
+      state.countPage = data.count_page;
+      state.total = data.total;
+    },
     ADD_CUSTOMER(state, data) {
       state.listCustomer.push(data);
     },
     UPDATE_CUSTOMER_BY_NO(state, data) {
-      for (let index = 0; index < state.listCustomer.length; index++) {
-        const element = state.listCustomer[index];
-        if (element.no == data.no) {
-          state.listCustomer[index].name = data.name;
-          state.listCustomer[index].surname = data.surname;
-          state.listCustomer[index].tel = data.tel;
-          state.listCustomer[index].address = data.address;
-        }
-      }
+      console.log(data);
+      // for (let index = 0; index < state.listCustomer.length; index++) {
+      //   const element = state.listCustomer[index];
+      //   if (element.customer_id.no == data.id) {
+      //     state.listCustomer[index].customer_name = data.name;
+      //     state.listCustomer[index].customer_surname = data.surname;
+      //     state.listCustomer[index].customer_tel = data.tel;
+      //     state.listCustomer[index].customer_address = data.address;
+      //   }
+      // }
+      state.listCustomer = state.listCustomer.map((customer) =>
+        customer.customer_id === data.customer_id
+          ? { ...customer, ...data }
+          : customer
+      );
+
+      console.log(state.listCustomer);
     },
-    DELETE_CUSTOMER_BY_NO(state, cusNo) {
-      state.listCustomer = state.listCustomer.filter((x) => x.no != cusNo);
+    DELETE_CUSTOMER_BY_NO(state, id) {
+      state.listCustomer = state.listCustomer.filter(
+        (x) => x.customer_id != id
+      );
     },
 
     SET_GOING_TO_BILL(state, data) {
@@ -143,6 +49,83 @@ export default {
       state.selectingCus = data;
     },
   },
-  actions: {},
+  actions: {
+    async getCustomer({ state, commit }, item) {
+      console.log("Getting customer...");
+      try {
+        const resp = await this.$axios({
+          method: "get",
+          url: `/api/customer/view?search=${item?.search || ""}&page=${
+            item?.page
+          }&limit=${item?.limit}`,
+        });
+        if (resp.status == 200 && resp.data.msg == "success") {
+          commit("SET_CUSTOMER", resp.data.resultData);
+          commit("SET_CUSTOMER_COUNT", resp.data);
+        }
+
+        return resp;
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    },
+    async createCustomer({ state, commit }, item) {
+      console.log("Create customer...");
+      try {
+        const resp = await this.$axios({
+          method: "post",
+          url: `/api/customer/create`,
+          data: item,
+        });
+        return resp;
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    },
+    async updateCustomer({ state, commit }, item) {
+      console.log("Create customer...");
+      try {
+        const resp = await this.$axios({
+          method: "put",
+          url: `/api/customer/update`,
+          data: item,
+        });
+        if (resp.status == 200 && resp.data.msg == "success") {
+          commit("UPDATE_CUSTOMER_BY_NO", {
+            customer_id: item.id,
+            customer_name: item.name,
+            customer_surname: item.surename,
+            customer_tel: item.tel,
+            customer_address: item.address,
+            create_at: null,
+            update_at: null,
+            stt: 1,
+          });
+        }
+        return resp;
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    },
+    async deleteCustomer({ state, commit }, id) {
+      console.log("Delete customer...");
+      try {
+        const resp = await this.$axios({
+          method: "delete",
+          url: `/api/customer/delete/${id}`,
+        });
+        if (resp.status == 200 && resp.data.msg == "success") {
+          commit("DELETE_CUSTOMER_BY_NO", id);
+        }
+        return resp;
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    },
+  },
   getters: {},
 };
