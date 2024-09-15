@@ -157,7 +157,6 @@
         </template>
       </v-data-table>
     </template>
-    <HistoryBuyView :key="1" ref="myCompHisView" />
     <!-- <HistoryBuyInfo :key="2" ref="myCompInfo" :statusTran="status" /> -->
     <Bill :key="2" ref="myCompInfo" :statusTran="status" />
   </div>
