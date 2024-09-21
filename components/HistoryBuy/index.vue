@@ -47,7 +47,7 @@
         <template v-slot:header="props" v-if="tableNull">
           <tr style="background-color: rgba(0, 0, 0, 0.09)">
             <td
-              colspan="10"
+              colspan="12"
               style="padding: 10px; padding-left: 20px"
               align="left"
             >
@@ -104,6 +104,16 @@
         </template>
         <template #[`item.total_price`]="{ item }">
           <span> {{ $formatnumber(item.total_price) }} </span>
+        </template>
+        <template #[`item.rate_buy`]="{ item }">
+          <span>
+            {{ $formatnumber(item.rate_buy) }}
+          </span>
+        </template>
+        <template #[`item.rate_sell`]="{ item }">
+          <span>
+            {{ $formatnumber(item.rate_sell) }}
+          </span>
         </template>
         <template #[`item.customer`]="{ item }">
           <span>
@@ -203,6 +213,20 @@ export default {
           text: "ລາຄາ",
           align: "center",
           value: "total_price",
+          width: "120px",
+          class: " darken-2 text-subtitle-2 font-weight-black",
+        },
+        {
+          text: "ລາຄາຊື້",
+          align: "center",
+          value: "rate_buy",
+          width: "120px",
+          class: " darken-2 text-subtitle-2 font-weight-black",
+        },
+        {
+          text: "ລາຄາຂາຍ",
+          align: "center",
+          value: "rate_sell",
           width: "120px",
           class: " darken-2 text-subtitle-2 font-weight-black",
         },

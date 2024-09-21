@@ -294,6 +294,7 @@
                       <div class="dot-divider"></div>
                     </div>
                     <!-- detail buy -->
+
                     <div
                       v-for="(n, index) in buyInfoList?.list_detail"
                       :key="index + 'ເທີນ'"

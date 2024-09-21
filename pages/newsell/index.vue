@@ -30,8 +30,8 @@
           ></v-autocomplete> -->
         </v-col>
         <v-col cols="6" sm="2" v-if="!loading || listGold.length > 0">
-          <v-btn color="goldColor" block dark @click="onOpenBuy()">
-            <v-icon>mdi-gold</v-icon> ຊື້
+          <v-btn color="primary" block dark @click="onOpenBuy()">
+            ຊື້ເຂົ້າ
           </v-btn>
         </v-col>
         <v-col cols="6" sm="3" v-if="!loading || listGold.length > 0">
@@ -178,13 +178,13 @@
                         <div style="width: 80%; height: 100px" class="px-2">
                           <div class="d-flex" style="height: 100%">
                             <div style="width: 70%; height: 100%">
-                              <div>
-                                ນ້ຳໜັກ : {{ item?.weight }}
-                                {{ item?.unitName }}
-                              </div>
-                              <div>
+                              <div v-if="Number(item?.realWeight) > 0">
                                 ນ້ຳໜັກໂຕຈິງ : {{ item?.realWeight }}
                                 g
+                              </div>
+                              <div v-else>
+                                ນ້ຳໜັກ : {{ item?.weight }}
+                                {{ item?.unitName }}
                               </div>
                               <div>
                                 ລາຄາ :
@@ -339,7 +339,7 @@
                   class="d-flex flex-column flex-grow-1"
                 >
                   <v-row class="flex-grow-1">
-                    <v-col cols="12">
+                    <!-- <v-col cols="12">
                       <div class="d-flex">
                         <div style="width: 80%">
                           <div v-if="selectingCus.customer_tel">
@@ -375,7 +375,7 @@
                           <v-icon color="primary">mdi-pencil</v-icon>
                         </div>
                       </div>
-                    </v-col>
+                    </v-col> -->
 
                     <v-col cols="12">
                       <v-divider></v-divider>
@@ -419,7 +419,7 @@
                       <div class="d-flex justify-space-around mt-5">
                         <v-btn
                           color="success"
-                          @click="onConfirm()"
+                          @click="goToPageBill()"
                           :loading="isCreatingTransaction"
                           :disabled="isCreatingTransaction"
                         >
@@ -551,6 +551,67 @@ export default {
       "SellProduct",
       "BuyProduct",
     ]),
+    goToPageBill() {
+      let body = {};
+      if (this.listCartSell.length > 0 && this.listCartBuy.length == 0) {
+        this.$store.commit("newsell/SET_STTTRAN", "ປະຫວັດຂາຍ");
+        body = {
+          cusId: this.selectingCus.customer_id,
+          realTotalWeight: this.sumSellRealWeight,
+          rateId: this.dataRate.rate_id,
+          totalPrice: this.sumListCartSell,
+          disc: 0,
+          finalPrice: this.sumListCartSell,
+          listExportDetail: this.listCartSell.map((item) => ({
+            productId: item.product_id,
+            qty: item.countItem,
+            totalPrice: item.countItem * item.price,
+          })),
+        };
+      } else if (this.listCartSell.length == 0 && this.listCartBuy.length > 0) {
+        this.$store.commit("newsell/SET_STTTRAN", "ປະຫວັດຊື້");
+        body = {
+          cusId: this.selectingCus.customer_id,
+          realTotalWeight: this.sumBuyRealWeight,
+          rateId: this.dataRate.rate_id,
+          totalPrice: this.sumListCartBuy,
+          listImportDetail: this.listCartBuy.map((item) => ({
+            weight: item.weight,
+            unitId: item.unitId,
+            realWeight: item.realWeight,
+            price: item.price,
+            purity: item.purity,
+          })),
+        };
+      } else if (this.listCartSell.length > 0 && this.listCartBuy.length > 0) {
+        this.$store.commit("newsell/SET_STTTRAN", "ປະຫວັດເທີນ");
+
+        body = {
+          cusId: this.selectingCus.customer_id,
+          srealTotalWeight: this.sumSellRealWeight,
+          rateId: this.dataRate.rate_id,
+          stotalPrice: this.sumListCartSell,
+          sdisc: 0,
+          sfinalPrice: this.sumListCartSell,
+          listExportDetail: this.listCartSell.map((item) => ({
+            productId: item.product_id,
+            qty: item.countItem,
+            totalPrice: item.countItem * item.price,
+          })),
+          brealTotalWeight: this.sumBuyRealWeight,
+          btotalPrice: this.sumListCartBuy,
+          listImportDetail: this.listCartBuy.map((item) => ({
+            weight: item.weight,
+            unitId: item.unitId,
+            realWeight: item.realWeight,
+            price: item.price,
+            purity: item.purity,
+          })),
+        };
+      }
+      this.$store.commit("newsell/SET_PREVIEW_BILL", body);
+      this.$router.push("/newsell/confirmbill");
+    },
     async getGolds() {
       this.loading = true;
       try {
@@ -693,6 +754,7 @@ export default {
           const body = {
             cusId: this.selectingCus.customer_id,
             realTotalWeight: this.sumSellRealWeight,
+            rateId: this.dataRate.rate_id,
             totalPrice: this.sumListCartSell,
             disc: 0,
             finalPrice: this.sumListCartSell,
@@ -713,6 +775,7 @@ export default {
           const body = {
             cusId: this.selectingCus.customer_id,
             realTotalWeight: this.sumBuyRealWeight,
+            rateId: this.dataRate.rate_id,
             totalPrice: this.sumListCartBuy,
             listImportDetail: this.listCartBuy.map((item) => ({
               weight: item.weight,
@@ -733,6 +796,7 @@ export default {
           const body = {
             cusId: this.selectingCus.customer_id,
             srealTotalWeight: this.sumSellRealWeight,
+            rateId: this.dataRate.rate_id,
             stotalPrice: this.sumListCartSell,
             sdisc: 0,
             sfinalPrice: this.sumListCartSell,

@@ -4,6 +4,8 @@ export default {
     listCartSell: [],
     cusData: [],
     buyInfoList: {},
+    previewBill: {},
+    statusTran: "",
   }),
   mutations: {
     CLEAR_LIST_CART_BUY(state) {
@@ -11,6 +13,12 @@ export default {
     },
     SET_CUS(state, data) {
       state.cusData = data;
+    },
+    SET_STTTRAN(state, data) {
+      state.statusTran = data;
+    },
+    SET_PREVIEW_BILL(state, data) {
+      state.previewBill = data;
     },
     SET_BUYINFOSTT(state, data) {
       if (data.list_sell) {

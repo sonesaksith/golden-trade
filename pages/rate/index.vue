@@ -134,35 +134,10 @@
             <template #item.sell="{ index, item }">
               <div>{{ $formatnumber2(item.rate_sell) }}</div>
             </template>
-
-            <template #item.actions="{ index, item }">
-              <div class="d-flex justify-center align-center">
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      icon
-                      @click="onOpenUpdate(item)"
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                      <v-icon color="primary"> mdi-square-edit-outline </v-icon>
-                    </v-btn>
-                  </template>
-                  <span>ແກ້ໄຂຂໍ້ມູນສິນຄ້າ</span>
-                </v-tooltip>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      icon
-                      @click="onDelete(item)"
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                      <v-icon color="error"> mdi-delete-empty-outline </v-icon>
-                    </v-btn>
-                  </template>
-                  <span>ລົບສິນຄ້າ</span>
-                </v-tooltip>
+            <template #item.aaa="{ index, item }">
+              <div>
+                <v-icon v-if="index == 0" color="success">mdi-check</v-icon>
+                <v-icon v-else color="error">mdi-close</v-icon>
               </div>
             </template>
           </v-data-table>
@@ -225,8 +200,8 @@ export default {
           sortable: false,
         },
         {
-          text: "ຈັດການ",
-          value: "actions",
+          text: "ສະຖານະການໃຊ້",
+          value: "aaa",
           class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-5",
           align: "center",
           sortable: false,

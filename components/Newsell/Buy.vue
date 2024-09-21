@@ -20,9 +20,9 @@
             <v-col cols="12" class="py-0" sm="6">
               <v-text-field
                 v-model="realWeight"
+                @keyup="fotmatWeightReal()"
                 label="ນ້ຳໜັກໂຕຈິງ"
                 append-icon="g"
-                :rules="[(v) => !!v || 'ກະລຸນາປ້ອນຄວາມບໍລິສຸດທອງ']"
                 outlined
                 dense
                 class="rounded-md"
@@ -139,7 +139,7 @@
         <v-card-actions>
           <v-spacer> </v-spacer>
           <v-btn color="primary" @click="onAddListBuy()">ເພີ່ມລາຍການ</v-btn>
-          <v-btn color="error" @click="dialog = false">ປິດ</v-btn>
+          <v-btn color="error" @click="dialog = false" outlined>ປິດ</v-btn>
         </v-card-actions>
       </v-form>
     </v-card>
@@ -155,7 +155,7 @@ export default {
       modelGoldType: "ທອງຮູບປະພັນ",
       modelPurity: 99.99,
       manualPrice: false,
-      realWeight: "",
+      realWeight: 0,
       goldTypes: [
         {
           id: 1,
@@ -186,7 +186,7 @@ export default {
         },
       ],
       dataRate: {},
-      modelWeightAmount: "",
+      modelWeightAmount: 0,
       modelWeightType: "ກຣາມ",
       weightType: [
         {
@@ -251,9 +251,28 @@ export default {
     };
   },
   watch: {
+    realWeight: function (val) {
+      if (this.manualPrice == false) {
+        if (val) {
+          this.modelWeightAmount = 0;
+          this.modelPrice = Math.ceil(
+            this.$convertGoldToMoney(
+              val?.split(",").join(""),
+              "ກຣາມ",
+              this.modelPurity,
+              this.dataRate?.rate_buy
+            )
+          );
+          this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
+        } else {
+          this.modelPrice = 0;
+        }
+      }
+    },
     modelWeightAmount: function (val) {
       if (this.manualPrice == false) {
         if (val) {
+          this.realWeight = 0;
           this.modelPrice = Math.ceil(
             this.$convertGoldToMoney(
               val?.split(",").join(""),
@@ -348,10 +367,9 @@ export default {
   methods: {
     onAddListBuy() {
       if (
-        this.modelWeightAmount &&
+        (this.realWeight || (this.modelWeightType && this.modelWeightAmount)) &&
         this.modelWeightType &&
         this.modelWeightType &&
-        this.realWeight &&
         this.modelPrice &&
         this.modelPurity
       ) {
@@ -441,10 +459,12 @@ export default {
       this.modelPrice = val;
     },
     fotmatWeight() {
-      this.modelWeightAmount = this.modelWeightAmount.split(",").join("");
+      this.modelWeightAmount = String(this.modelWeightAmount || "")
+        .split(",")
+        .join("");
       let val;
       let valArr = [];
-      val = this.modelWeightAmount;
+      val = String(this.modelWeightAmount || "");
       val = val.replace(/[^0-9\.]/g, "");
       if (val != "") {
         valArr = val.split(".");
@@ -452,6 +472,21 @@ export default {
         val = valArr.join(".");
       }
       this.modelWeightAmount = val;
+    },
+    fotmatWeightReal() {
+      this.realWeight = String(this.realWeight || "")
+        .split(",")
+        .join("");
+      let val;
+      let valArr = [];
+      val = String(this.realWeight || "");
+      val = val.replace(/[^0-9\.]/g, "");
+      if (val != "") {
+        valArr = val.split(".");
+        valArr[0] = parseInt(valArr[0], 10).toLocaleString();
+        val = valArr.join(".");
+      }
+      this.realWeight = val;
     },
   },
 };
