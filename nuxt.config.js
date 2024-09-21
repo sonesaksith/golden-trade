@@ -42,11 +42,11 @@ export default {
   },
   proxy: {
     "/api/": {
-      target: process.env.BASE_URL_GOLD,
+      target: process.env.VERCEL_BASE_URL_GOLD,
       pathRewrite: { "^/api/": "/" },
     },
     "/gold/": {
-      target: process.env.BASE_URL_GOLD,
+      target: process.env.VERCEL_BASE_URL_GOLD,
       pathRewrite: { "^/gold/": "/" },
     },
   },
