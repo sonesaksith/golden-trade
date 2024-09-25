@@ -1,23 +1,53 @@
 <template>
-  <v-dialog v-model="dialog" width="80%">
+  <v-dialog v-model="dialog" width="1000">
     <v-form ref="form" v-model="valid">
       <v-card>
-        <v-card-title>
-          ເພີ່ມລາຍ
-          <v-spacer></v-spacer>
-          <v-btn @click="onAdd()" class="mx-1" color="primary">ເພີ່ມ</v-btn>
-          <v-btn @click="onClose()" color="error">ຍົກເລີກ</v-btn>
+        <v-card-title style="background-color: #e7e6e6">
+          <div style="display: flex; width: 100%; align-items: center; justify-content: center;">
+            <div style="display: flex; align-items: center">
+              <v-icon large color="grey">mdi-notebook-plus-outline</v-icon>
+              <h4 class="mx-2">ເພີ່ມລາຍ</h4>
+            </div>
+            <v-spacer></v-spacer>
+            <div style="border-radius: 100%; width: 40px; height: 40px; background-color: white; display: flex; align-items: center; justify-content: center">
+              <v-icon @click="onClose()" large color="grey">mdi-close</v-icon>
+            </div>
+          </div>
+          <!-- <v-row>
+            <v-col cols="9" sm="10" style="display: flex; align-items: start; justify-content: start;">
+              ເພີ່ມລາຍ
+            </v-col>
+            <v-col cols="3" sm="2" style="display: flex; align-items: end; justify-content: end;">
+              <v-btn @click="onClose()" color="error">ຍົກເລີກ</v-btn>
+            </v-col>
+          </v-row> -->
         </v-card-title>
-        <v-container>
-          <v-row>
-            <v-col cols="12" sm="12" class="py-0">
+        <v-card-text>
+          <div style="display: flex;" class="pb-6 mt-4">
+            <div style="display: flex; align-items: center; justify-content: center; min-width: 100%;">
               <v-text-field
                 v-model="name"
                 dense
                 label="ຊື່ລາຍ"
+                hide-details="auto"
+                outlined
+              ></v-text-field>
+              <v-btn @click="onAdd()" class="mx-1" style="height: 40px;" color="primary">ເພີ່ມ</v-btn>
+            </div>
+          </div>
+          <v-row>
+            <!-- <v-col cols="9" sm="10" style="display: flex; align-items: center; justify-content: center;">
+              <v-text-field
+                v-model="name"
+                dense
+                label="ຊື່ລາຍ"
+                hide-details="auto"
                 outlined
               ></v-text-field>
             </v-col>
+            <v-col cols="3" sm="2" style="display: flex; align-items: center; justify-content: end;">
+              <v-btn @click="onAdd()" class="mx-1" color="primary">ເພີ່ມ</v-btn>
+            </v-col> -->
             <v-col cols="12">
               <v-data-table
                 :headers="headers"
@@ -41,7 +71,7 @@
                       align="left"
                     >
                       <h3 style="font-size: 18px; color: gray">
-                        ສິນຄ້າທັງໝົດ:
+                        ລາຍທັງໝົດ:
                         <b style="font-size: 18px; color: #c62828">
                           {{ lines.length || 0 }}
                         </b>
@@ -141,7 +171,7 @@
               </v-data-table>
             </v-col>
           </v-row>
-        </v-container>
+        </v-card-text>
         <!-- <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn @click="onAdd()" color="primary" text>ເພີ່ມ</v-btn>

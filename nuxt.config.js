@@ -13,6 +13,7 @@ export default {
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { hid: "description", name: "description", content: "" },
       { name: "format-detection", content: "telephone=no" },
+      { "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS" },
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/goldbar.png" }],
   },
@@ -42,10 +43,15 @@ export default {
   },
   proxy: {
     "/api/": {
-      target: process.env.BASE_URL_GOLD,
+      target: process.env.VERCEL_BASE_URL_GOLD,
       pathRewrite: { "^/api/": "/" },
     },
+    "/gold/": {
+      target: process.env.VERCEL_BASE_URL_GOLD,
+      pathRewrite: { "^/gold/": "/" },
+    },
   },
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   vuetify: {
     theme: {

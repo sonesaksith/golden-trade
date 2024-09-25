@@ -232,6 +232,7 @@ export default {
   },
   mounted() {
     this.handleGetCustomer();
+    this.$store.commit("main/SET_HEADER_TITLE", "ລູກຄ້າ");
   },
   watch: {
     page: function (val) {

@@ -2,7 +2,7 @@
   <div class="pa-4 mt-4">
     <v-row>
       <v-col cols="12" sm="4" md="2" lg="2">
-        <h3>ປະຫວັດການຂາຍ</h3>
+        <h3>ປະຫວັດການເທີນ</h3>
       </v-col>
       <v-spacer></v-spacer>
       <v-col cols="12" sm="4" md="4" lg="4">
@@ -33,7 +33,7 @@
     <template>
       <v-data-table
         :headers="headers"
-        :items="sellList"
+        :items="trunList"
         class="elevation-1"
         fixed-header
         hide-default-footer
@@ -42,12 +42,12 @@
         loading-text="Loading..."
         height="68vh"
         width="400"
-        :loading="loadSell"
+        :loading="loadTrun"
       >
         <template v-slot:header="props" v-if="tableNull">
           <tr style="background-color: rgba(0, 0, 0, 0.09)">
             <td
-              colspan="12"
+              colspan="16"
               style="padding: 10px; padding-left: 20px"
               align="left"
             >
@@ -107,9 +107,9 @@
             {{ item.billNo }}
           </span>
         </template>
-        <template #[`item.final_price`]="{ item }">
+        <template #[`item.sell_real_total_weight`]="{ item }">
           <span>
-            {{ $formatnumber(item.final_price) }}
+            {{ $formatnumber(item.sell_real_total_weight) }}
           </span>
         </template>
         <template #[`item.rate_buy`]="{ item }">
@@ -120,6 +120,32 @@
         <template #[`item.rate_sell`]="{ item }">
           <span>
             {{ $formatnumber(item.rate_sell) }}
+          </span>
+        </template>
+        <template #[`item.sell_total_price`]="{ item }">
+          <span>
+            {{ $formatnumber(item.sell_total_price) }}
+          </span>
+        </template>
+        <template #[`item.final_price`]="{ item }">
+          <span>
+            {{ $formatnumber(item.final_price) }}
+          </span>
+        </template>
+        <template #[`item.buy_total_price`]="{ item }">
+          <span>
+            {{ $formatnumber(item.buy_total_price) }}
+          </span>
+        </template>
+        <template #[`item.diff`]="{ item }">
+          <span>
+            {{ item.diff < 0 ? "ທອນ" : "ຕື່ມ" }}
+            {{ $formatnumber(item.diff < 0 ? item.diff * -1 : item.diff) }}
+          </span>
+        </template>
+        <template #[`item.sell_final_price`]="{ item }">
+          <span>
+            {{ $formatnumber(item.sell_final_price) }}
           </span>
         </template>
         <template #[`item.stt`]="{ item }">
@@ -139,6 +165,11 @@
           <span>
             {{ item.seller_info.user_name }} {{ item.seller_info.user_surname }}
           </span>
+        </template>
+        <template #item.create_at="{ index, item }">
+          <div>
+            {{ $FormatDateTime(item.create_at) }}
+          </div>
         </template>
         <template #[`item.view`]="{ item }">
           <div
@@ -167,14 +198,9 @@
             <div></div>
           </div>
         </template>
-        <template #item.create_at="{ index, item }">
-          <div>
-            {{ $FormatDateTime(item.create_at) }}
-          </div>
-        </template>
       </v-data-table>
     </template>
-    <Bill :key="2" ref="myCompInfo" :statusTran="status" />
+    <Bill :key="1" ref="myCompInfo" :statusTran="status" />
   </div>
 </template>
 <script>
@@ -189,7 +215,7 @@ export default {
         { id: 15, value: 15 },
         { id: "All", value: "" },
       ],
-      status: "ປະຫວັດຂາຍ",
+      status: "ປະຫວັດເທີນ",
       search: "",
       headers: [
         {
@@ -208,17 +234,31 @@ export default {
           class: " darken-2 text-subtitle-2 font-weight-black",
         },
         {
-          text: "ນ້ຳໜັກ",
+          text: "ນ້ຳໜັກຊື້",
           align: "center",
-          value: "real_total_weight",
+          value: "buy_real_total_weight",
           width: "120px",
           class: " darken-2 text-subtitle-2 font-weight-black",
         },
         {
-          text: "ລາຄາ",
+          text: "ນ້ຳໜັກຂາຍ",
           align: "center",
-          value: "final_price",
+          value: "sell_real_total_weight",
           width: "120px",
+          class: " darken-2 text-subtitle-2 font-weight-black",
+        },
+        {
+          text: "ລວມລາຄາຊື້",
+          align: "center",
+          value: "buy_total_price",
+          width: "140px",
+          class: " darken-2 text-subtitle-2 font-weight-black",
+        },
+        {
+          text: "ລວມລາຄາຂາຍ",
+          align: "center",
+          value: "sell_total_price",
+          width: "140px",
           class: " darken-2 text-subtitle-2 font-weight-black",
         },
         {
@@ -232,6 +272,20 @@ export default {
           text: "ລາຄາຂາຍ",
           align: "center",
           value: "rate_sell",
+          width: "120px",
+          class: " darken-2 text-subtitle-2 font-weight-black",
+        },
+        {
+          text: "ສ່ວນຕ່າງ",
+          align: "center",
+          value: "diff",
+          width: "120px",
+          class: " darken-2 text-subtitle-2 font-weight-black",
+        },
+        {
+          text: "ສະຫຼຸບລາຄາ",
+          align: "center",
+          value: "sell_final_price",
           width: "120px",
           class: " darken-2 text-subtitle-2 font-weight-black",
         },
@@ -270,7 +324,6 @@ export default {
           width: "120px",
           class: " darken-2 text-subtitle-2 font-weight-black",
         },
-
         {
           text: "ລາຍລະອຽດ",
           align: "center",
@@ -289,16 +342,16 @@ export default {
 
   computed: {
     ...mapState("historyStore", [
-      "sellList",
+      "trunList",
       "countPage",
       "tableNull",
       "totalList",
-      "loadSell",
+      "loadTrun",
     ]),
   },
   methods: {
     ...mapMutations("historyStore", ["SET_INFO_BUY"]),
-    ...mapActions("historyStore", ["GetHisSell", "Delete"]),
+    ...mapActions("historyStore", ["GetHisTrun", "Delete"]),
     async OnDelete(item) {
       this.$swal({
         text: "ເຈົ້າຕ້ອງການຍົກເລີກແທ້ບໍ?",
@@ -352,7 +405,7 @@ export default {
     },
     async GetData() {
       try {
-        await this.GetHisSell({
+        await this.GetHisTrun({
           page: this.page,
           limit: this.limit,
           search: String(this.search),

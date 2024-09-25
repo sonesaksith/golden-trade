@@ -14,9 +14,22 @@
                 outlined
                 dense
                 class="rounded-md"
+                type="tel"
               ></v-text-field>
             </v-col>
             <v-col cols="12" class="py-0" sm="6">
+              <v-text-field
+                v-model="realWeight"
+                @keyup="fotmatWeightReal()"
+                label="ນ້ຳໜັກໂຕຈິງ"
+                append-icon="g"
+                outlined
+                dense
+                class="rounded-md"
+                type="tel"
+              ></v-text-field>
+            </v-col>
+            <!-- <v-col cols="12" class="py-0" sm="6">
               <v-text-field
                 v-model="modelLost"
                 @keyup="fotmatLost()"
@@ -31,8 +44,8 @@
                   </div>
                 </template>
               </v-text-field>
-            </v-col>
-            <v-col cols="12" class="py-0">
+            </v-col> -->
+            <!-- <v-col cols="12" class="py-0">
               <v-select
                 v-model="modelGoldType"
                 :items="goldTypes"
@@ -58,9 +71,9 @@
                 class="rounded-md"
                 clearable
               ></v-select>
-              <!-- :rules="[(v) => !!v || 'ກະລຸນາເລືອກຮູບປະພັນ']" -->
-            </v-col>
-            <v-col cols="12" class="py-0" v-if="modelGoldType == 'ທອງຮູບປະພັນ'">
+
+            </v-col> -->
+            <!-- <v-col cols="12" class="py-0" v-if="modelGoldType == 'ທອງຮູບປະພັນ'">
               <v-select
                 v-model="modelGoldShapeLine"
                 :items="goldShapeLine"
@@ -72,7 +85,7 @@
                 class="rounded-md"
                 clearable
               ></v-select>
-            </v-col>
+            </v-col> -->
             <v-col cols="6" class="py-0">
               <v-text-field
                 v-model="modelWeightAmount"
@@ -126,21 +139,23 @@
         <v-card-actions>
           <v-spacer> </v-spacer>
           <v-btn color="primary" @click="onAddListBuy()">ເພີ່ມລາຍການ</v-btn>
-          <v-btn color="error" @click="dialog = false">ປິດ</v-btn>
+          <v-btn color="error" @click="dialog = false" outlined>ປິດ</v-btn>
         </v-card-actions>
       </v-form>
     </v-card>
   </v-dialog>
 </template>
 <script>
+import secureStorage from "~/plugins/secure-storage";
 export default {
   data() {
     return {
       valid: true,
       dialog: false,
       modelGoldType: "ທອງຮູບປະພັນ",
-      modelPurity: 99,
+      modelPurity: 99.99,
       manualPrice: false,
+      realWeight: 0,
       goldTypes: [
         {
           id: 1,
@@ -152,7 +167,6 @@ export default {
         },
       ],
       modelGoldShape: "",
-
       goldShape: [
         {
           id: 1,
@@ -171,35 +185,34 @@ export default {
           shapeName: "ກຳໄລ",
         },
       ],
-      modelWeightAmount: "",
-
-      modelWeightType: "gram",
+      dataRate: {},
+      modelWeightAmount: 0,
+      modelWeightType: "ກຣາມ",
       weightType: [
         {
           id: 1,
-          weightName: "gram",
+          weightName: "ກຣາມ",
         },
         {
           id: 2,
-          weightName: "kg",
+          weightName: "ບາດ",
         },
         {
           id: 3,
-          weightName: "ຫູນ",
+          weightName: "ສະຫລຶງ",
         },
         {
           id: 4,
-          weightName: "ສະຫຼຶງ",
+          weightName: "ຫຸນ",
         },
         {
           id: 5,
-          weightName: "ບາດ",
+          weightName: "kg",
         },
       ],
       modelLost: 0,
       modelPrice: 0,
       modelGoldShapeLine: "",
-
       goldShapeLine: [
         {
           id: 1,
@@ -238,15 +251,34 @@ export default {
     };
   },
   watch: {
+    realWeight: function (val) {
+      if (this.manualPrice == false) {
+        if (val) {
+          this.modelWeightAmount = 0;
+          this.modelPrice = Math.ceil(
+            this.$convertGoldToMoney(
+              val?.split(",").join(""),
+              "ກຣາມ",
+              this.modelPurity,
+              this.dataRate?.rate_buy
+            )
+          );
+          this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
+        } else {
+          this.modelPrice = 0;
+        }
+      }
+    },
     modelWeightAmount: function (val) {
       if (this.manualPrice == false) {
         if (val) {
+          this.realWeight = 0;
           this.modelPrice = Math.ceil(
             this.$convertGoldToMoney(
               val?.split(",").join(""),
               this.modelWeightType,
               this.modelPurity,
-              String(this.modelLost)?.split(",").join("")
+              this.dataRate?.rate_buy
             )
           );
           this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
@@ -257,19 +289,23 @@ export default {
     },
     modelWeightType: function (val) {
       if (this.manualPrice == false) {
-        if (val) {
-          this.modelPrice = Math.ceil(
-            this.$convertGoldToMoney(
-              this.modelWeightAmount?.split(",").join(""),
-              val,
-              this.modelPurity,
-              String(this.modelLost)?.split(",").join("")
-            )
-          );
-          this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
-        } else {
-          // this.modelWeightType = "gram";
-          this.modelPrice = 0;
+        try {
+          if (val) {
+            this.modelPrice = Math.ceil(
+              this.$convertGoldToMoney(
+                this.modelWeightAmount?.split(",").join(""),
+                val,
+                this.modelPurity,
+                this.dataRate?.rate_buy
+              )
+            );
+            this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
+          } else {
+            // this.modelWeightType = "gram";
+            this.modelPrice = 0;
+          }
+        } catch (error) {
+          console.log(error);
         }
       }
     },
@@ -281,7 +317,7 @@ export default {
               this.modelWeightAmount?.split(",").join(""),
               this.modelWeightType,
               val,
-              String(this.modelLost)?.split(",").join("")
+              this.dataRate?.rate_buy
             )
           );
           this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
@@ -291,7 +327,7 @@ export default {
               this.modelWeightAmount?.split(",").join(""),
               this.modelWeightType,
               val,
-              String(this.modelLost)?.split(",").join("")
+              this.dataRate?.rate_buy
             )
           );
           this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
@@ -307,7 +343,7 @@ export default {
             this.modelWeightAmount?.split(",").join(""),
             this.modelWeightType,
             this.modelPurity,
-            String(this.modelLost)?.split(",").join("")
+            this.dataRate?.rate_buy
           )
         );
         this.modelPrice = this.fotmatPrice2(String(this.modelPrice));
@@ -325,37 +361,51 @@ export default {
       }
     },
   },
+  mounted() {
+    this.dataRate = secureStorage.getItem("rate");
+  },
   methods: {
     onAddListBuy() {
-      //   console.log(this.modelPurity);
-      //   console.log(this.modelLost);
-      //   console.log(this.modelGoldType);
-      //   console.log(this.modelGoldShape);
-      //   console.log(this.modelGoldShapeLine);
-      //   console.log(this.modelWeightAmount);
-      //   console.log(this.modelWeightType);
-      //   console.log(this.modelPrice);
-
-      const data = {
-        id: "pk" + Math.floor(Math.random() * 10000000),
-        typGold: this.modelGoldType,
-        optionGole: this.modelGoldShape,
-        typeLine: this.modelGoldShapeLine,
-        wight: this.modelWeightAmount,
-        typwight: this.modelWeightType,
-        sellGold: Number(this.modelPrice.replaceAll(",", "")),
-        countItem: 1,
-      };
-      this.$store.commit("newsell/ADD_LIST_CART_BUY", data);
-      this.dialog = false;
-      this.modelPurity = 99;
-      this.modelLost = 0;
-      this.modelGoldType = "ທອງຮູບປະພັນ";
-      this.modelGoldShape = "";
-      this.modelGoldShapeLine = "";
-      this.modelWeightAmount = "";
-      this.modelWeightType = "gram";
-      this.modelPrice = 0;
+      if (
+        (this.realWeight || (this.modelWeightType && this.modelWeightAmount)) &&
+        this.modelWeightType &&
+        this.modelWeightType &&
+        this.modelPrice &&
+        this.modelPurity
+      ) {
+        const data = {
+          weight: this.modelWeightAmount,
+          unitId: this.weightType.filter(
+            (x) => x.weightName == this.modelWeightType
+          )[0]?.id,
+          unitName: this.modelWeightType,
+          realWeight: this.realWeight,
+          price: Number(this.modelPrice.replaceAll(",", "")),
+          purity: this.modelPurity,
+        };
+        console.log(data);
+        this.$store.commit("newsell/ADD_LIST_CART_BUY", data);
+        this.dialog = false;
+        this.modelPurity = 99.99;
+        this.modelLost = 0;
+        this.modelGoldType = "ທອງຮູບປະພັນ";
+        this.modelGoldShape = "";
+        this.modelGoldShapeLine = "";
+        this.modelWeightAmount = "";
+        this.modelWeightType = "ກຣາມ";
+        this.modelPrice = 0;
+        this.realWeight = "";
+      } else {
+        this.$swal({
+          toast: true,
+          text: "ກະລຸນາປ້ອນຂໍ້ມູນ!",
+          type: "warning",
+          timer: 1500,
+          timerProgressBar: true,
+          showConfirmButton: false,
+          position: "top-end",
+        });
+      }
     },
     fotmatPrice2(price) {
       let val;
@@ -409,10 +459,12 @@ export default {
       this.modelPrice = val;
     },
     fotmatWeight() {
-      this.modelWeightAmount = this.modelWeightAmount.split(",").join("");
+      this.modelWeightAmount = String(this.modelWeightAmount || "")
+        .split(",")
+        .join("");
       let val;
       let valArr = [];
-      val = this.modelWeightAmount;
+      val = String(this.modelWeightAmount || "");
       val = val.replace(/[^0-9\.]/g, "");
       if (val != "") {
         valArr = val.split(".");
@@ -420,6 +472,21 @@ export default {
         val = valArr.join(".");
       }
       this.modelWeightAmount = val;
+    },
+    fotmatWeightReal() {
+      this.realWeight = String(this.realWeight || "")
+        .split(",")
+        .join("");
+      let val;
+      let valArr = [];
+      val = String(this.realWeight || "");
+      val = val.replace(/[^0-9\.]/g, "");
+      if (val != "") {
+        valArr = val.split(".");
+        valArr[0] = parseInt(valArr[0], 10).toLocaleString();
+        val = valArr.join(".");
+      }
+      this.realWeight = val;
     },
   },
 };

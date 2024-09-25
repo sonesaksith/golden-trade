@@ -7,7 +7,7 @@
     <v-container fluid>
       <v-row>
         <v-col cols="12" class="d-flex pt-0">
-          <h2>ຈັດການຂໍ້ມູນ Rate</h2>
+          <h2>ຈັດການຂໍ້ມູນ ລາຄາຄຳ</h2>
         </v-col>
         <v-col cols="12">
           <v-row>
@@ -122,41 +122,22 @@
                 {{ ((page || 1) - 1) * limit + index + 1 }}
               </div>
             </template>
-            <template #item.buy="{ index, item }">
-              <div>{{ item.rate_buy }}</div>
-            </template>
-            <template #item.sell="{ index, item }">
-              <div>{{ item.rate_sell }}</div>
+            <template #item.create_at="{ index, item }">
+              <div>
+                {{ $FormatDateTime(item.create_at) }}
+              </div>
             </template>
 
-            <template #item.actions="{ index, item }">
-              <div class="d-flex justify-center align-center">
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      icon
-                      @click="onOpenUpdate(item)"
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                      <v-icon color="primary"> mdi-square-edit-outline </v-icon>
-                    </v-btn>
-                  </template>
-                  <span>ແກ້ໄຂຂໍ້ມູນສິນຄ້າ</span>
-                </v-tooltip>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      icon
-                      @click="onDelete(item)"
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                      <v-icon color="error"> mdi-delete-empty-outline </v-icon>
-                    </v-btn>
-                  </template>
-                  <span>ລົບສິນຄ້າ</span>
-                </v-tooltip>
+            <template #item.buy="{ index, item }">
+              <div>{{ $formatnumber2(item.rate_buy) }}</div>
+            </template>
+            <template #item.sell="{ index, item }">
+              <div>{{ $formatnumber2(item.rate_sell) }}</div>
+            </template>
+            <template #item.aaa="{ index, item }">
+              <div>
+                <v-icon v-if="index == 0" color="success">mdi-check</v-icon>
+                <v-icon v-else color="error">mdi-close</v-icon>
               </div>
             </template>
           </v-data-table>
@@ -212,8 +193,15 @@ export default {
           sortable: false,
         },
         {
-          text: "ຈັດການ",
-          value: "actions",
+          text: "ວັນທີ",
+          value: "create_at",
+          class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-5",
+          align: "center",
+          sortable: false,
+        },
+        {
+          text: "ສະຖານະການໃຊ້",
+          value: "aaa",
           class: "blue-grey lighten-4 text-subtitle-2 font-weight-black px-5",
           align: "center",
           sortable: false,
@@ -223,6 +211,7 @@ export default {
   },
   mounted() {
     // this.handelClickSearch();
+    this.$store.commit("main/SET_HEADER_TITLE", "ລາຄາຄຳ");
     this.handleGetRate();
   },
   watch: {

@@ -52,7 +52,6 @@ export default {
           id: this.lai_id,
           name: this.lai_name,
         };
-        console.log(item);
         const res = await this.UpdateLine(item);
         if (res?.data?.status == 200 || res?.data?.msg == "success") {
           this.$swal({

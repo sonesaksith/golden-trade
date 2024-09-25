@@ -76,18 +76,15 @@ Vue.prototype.$convertGramsToGold = (weight, unit, purity) => {
 Vue.prototype.$convertGoldToMoney = (
   weight,
   unit,
-  purity,
-  deductBroken = 0
+  purity = 99.99,
+  pricePerBaht = 29000000,
+  deductBroken = 0,
+  gramPerBaht = 15
 ) => {
-  if (!purity) {
-    purity = 99.99;
-  }
-  const gramPerBaht = 15.244;
-  const pricePerBaht = 29000000;
   let weightInGrams;
 
   switch (unit) {
-    case "gram":
+    case "ກຣາມ":
       weightInGrams = weight;
       break;
     case "kg":
@@ -96,10 +93,10 @@ Vue.prototype.$convertGoldToMoney = (
     case "ບາດ":
       weightInGrams = weight * gramPerBaht;
       break;
-    case "ສະຫຼຶງ":
+    case "ສະຫລຶງ":
       weightInGrams = weight * (gramPerBaht / 4);
       break;
-    case "ຫູນ":
+    case "ຫຸນ":
       weightInGrams = weight * (gramPerBaht / 40);
       break;
     default:

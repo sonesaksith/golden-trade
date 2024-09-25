@@ -80,6 +80,7 @@
 <script>
 import secureStorage from "../../plugins/secure-storage.js";
 import { mapActions, mapGetters } from "vuex";
+import { genPassword } from "~/plugins/gencrypto";
 export default {
   data() {
     return {
@@ -93,7 +94,7 @@ export default {
     };
   },
   mounted() {
-    const a = secureStorage.getItem("token") || null
+    const a = secureStorage.getItem("token") || null;
     if (a) {
       this.$router.replace("/");
     }
@@ -103,19 +104,22 @@ export default {
     ...mapGetters("authen", ["isLoading"]),
   },
   methods: {
-    ...mapActions("authen", ["Login"]),
+    ...mapActions("authen", ["Loginss"]),
     async login() {
       try {
         if (this.username || this.password) {
           const body = {
             username: this.username,
-            password: "U2FsdGVkX18Z3TEnTSt7MmFsyil3+GEF2taAd+Gl0jY=",
+            password: await genPassword(this.password),
           };
-          const resp = await this.Login(body);
+          const resp = await this.Loginss(body);
           if (resp?.data?.resultData?.accessToken && resp.data.status == 200) {
-            console.log(resp.data.resultData?.accessToken);
-            secureStorage.setItem("token", JSON.stringify(resp?.data?.resultData?.access_token));
-            secureStorage.setItem("userinfo", JSON.stringify(resp?.data?.resultData));
+            secureStorage.setItem("token", resp?.data?.resultData?.accessToken);
+            secureStorage.setItem("userinfo", resp?.data?.resultData?.userInfo);
+            secureStorage.setItem(
+              "permission",
+              resp?.data?.resultData?.permission
+            );
             this.$swal({
               toast: true,
               text: "ເຂົ້າສູ່ລະບົບສຳເລັດ!",
@@ -125,7 +129,8 @@ export default {
               showConfirmButton: false,
               position: "top-end",
             });
-          this.$router.replace("/");
+
+            this.$router.replace("/");
           } else {
             this.$swal({
               toast: true,

@@ -2,9 +2,10 @@
   <div>
     <CustomerDialog ref="cusDialog" />
     <NewsellBuy ref="buyDialog" />
+    <NewsellBill :key="2" ref="myBillSell" v-show="false" />
     <v-container>
       <v-row>
-        <v-col cols="12" sm="4">
+        <v-col cols="12" sm="5" v-if="!loading || listGold.length > 0">
           <v-text-field
             v-model="search"
             outlined
@@ -17,8 +18,8 @@
             @input="page = 1"
           ></v-text-field>
         </v-col>
-        <v-col cols="12" sm="3">
-          <v-autocomplete
+        <v-col cols="12" sm="2" v-if="!loading || listGold.length > 0">
+          <!-- <v-autocomplete
             v-model="types"
             outlined
             dense
@@ -26,14 +27,14 @@
             :items="listType"
             clearable
             @change="page = 1"
-          ></v-autocomplete>
+          ></v-autocomplete> -->
         </v-col>
-        <v-col cols="6" sm="2">
-          <v-btn color="goldColor" block dark @click="onOpenBuy()">
-            <v-icon>mdi-gold</v-icon> ຊື້
+        <v-col cols="6" sm="2" v-if="!loading || listGold.length > 0">
+          <v-btn color="primary" block dark @click="onOpenBuy()">
+            ຊື້ເຂົ້າ
           </v-btn>
         </v-col>
-        <v-col cols="6" sm="3">
+        <v-col cols="6" sm="3" v-if="!loading || listGold.length > 0">
           <div class="d-flex justify-end align-center" style="height: 100%">
             <div
               style="height: 100%; width: 35px"
@@ -57,7 +58,22 @@
             </div>
           </div>
         </v-col>
-        <v-col cols="12" v-if="paginatedData.length == 0" align="center">
+        <v-col
+          cols="12"
+          v-if="paginatedData.length == 0 && loading"
+          align="center"
+        >
+          <v-img
+            src="/loading.png"
+            style="width: 300px; object-fit: cover"
+          ></v-img>
+          <h2>ກຳລັງໂຫລດ</h2>
+        </v-col>
+        <v-col
+          cols="12"
+          v-if="paginatedData.length == 0 && loading == false"
+          align="center"
+        >
           <v-img
             src="/Empty-amico.png"
             style="width: 300px; object-fit: cover"
@@ -72,41 +88,54 @@
           md="3"
           xl="2"
         >
-          <v-card min-height="270" @click="addSellItem(item)" elevation="1">
-            <v-img
-              height="150"
-              :src="
-                imgFilter(
-                  item.typGold === 'ທອງຄຳແທ່ງ' ? item.typGold : item.optionGole
-                )
-              "
-            ></v-img>
-
-            <v-card-title style="font-weight: bold">
-              {{
-                item.typGold === "ທອງຄຳແທ່ງ" ? item.typGold : item.optionGole
-              }}
-              {{ item.typeLine ? "-" : "" }} {{ item.typeLine }}
+          <v-card
+            min-height="270"
+            @click="addSellItem(item)"
+            elevation="1"
+            style="height: 100%"
+          >
+            <v-img height="150" :src="imgFilter(item?.category_name)"></v-img>
+            <v-card-title style="font-weight: bold" class="py-1">
+              {{ item?.category_name
+              }}{{ item?.lai_name ? " - " + item?.lai_name : "" }}
             </v-card-title>
-
             <v-card-text>
-              <div style="font-size: 17px; color: black">
-                ນ້ຳໜັກ : {{ item.wight }} {{ item.typwight }}
+              <div style="font-size: 14px; color: black">
+                ນ້ຳໜັກ : {{ item.weight }} {{ item.unit_name }}({{
+                  item.real_weight
+                }}g|{{ item.purity }}%)
+              </div>
+              <div style="font-size: 14px; color: black">
+                ຈຳນວນ : {{ item.quantity }}
               </div>
               <div class="d-flex justify-space-between align-center">
                 <div
                   style="
-                    font-size: 15px;
+                    font-size: 13px;
                     font-weight: bold;
-                    margin: 4px 0;
+                    margin: 2px 0;
                     color: black;
                   "
                 >
-                  {{ $formatnumber(item.sellGold) }} ກີບ
+                  ລາຄາ :
+                  {{
+                    $formatnumber(
+                      $convertGoldToMoney(
+                        item.weight,
+                        item.unit_name,
+                        item.purity,
+                        dataRate?.rate_sell
+                      )
+                    )
+                  }}
+                  ກີບ
                 </div>
-                <div class="goldColor rounded-circle pa-2">
+                <!-- <div class="goldColor rounded-circle pa-2">
                   <v-icon color="white">mdi-cart-minus</v-icon>
-                </div>
+                </div> -->
+              </div>
+              <div style="font-size: 14px; color: black">
+                ຄ່າລາຍ : {{ $formatnumber(item.price_lai) || 0 }} ກີບ
               </div>
             </v-card-text>
           </v-card>
@@ -141,45 +170,34 @@
                       >
                         <div style="width: 20%">
                           <v-img
-                            style="width: 100%"
+                            style="width: 100%; object-fit: contain"
                             height="80"
-                            :src="
-                              imgFilter(
-                                item.typGold === 'ທອງຄຳແທ່ງ'
-                                  ? item.typGold
-                                  : item.optionGole
-                              )
-                            "
+                            :src="imgFilter(item?.category_name)"
                           ></v-img>
                         </div>
                         <div style="width: 80%; height: 100px" class="px-2">
                           <div class="d-flex" style="height: 100%">
                             <div style="width: 70%; height: 100%">
-                              <span style="font-size: 14pt">
-                                {{
-                                  item.typGold === "ທອງຄຳແທ່ງ"
-                                    ? item.typGold
-                                    : item.optionGole
-                                }}
-                                {{ item.typeLine ? "-" : "" }}
-                                {{ item.typeLine }}
-                              </span>
-                              <p>
-                                ນ້ຳໜັກ : {{ item.wight }} {{ item.typwight }}
-                              </p>
-                              <span
-                                >ລາຄາ :
+                              <div v-if="Number(item?.realWeight) > 0">
+                                ນ້ຳໜັກໂຕຈິງ : {{ item?.realWeight }}
+                                g
+                              </div>
+                              <div v-else>
+                                ນ້ຳໜັກ : {{ item?.weight }}
+                                {{ item?.unitName }}
+                              </div>
+                              <div>
+                                ລາຄາ :
                                 {{
                                   $formatnumber(
-                                    Number(item.sellGold) *
-                                      (item?.countItem || 0)
+                                    Number(item.price) * (item?.countItem || 0)
                                   )
                                 }}
                                 ກີບ
-                              </span>
+                              </div>
                             </div>
                             <div style="width: 30%; position: relative">
-                              <div
+                              <!-- <div
                                 class="d-flex justify-space-between"
                                 style="width: 100%"
                               >
@@ -194,7 +212,7 @@
                                   @click="plusBuyItem(item)"
                                   >mdi-plus</v-icon
                                 >
-                              </div>
+                              </div> -->
 
                               <div
                                 class="d-flex justify-center"
@@ -231,37 +249,25 @@
                           <v-img
                             style="width: 100%"
                             height="80"
-                            :src="
-                              imgFilter(
-                                item.typGold === 'ທອງຄຳແທ່ງ'
-                                  ? item.typGold
-                                  : item.optionGole
-                              )
-                            "
+                            :src="imgFilter(item?.category_name)"
                           ></v-img>
                         </div>
                         <div style="width: 80%; height: 100px" class="px-2">
                           <div class="d-flex" style="height: 100%">
                             <div style="width: 70%; height: 100%">
                               <span style="font-size: 14pt">
-                                {{
-                                  item.typGold === "ທອງຄຳແທ່ງ"
-                                    ? item.typGold
-                                    : item.optionGole
+                                {{ item?.category_name
+                                }}{{
+                                  item?.lai_name ? " - " + item?.lai_name : ""
                                 }}
-                                {{ item.typeLine ? "-" : "" }}
-                                {{ item.typeLine }}
                               </span>
-                              <p>
-                                ນ້ຳໜັກ : {{ item.wight }} {{ item.typwight }}
-                              </p>
+                              <div>
+                                ນ້ຳໜັກ : {{ item.weight }} {{ item.unit_name }}
+                              </div>
                               <span
                                 >ລາຄາ :
                                 {{
-                                  $formatnumber(
-                                    Number(item.sellGold) *
-                                      (item?.countItem || 0)
-                                  )
+                                  $formatnumber(item?.price * item.countItem)
                                 }}
                                 ກີບ
                               </span>
@@ -333,16 +339,16 @@
                   class="d-flex flex-column flex-grow-1"
                 >
                   <v-row class="flex-grow-1">
-                    <v-col cols="12">
+                    <!-- <v-col cols="12">
                       <div class="d-flex">
                         <div style="width: 80%">
-                          <div v-if="selectingCus.surname">
+                          <div v-if="selectingCus.customer_tel">
                             <span style="font-size: 16pt">
-                              ຊື່ : {{ selectingCus.name }}
-                              {{ selectingCus.surname }}
+                              ຊື່ : {{ selectingCus.customer_name }}
+                              {{ selectingCus.customer_surname }}
                             </span>
                             <p style="font-size: 16pt">
-                              ເບີໂທ : {{ selectingCus.tel }}
+                              ເບີໂທ : {{ selectingCus.customer_tel }}
                             </p>
                           </div>
                           <div
@@ -350,9 +356,15 @@
                             class="d-flex justify-start align-center"
                             @click="onOpenCusDialog()"
                           >
-                            <span style="font-size: 16pt" class="primary--text"
-                              >ເລືອກລູກຄ້າ</span
+                            <span
+                              style="font-size: 16pt; font-weight: bold"
+                              class="primary--text"
                             >
+                              ເລືອກລູກຄ້າ
+                              <v-icon color="error"
+                                >mdi-exclamation-thick</v-icon
+                              >
+                            </span>
                           </div>
                         </div>
                         <div
@@ -363,7 +375,7 @@
                           <v-icon color="primary">mdi-pencil</v-icon>
                         </div>
                       </div>
-                    </v-col>
+                    </v-col> -->
 
                     <v-col cols="12">
                       <v-divider></v-divider>
@@ -376,19 +388,26 @@
                       <div v-if="sumListCartSell > 0" style="font-size: 18px">
                         ຍອດຂາຍ : {{ $formatnumber(sumListCartSell) }} ກີບ
                       </div>
-                      <div style="font-size: 18px">
-                        ຫັກອາກອນ :
+
+                      <!-- <div style="font-size: 18px">
+                        ອາກອນ :
                         {{
                           $formatnumber(sumListCartAll - sumListCartAll * 0.99)
                         }}
                         ກີບ
-                      </div>
+                      </div> -->
                       <v-divider class="my-3"></v-divider>
-                      <b style="font-size: 20px">
+
+                      <b
+                        style="font-size: 20px"
+                        v-if="sumListCartBuy > 0 && sumListCartSell > 0"
+                      >
+                        {{ diff > 0 ? "ລູກຄ້າຕື່ມ" : "ທອນ" }} :
+                        {{ $formatnumber(diff > 0 ? diff : diff * -1) }} ກີບ
+                      </b>
+                      <b style="font-size: 20px" v-else>
                         ຍອດຕ້ອງຈ່າຍ :
-                        {{
-                          $formatnumber(sumListCartAll - sumListCartAll * 0.01)
-                        }}
+                        {{ $formatnumber(sumListCartAll) }}
                         ກີບ
                       </b>
                     </v-col>
@@ -399,15 +418,13 @@
                     <v-col cols="12" class="pt-0">
                       <div class="d-flex justify-space-around mt-5">
                         <v-btn
-                          style="font-size: 14px"
-                          class="rounded-lg ml-1 mr-1 btn-pdf"
-                          color="primary"
+                          color="success"
+                          @click="goToPageBill()"
+                          :loading="isCreatingTransaction"
+                          :disabled="isCreatingTransaction"
                         >
-                          <v-icon>mdi-printer</v-icon> &nbsp; ພິມບິນ
+                          ຢືນຢັນບິນ
                         </v-btn>
-                        <v-btn color="success" @click="onConfirm()"
-                          >ຢືນຢັນບິນ</v-btn
-                        >
                       </div>
                     </v-col>
                   </v-row>
@@ -418,7 +435,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-dialog v-model="askPrintBillDialog" width="400">
+    <v-dialog v-model="askPrintBillDialog" persistent width="400">
       <v-card>
         <v-container>
           <v-row>
@@ -446,7 +463,9 @@
           >
             <v-icon>mdi-printer</v-icon> &nbsp; ພິມບິນ
           </v-btn>
-          <v-btn outlined color="error" @click="onCloseConfirm()">ບໍ່ພິມ</v-btn>
+          <v-btn outlined color="error" @click="askPrintBillDialog = false"
+            >ບໍ່ພິມ</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -454,6 +473,7 @@
 </template>
 <script>
 import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
+import secureStorage from "~/plugins/secure-storage";
 export default {
   data() {
     return {
@@ -464,10 +484,18 @@ export default {
       limit: 12,
       loading: false,
       askPrintBillDialog: false,
+      isCreatingTransaction: false,
+      dataRate: {},
     };
   },
   mounted() {
+    this.dataRate = secureStorage.getItem("rate");
+
+    this.$store.commit("customer/SET_SELECTING_CUSTOMER", {});
+    this.$refs.myBillSell.statusTran = "ປະຫວັດຂາຍ";
     this.$store.commit("main/SET_HEADER_TITLE", "ຊື້ - ຂາຍ");
+    this.getGolds();
+    this.GetCus();
   },
   computed: {
     ...mapState("gold", ["listGold"]),
@@ -477,6 +505,9 @@ export default {
       "sumListCartBuy",
       "sumListCartSell",
       "sumListCartAll",
+      "diff",
+      "sumSellRealWeight",
+      "sumBuyRealWeight",
     ]),
 
     filteredData() {
@@ -489,15 +520,17 @@ export default {
 
       return this.listGold.filter((item) => {
         const matchesSearch =
-          item.typGold.toLowerCase().includes(search) ||
-          item.optionGole.toLowerCase().includes(search) ||
-          item.typeLine.toLowerCase().includes(search);
+          item?.product_name?.toLowerCase().includes(search) ||
+          item?.lai_name?.toLowerCase().includes(search) ||
+          item?.product_type_name?.toLowerCase().includes(search) ||
+          item?.category_name?.toLowerCase().includes(search);
 
-        const matchesFilterType =
-          item.typGold.toLowerCase().includes(filterType) ||
-          item.optionGole.toLowerCase().includes(filterType);
+        // const matchesFilterType =
+        //   item.typGold.toLowerCase().includes(filterType) ||
+        //   item.optionGole.toLowerCase().includes(filterType);
 
-        return matchesSearch && matchesFilterType;
+        // return matchesSearch && matchesFilterType;
+        return matchesSearch;
       });
     },
     paginatedData() {
@@ -511,23 +544,106 @@ export default {
     },
   },
   methods: {
+    ...mapActions("gold", ["GetGolds", "GetLines", "GetCategory"]),
+    ...mapActions("newsell", [
+      "GetCus",
+      "TurnProduct",
+      "SellProduct",
+      "BuyProduct",
+    ]),
+    goToPageBill() {
+      let body = {};
+      if (this.listCartSell.length > 0 && this.listCartBuy.length == 0) {
+        this.$store.commit("newsell/SET_STTTRAN", "ປະຫວັດຂາຍ");
+        body = {
+          cusId: this.selectingCus.customer_id,
+          realTotalWeight: this.sumSellRealWeight,
+          rateId: this.dataRate.rate_id,
+          totalPrice: this.sumListCartSell,
+          disc: 0,
+          finalPrice: this.sumListCartSell,
+          listExportDetail: this.listCartSell.map((item) => ({
+            productId: item.product_id,
+            qty: item.countItem,
+            totalPrice: item.countItem * item.price,
+          })),
+        };
+      } else if (this.listCartSell.length == 0 && this.listCartBuy.length > 0) {
+        this.$store.commit("newsell/SET_STTTRAN", "ປະຫວັດຊື້");
+        body = {
+          cusId: this.selectingCus.customer_id,
+          realTotalWeight: this.sumBuyRealWeight,
+          rateId: this.dataRate.rate_id,
+          totalPrice: this.sumListCartBuy,
+          listImportDetail: this.listCartBuy.map((item) => ({
+            weight: item.weight,
+            unitId: item.unitId,
+            realWeight: item.realWeight,
+            price: item.price,
+            purity: item.purity,
+          })),
+        };
+      } else if (this.listCartSell.length > 0 && this.listCartBuy.length > 0) {
+        this.$store.commit("newsell/SET_STTTRAN", "ປະຫວັດເທີນ");
+
+        body = {
+          cusId: this.selectingCus.customer_id,
+          srealTotalWeight: this.sumSellRealWeight,
+          rateId: this.dataRate.rate_id,
+          stotalPrice: this.sumListCartSell,
+          sdisc: 0,
+          sfinalPrice: this.sumListCartSell,
+          listExportDetail: this.listCartSell.map((item) => ({
+            productId: item.product_id,
+            qty: item.countItem,
+            totalPrice: item.countItem * item.price,
+          })),
+          brealTotalWeight: this.sumBuyRealWeight,
+          btotalPrice: this.sumListCartBuy,
+          listImportDetail: this.listCartBuy.map((item) => ({
+            weight: item.weight,
+            unitId: item.unitId,
+            realWeight: item.realWeight,
+            price: item.price,
+            purity: item.purity,
+          })),
+        };
+      }
+      this.$store.commit("newsell/SET_PREVIEW_BILL", body);
+      this.$router.push("/newsell/confirmbill");
+    },
+    async getGolds() {
+      this.loading = true;
+      try {
+        const res = await this.GetGolds();
+        if (res.data.status == 200) {
+          this.products = res?.data?.resultData;
+          this.loading = false;
+        }
+      } catch (error) {
+        console.log("error", error);
+        this.loading = false;
+      } finally {
+        this.loading = false;
+      }
+    },
     imgFilter(key) {
       let imgSrc = "";
-      switch (key) {
-        case "ສາຍແຂນ":
-          imgSrc = "/chain.jpg";
-          break;
-        case "ສາຍຄໍ":
-          imgSrc = "/necklace.jpg";
-          break;
-        case "ທອງຄຳແທ່ງ":
-          imgSrc = "/goldbar.png";
-          break;
 
-        default:
-          imgSrc = "/necklace.jpg";
-          break;
+      if (key?.includes("ສາຍແຂນ")) {
+        imgSrc = "/chain.jpg";
+      } else if (key?.includes("ສາຍຄໍ")) {
+        imgSrc = "/necklace.jpg";
+      } else if (key?.includes("ແທ່ງ")) {
+        imgSrc = "/goldbar.png";
+      } else if (key?.includes("ແຫວນ")) {
+        imgSrc = "/ring.png";
+      } else if (key?.includes("ແຂນ")) {
+        imgSrc = "/bracer.png";
+      } else {
+        imgSrc = "/gold.png";
       }
+
       return imgSrc;
     },
     onOpenBuy() {
@@ -536,8 +652,15 @@ export default {
     onOpenCusDialog() {
       this.$refs.cusDialog.dialog = true;
     },
-    addSellItem(item) {
-      this.$store.commit("newsell/ADD_LIST_CART_SELL", item);
+    addSellItem(newItem) {
+      const price = this.$convertGoldToMoney(
+        newItem.weight,
+        newItem.unit_name,
+        newItem.purity,
+        this.dataRate?.rate_sell
+      );
+
+      this.$store.commit("newsell/ADD_LIST_CART_SELL", { newItem, price });
     },
     minusBuyItem(item) {
       this.$store.commit("newsell/MINUS_ITEMCOUNT_CART_BUY", item.id);
@@ -549,22 +672,157 @@ export default {
       this.$store.commit("newsell/DELETE_ITEM_CART_BUY", item.id);
     },
     minusSellItem(item) {
-      this.$store.commit("newsell/MINUS_ITEMCOUNT_CART_SELL", item.id);
+      const price = this.$convertGoldToMoney(
+        item.weight,
+        item.unit_name,
+        item.purity,
+        this.dataRate?.rate_sell
+      );
+
+      this.$store.commit("newsell/MINUS_ITEMCOUNT_CART_SELL", {
+        itemId: item.product_id,
+        price,
+      });
     },
     plusSellItem(item) {
-      this.$store.commit("newsell/PLUS_ITEMCOUNT_CART_SELL", item.id);
+      const price = this.$convertGoldToMoney(
+        item.weight,
+        item.unit_name,
+        item.purity,
+        this.dataRate?.rate_sell
+      );
+
+      this.$store.commit("newsell/PLUS_ITEMCOUNT_CART_SELL", {
+        itemId: item.product_id,
+        price,
+      });
     },
     delSellItem(item) {
-      this.$store.commit("newsell/DELETE_ITEM_CART_SELL", item.id);
+      this.$store.commit("newsell/DELETE_ITEM_CART_SELL", item.product_id);
     },
     onCloseConfirm() {
+      this.getGolds();
+      this.$refs.myBillSell.OnPrintBill();
       this.$store.commit("customer/SET_SELECTING_CUSTOMER", {});
       this.$store.commit("newsell/CLEAR_LIST_CART_SELL");
       this.$store.commit("newsell/CLEAR_LIST_CART_BUY");
       this.askPrintBillDialog = false;
     },
-    onConfirm() {
-      this.askPrintBillDialog = true;
+    async onConfirm() {
+      this.isCreatingTransaction = true;
+      let res;
+      try {
+        if (this.selectingCus?.customer_id) {
+          res = await this.callApi();
+          console.log(res);
+          if (res.data.msg === "success") {
+            this.askPrintBillDialog = true;
+            this.$store.commit("newsell/SET_BUYINFOSTT", res.data.resultData);
+          }
+        } else {
+          this.$swal({
+            toast: true,
+            text: "ກະລຸນາເລືອກລູກຄ້າ!",
+            type: "warning",
+            timer: 1500,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            position: "top-end",
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        this.$swal({
+          toast: true,
+          text: error?.response?.data?.message || "ເກີດຂໍ້ຜິດພາດ!",
+          type: "error",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+          position: "top-end",
+        });
+      } finally {
+        this.isCreatingTransaction = false;
+      }
+    },
+    async callApi() {
+      try {
+        let res;
+
+        if (this.listCartSell.length > 0 && this.listCartBuy.length == 0) {
+          this.$refs.myBillSell.statusTran = "ປະຫວັດຂາຍ";
+          const body = {
+            cusId: this.selectingCus.customer_id,
+            realTotalWeight: this.sumSellRealWeight,
+            rateId: this.dataRate.rate_id,
+            totalPrice: this.sumListCartSell,
+            disc: 0,
+            finalPrice: this.sumListCartSell,
+            listExportDetail: this.listCartSell.map((item) => ({
+              productId: item.product_id,
+              qty: item.countItem,
+              totalPrice: item.countItem * item.price,
+            })),
+          };
+          res = await this.SellProduct(body);
+
+          return res;
+        } else if (
+          this.listCartSell.length == 0 &&
+          this.listCartBuy.length > 0
+        ) {
+          this.$refs.myBillSell.statusTran = "ປະຫວັດຊື້";
+          const body = {
+            cusId: this.selectingCus.customer_id,
+            realTotalWeight: this.sumBuyRealWeight,
+            rateId: this.dataRate.rate_id,
+            totalPrice: this.sumListCartBuy,
+            listImportDetail: this.listCartBuy.map((item) => ({
+              weight: item.weight,
+              unitId: item.unitId,
+              realWeight: item.realWeight,
+              price: item.price,
+              purity: item.purity,
+            })),
+          };
+          res = await this.BuyProduct(body);
+
+          return res;
+        } else if (
+          this.listCartSell.length > 0 &&
+          this.listCartBuy.length > 0
+        ) {
+          this.$refs.myBillSell.statusTran = "ປະຫວັດເທີນ";
+          const body = {
+            cusId: this.selectingCus.customer_id,
+            srealTotalWeight: this.sumSellRealWeight,
+            rateId: this.dataRate.rate_id,
+            stotalPrice: this.sumListCartSell,
+            sdisc: 0,
+            sfinalPrice: this.sumListCartSell,
+            listExportDetail: this.listCartSell.map((item) => ({
+              productId: item.product_id,
+              qty: item.countItem,
+              totalPrice: item.countItem * item.price,
+            })),
+            brealTotalWeight: this.sumBuyRealWeight,
+            btotalPrice: this.sumListCartBuy,
+            listImportDetail: this.listCartBuy.map((item) => ({
+              weight: item.weight,
+              unitId: item.unitId,
+              realWeight: item.realWeight,
+              price: item.price,
+              purity: item.purity,
+            })),
+          };
+          res = await this.TurnProduct(body);
+
+          return res;
+        }
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
     },
   },
 };
