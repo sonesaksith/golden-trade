@@ -6,10 +6,7 @@
 
     <v-container fluid>
       <v-row>
-        <v-col cols="12" class="d-flex pt-0">
-          <h2>ຈັດການຂໍ້ມູນລູກຄ້າ</h2>
-        </v-col>
-        <v-col cols="12">
+        <v-col cols="12" style="height: 10dvh">
           <v-row>
             <v-col cols="12" sm="4" class="d-flex align-center justify-start">
               <v-text-field
@@ -29,15 +26,15 @@
                 <template #append>
                   <v-btn
                     small
-                    icon
                     @click="
                       () => {
                         page = 1;
                         handleGetCustomer();
                       }
                     "
-                    style="background-color: #1976d2"
-                    color="white"
+                    color="primary"
+                    fab
+                    class="mb-1"
                   >
                     <v-icon small>mdi-magnify</v-icon>
                   </v-btn>
@@ -56,7 +53,7 @@
             class="elevation-1 rounded-lg"
             :items-per-page="limit"
             fixed-header
-            height="550"
+            height="75dvh"
             hide-default-footer
             loading-text="ກຳລັງໂຫລດຂໍ້ມູນ..."
             :loading="loading"

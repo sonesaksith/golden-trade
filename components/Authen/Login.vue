@@ -112,6 +112,7 @@ export default {
             username: this.username,
             password: await genPassword(this.password),
           };
+          console.log(body);
           const resp = await this.Loginss(body);
           if (resp?.data?.resultData?.accessToken && resp.data.status == 200) {
             secureStorage.setItem("token", resp?.data?.resultData?.accessToken);
